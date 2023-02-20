@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.overlay.OverlayFragment">
+
+    <ai.visionlabs.examples.camera.ui.views.ViewportView
+        android:id="@+id/overlay_viewport"
+        android:layout_gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="#4fffffff">
+    </ai.visionlabs.examples.camera.ui.views.ViewportView>
+
+    <ai.visionlabs.examples.camera.ui.views.FaceDetectionView
+        android:id="@+id/overlay_detection"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ImageView
+        android:id="@+id/overlay_close"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_gravity="top|end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/overlay_error"
+        android:text="overlay bottom text"
+        android:paddingEnd="40dp"
+        android:paddingBottom="100dp"
+        android:layout_gravity="bottom|end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</FrameLayout>

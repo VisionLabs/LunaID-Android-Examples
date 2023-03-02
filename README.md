@@ -1,8 +1,8 @@
 
 
 #### как добавить в зависимость aar
-см. lunaCamera/, lunaCore/ и settings.gradle.
-положить .aar файлы в соответствующие папки и добавить эти папки как зависимости в settings.gradle.
+см. lunaCore/ и settings.gradle.
+положить lunaCore.aar файл в соотствующую папку и добавить эту папку как зависимости в settings.gradle.
 
 
 #### как инициализировать Luna ID SDK

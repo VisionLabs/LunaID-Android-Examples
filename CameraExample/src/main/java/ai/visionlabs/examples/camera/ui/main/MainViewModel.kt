@@ -7,9 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.visionlabs.sdk.lunacamera.presentation.CameraUIDelegate
-import ru.visionlabs.sdk.lunacamera.presentation.LunaCameraBuilder
 import ru.visionlabs.sdk.lunacore.BestShot
 import ru.visionlabs.sdk.lunacore.LunaError
+import ru.visionlabs.sdk.lunacore.LunaID
 
 sealed class MainViewState {
 
@@ -49,7 +49,7 @@ class MainViewModel : ViewModel() {
 
     fun onShowCameraWithDetectionClicked(activity: Activity) {
         Settings.overlayShowDetection = true
-        LunaCameraBuilder.showCamera(
+        LunaID.showCamera(
             activity,
             cameraUIDelegate,
             disableErrors = true,
@@ -58,7 +58,7 @@ class MainViewModel : ViewModel() {
 
     fun onShowCameraWithFrameClicked(activity: Activity) {
         Settings.overlayShowDetection = false
-        LunaCameraBuilder.showCamera(
+        LunaID.showCamera(
             activity,
             cameraUIDelegate,
             disableErrors = true,

@@ -10,3 +10,6 @@ local.properties
 /.idea
 *.aar
 build/
+
+
+**/license.conf

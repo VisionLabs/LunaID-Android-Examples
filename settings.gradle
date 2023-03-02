@@ -17,4 +17,3 @@ rootProject.name = "Luna ID Examples"
 include ':CameraExample'
 
 include (":lunaCore")
-include (":lunaCamera")

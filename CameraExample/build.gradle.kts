@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -76,4 +77,5 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
     implementation (project(":lunaCore"))
+    implementation("androidx.core:core-ktx:+")
 }

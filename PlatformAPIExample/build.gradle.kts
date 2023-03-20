@@ -62,5 +62,6 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     implementation(project(":lunaCore"))
+    implementation("androidx.core:core-ktx:+")
 
 }

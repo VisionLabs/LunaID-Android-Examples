@@ -204,3 +204,10 @@ android {
             areDescriptorsEnabled = true,
         )
 ```
+
+#####
+Чтобы получить или сравнить дескрипторы воспользоваться методами из `LunaUtils` 
+
+* getDescriptor(image)
+* getDescriptorFromWrapped(image)
+* matchDescriptors(first, second)

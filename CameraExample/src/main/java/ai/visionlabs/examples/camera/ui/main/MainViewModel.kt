@@ -30,6 +30,7 @@ class MainViewModel : ViewModel() {
         override fun bestShot(bestShot: BestShot): Boolean {
             Log.d("@@@", "bestShot: $bestShot")
             updateState(MainViewState.Image(bestShot))
+            bestShot.descriptor
             return true
         }
 

@@ -81,7 +81,7 @@ android {
 
 #### build.gradle
 
-```groovy
+```kotlin
 android {
     ...
 
@@ -165,3 +165,42 @@ android {
 
 Обратите внимание: в утилите `Analyze APK` в папке `lib` должна быть только одна платформа ("armeabi-v7a", "arm64-v8a" или другая). Если в этой папке больше одной платформы, значит вы смотрите универсальный .apk файл, который включает все платформы. Вернитесь на шаг назад и пересоберите приложение с включенным `splits.abi`.  
 
+
+#### как включить дескрипторы
+
+##### 
+Убрать из игнорируемых файлов `cnn` файлы.
+
+```kotlin
+android {
+    ...
+
+    androidResources {
+        ignoreAssetsPatterns.addAll(
+                [
+                        "!glasses_estimation_flwr_arm.plan",
+                        "!glasses_estimation_flwr_cpu.plan",
+                        "!mask_clf_v3_arm.plan",
+                        "!mask_clf_v3_cpu.plan",
+                        "!oslm_v4_model_1_arm.plan",
+                        "!oslm_v4_model_1_cpu.plan",
+                        "!oslm_v4_model_2_arm.plan",
+                        "!oslm_v4_model_2_cpu.plan",
+                ]
+        )
+    }
+    
+    ...
+}
+```
+
+#####
+При инициализации `LunaID` выставить `areDescriptorsEnabled = true`.
+
+```kotlin
+        LunaID.init(
+            app = this@App,
+            lunaConfig = LunaConfig.create(),
+            areDescriptorsEnabled = true,
+        )
+```

@@ -213,3 +213,105 @@ android {
 * getDescriptor(image)
 * getDescriptorFromWrapped(image)
 * matchDescriptors(first, second)
+
+#### Как использовать интеракцию
+Для кейса, когда от пользователя требуется выполнить действие во время съемки, мы поддерживаем моргание.  
+За интеракцию отвечают два параметра в `LunaCongig`.  
+`interactionEnabled` - включает или выключает интеракцию во время съемки.  
+`interactionTimeout` - как долго (в миллисекундах) камера будет ожидать выполнения действия от пользователя прежде, чем вернуть ошибку.  
+
+
+Пример:  
+```kotlin
+        LunaID.init(
+            this,
+            LunaConfig.create(
+                interactionEnabled = true,
+                interactionTimeout = 10_000,
+            )
+        )
+```
+
+Если интеракция включена (`interactionEnabled = true`), то спустя `interactionTimeout` в `CameraUIDelegate#onError()` прилетит ошибка `InteractionTimeout`.  
+
+
+#### Как пользоваться интерфейсом в Platform API
+В состав `Luna ID SDK` входит класс для совершения вызовов к ендпоинтам [Platform API](https://docs.visionlabs.ai/luna/v.5.28.0/ReferenceManuals/APIReferenceManual.html).  
+
+##### инициализация
+
+```kotlin
+        val baseUrl = "http://luna-platform.com/api/6/"
+
+        val apiConfig = ApiHumanConfig(
+            baseUrl = baseUrl,
+        )
+
+        val platformApi = ApiHuman(apiConfig)
+
+```
+
+##### добавление статических заголовков
+
+Можно указать заголовки, которые будут использоваться в каждом запросе.  
+
+```kotlin
+        // will be added to every request
+        val constantHeaders = mapOf(
+            "LUNA_ACCOUNT_ID_HEADER" to "12ed7399-f779-479c-8258-bbc45e6017af"
+        )
+
+        val apiConfig = ApiHumanConfig(
+            ...
+            headers = constantHeaders,
+        )
+
+```
+
+##### добавление динамических заголовков
+
+В некоторых случаях заголовки не известны в момент инициализации `ApiHuman`.  
+Все запросы `ApiHuman` принимают в качестве параметра дополнительные опциональные заголовки, которые будет добавлены только к этому запросу.
+
+```kotlin
+        val api: ApiHuman
+        
+        val photo: ByteArray
+
+        // one-shot headers
+        val dynamicHeaders = mapOf(
+            "X-Auth-Token" to "secret_token1"
+        )
+
+        val request = VerifyRequest(
+            verifierId =  "sdfqw-123asdf-af123",
+            payload = BinaryPayload.Photo(photo),
+            extraHeaders = dynamicHeaders,
+        )
+
+        api.apiVerifiers(
+            data = request,
+            consumer = verifyResponseConsumer
+        )
+
+```
+
+##### использование
+
+Класс `ApiHuman` предоставляет несколько методов для взаимодействия с `Platform API`.  
+
+[#apiEvents](https://docs.visionlabs.ai/luna/v.5.28.0/ReferenceManuals/APIReferenceManual.html#operation/generateEvents)
+POST-запрос `handlers/{handler_id}/events`.  
+
+[#apiVerifiers](https://docs.visionlabs.ai/luna/v.5.28.0/ReferenceManuals/APIReferenceManual.html#operation/postVerifier)
+POST-запрос на `handlers/{verifier_id}/verifications`.  
+
+[#apiLiveness](https://docs.visionlabs.ai/luna/v.5.28.0/ReferenceManuals/APIReferenceManual.html#tag/liveness)
+POST-запрос на `liveness`.  
+
+Каждый из методов принимает в качестве аргумента коблек типа `Consumer<Result<T>>` для получения результата вызова.  
+Когда колбек больше не нужен (например, при разрушении вью-модели), его нужно удалить вызовом `ApiHuman#removeCallback()`.  
+
+
+`ApiHuman` упрощает доступ к ендпоинтам `Platform API`. Под собой он использует интерфейс Retrofit-а.  
+Если хочется большего контроля над запросами, интерфейс Retrofit-а доступен через `ApiHuman#retrofit`.  

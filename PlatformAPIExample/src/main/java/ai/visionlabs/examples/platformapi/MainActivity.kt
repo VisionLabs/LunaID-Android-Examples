@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         api.apiEvents(
-            data = request,
+            query = request,
             consumer = eventResponseConsumer
         )
     }
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         api.apiVerifiers(
-            data = request,
+            query = request,
             consumer = verifyResponseConsumer
         )
 
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         api.apiVerifiers(
-            data = request,
+            query = request,
             consumer = verifyResponseConsumer
         )
 

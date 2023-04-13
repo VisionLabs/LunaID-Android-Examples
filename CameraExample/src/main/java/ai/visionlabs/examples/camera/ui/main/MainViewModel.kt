@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.visionlabs.sdk.lunacamera.presentation.CameraUIDelegate
 import ru.visionlabs.sdk.lunacore.BestShot
+import ru.visionlabs.sdk.lunacore.CameraState
 import ru.visionlabs.sdk.lunacore.LunaError
 import ru.visionlabs.sdk.lunacore.LunaID
 
@@ -46,6 +47,25 @@ class MainViewModel : ViewModel() {
 
     fun updateState(s: MainViewState) {
         mutableStateLiveData.postValue(s)
+    }
+
+    init {
+        Log.d("@@@@", "Main VM created")
+        val s = LunaID.lastCameraState
+        when (s) {
+            is CameraState.BestshotFound -> {
+                updateState(MainViewState.Image(s.bestshot))
+            }
+            else -> {
+                // noop
+            }
+        }
+    }
+
+    override fun onCleared() {
+        Log.d("@@@@", "Main VM cleared")
+        LunaID.unregisterListener(cameraUIDelegate)
+        super.onCleared()
     }
 
     fun onShowCameraWithDetectionClicked(activity: Activity) {

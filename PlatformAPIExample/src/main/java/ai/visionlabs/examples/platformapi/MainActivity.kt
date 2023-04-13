@@ -48,7 +48,8 @@ class MainActivity : AppCompatActivity() {
 
         val request = EventRequest(
             handlerId = "34-sddf234-sdfq23",
-            payload = BinaryPayload.Photo(photo)
+            payload = BinaryPayload.Photo(photo),
+            imageType = 1, // warp
         )
 
         api.apiEvents(

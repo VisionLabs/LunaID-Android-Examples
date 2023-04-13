@@ -56,9 +56,6 @@ android {
                 "!oslm_v4_model_1_cpu.plan",
                 "!oslm_v4_model_2_arm.plan",
                 "!oslm_v4_model_2_cpu.plan",
-                "!cnn59m_arm.plan",
-                "!cnn59m_cpu.plan",
-                "!cnndescriptor_59.conf",
             )
         )
     }
@@ -77,5 +74,4 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
     implementation (project(":lunaCore"))
-    implementation("androidx.core:core-ktx:1.9.0")
 }

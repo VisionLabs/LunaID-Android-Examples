@@ -51,7 +51,7 @@ class MainViewModel : ViewModel() {
 
     init {
         Log.d("@@@@", "Main VM created")
-        val s = LunaID.lastCameraState
+        val s = LunaID.popLastCameraState()
         when (s) {
             is CameraState.BestshotFound -> {
                 updateState(MainViewState.Image(s.bestshot))

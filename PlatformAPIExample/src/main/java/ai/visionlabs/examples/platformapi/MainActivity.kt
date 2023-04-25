@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             imageType = 1, // warp
         )
 
-        api.apiEvents(
+        api.apiEventsStaticHandler(
             query = request,
             consumer = eventResponseConsumer
         )

@@ -258,7 +258,7 @@ android {
 ```kotlin
         // will be added to every request
         val constantHeaders = mapOf(
-            "LUNA_ACCOUNT_ID_HEADER" to "12ed7399-f779-479c-8258-bbc45e6017af"
+            "Luna-Account-Id" to "12ed7399-f779-479c-8258-bbc45e6017af"
         )
 
         val apiConfig = ApiHumanConfig(

@@ -63,7 +63,8 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.9.0")
 
-//    implementation("releases:lunaid:1.2.3@aar")
-    implementation(project(":lunaCore"))
+
+    implementation("ai.visionlabs.lunaid:core:1.2.3@aar")
+//    implementation(project(":lunaCore"))
 
 }

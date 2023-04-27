@@ -15,7 +15,7 @@ dependencyResolutionManagement {
         ivy {
             url = java.net.URI.create("https://download.visionlabs.ru/")
             patternLayout {
-                artifact ("[organisation]/[artifact]-[revision].[ext]")
+                artifact ("releases/lunaid-[artifact]-[revision].[ext]")
                 setM2compatible(false)
             }
             credentials {
@@ -48,3 +48,5 @@ rootProject.name = "Luna ID Examples"
 
 include(":CameraExample")
 include(":PlatformAPIExample")
+
+//include (":lunaCore")

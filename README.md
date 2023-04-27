@@ -64,8 +64,7 @@ dependencies {
 }
 ```
 
-Пример: `implementation("releases:lunaid:1.2.3@aar")`.
-
+Пример: `implementation("ai.visionlabs.lunaid:core:1.2.3@aar")`.
 
 
 #### как инициализировать Luna ID SDK

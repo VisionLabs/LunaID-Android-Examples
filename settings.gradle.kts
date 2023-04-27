@@ -28,8 +28,9 @@ dependencyResolutionManagement {
 }
 
 fun getLocalProperty(key: String, file: String = "local.properties"): Any {
+    val file = File(rootProject.projectDir, file)
     val properties = java.util.Properties()
-    val localProperties = File(file)
+    val localProperties = file
     if (localProperties.isFile) {
         java.io.InputStreamReader(java.io.FileInputStream(localProperties), Charsets.UTF_8).use { reader ->
             properties.load(reader)

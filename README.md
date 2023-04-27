@@ -60,7 +60,7 @@ fun getLocalProperty(key: String, file: String = "local.properties"): Any {
 dependencies {
     ...
 
-    implementation("releases:lunaid:{VERSION}@aar")
+    implementation("ai.visionlabs.lunaid:core:{VERSION}@aar")
 }
 ```
 

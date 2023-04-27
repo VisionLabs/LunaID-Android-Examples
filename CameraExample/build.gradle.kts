@@ -73,5 +73,5 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.5.1")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
-    implementation (project(":lunaCore"))
+    implementation("releases:lunaid:1.2.3@aar")
 }

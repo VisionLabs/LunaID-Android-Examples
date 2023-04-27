@@ -1,8 +1,71 @@
 
 
 #### как добавить в зависимость aar
-см. lunaCore/ и settings.gradle.
-положить lunaCore.aar файл в соотствующую папку и добавить эту папку как зависимости в settings.gradle.
+Пример ниже описанного можно посмотреть в `CameraExample`.
+
+##### добавить репозиторий в `repositories`:
+```kotlin
+    repositories {
+        ...
+
+        ivy {
+            url = java.net.URI.create("https://download.visionlabs.ru/")
+            patternLayout {
+                artifact ("[organisation]/[artifact]-[revision].[ext]")
+                setM2compatible(false)
+            }
+            credentials {
+                username = getLocalProperty("vl.login") as String
+                password = getLocalProperty("vl.pass") as String
+            }
+            metadataSources { artifact() }
+        }
+    }
+```
+
+##### настройте логин и пароль для скачивания
+
+Файлы с `https://download.visionlabs.ru/` можно скачивать только с аутентификацией.
+Сохраните логин и пароль в файле `local.properties`:
+
+```shell
+vl.login=YOUR_LOGIN
+vl.pass=YOUR_PASSWORD
+```
+
+и добавьте функцию для получения логина и пароля в удобное место.
+
+```kotlin
+fun getLocalProperty(key: String, file: String = "local.properties"): Any {
+    val properties = java.util.Properties()
+    val localProperties = File(file)
+    if (localProperties.isFile) {
+        java.io.InputStreamReader(java.io.FileInputStream(localProperties), Charsets.UTF_8).use { reader ->
+            properties.load(reader)
+        }
+    } else error("File from not found: '$file'")
+
+    if (!properties.containsKey(key)) {
+        error("Key not found '$key' in file '$file'")
+    }
+    return properties.getProperty(key)
+}
+```
+
+Примечание: файл `local.properties` принято добавлять в `.gitignore`, чтобы он не попал в систему контроля версий.
+
+
+##### добавить зависимость в build.gradle
+```kotlin
+dependencies {
+    ...
+
+    implementation("releases:lunaid:{VERSION}@aar")
+}
+```
+
+Пример: `implementation("releases:lunaid:1.2.3@aar")`.
+
 
 
 #### как инициализировать Luna ID SDK

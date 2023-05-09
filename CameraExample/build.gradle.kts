@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "ai.visionlabs.examples.camera"
-        minSdk = 23
+        minSdk = 21
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -41,7 +41,7 @@ android {
             isEnable = true
             reset()
             include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
-            isUniversalApk = false
+            isUniversalApk = true
         }
     }
 
@@ -73,6 +73,6 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.5.1")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
-    implementation("ai.visionlabs.lunaid:core:1.2.3@aar")
+    implementation("ai.visionlabs.lunaid:core:1.2.4@aar")
 //    implementation(project(":lunaCore"))
 }

@@ -18,8 +18,9 @@ sealed class MainViewState {
 
     class Error(val message: String?) : MainViewState()
 
-    class Image(val image: BestShot) : MainViewState()
+    class Image(val image: BestShot, val videoPath: String?) : MainViewState()
 
+    class Cancelled(val videoPath: String?) : MainViewState()
 }
 
 class MainViewModel : ViewModel() {
@@ -28,14 +29,14 @@ class MainViewModel : ViewModel() {
     val stateLiveData: LiveData<MainViewState> = mutableStateLiveData
 
     private val cameraUIDelegate = object : CameraUIDelegate {
-        override fun bestShot(bestShot: BestShot): Boolean {
+        override fun bestShot(bestShot: BestShot, videoPath: String?): Boolean {
             Log.d("@@@", "bestShot: $bestShot")
-            updateState(MainViewState.Image(bestShot))
+            updateState(MainViewState.Image(bestShot, videoPath))
             bestShot.descriptor
             return true
         }
 
-        override fun canceled() {
+        override fun canceled(videoPath: String?) {
             Log.d("@@@", "cancelled")
         }
 
@@ -54,7 +55,10 @@ class MainViewModel : ViewModel() {
         val s = LunaID.popLastCameraState()
         when (s) {
             is CameraState.BestshotFound -> {
-                updateState(MainViewState.Image(s.bestshot))
+                updateState(MainViewState.Image(s.bestshot, s.videoPath))
+            }
+            is CameraState.CancelledByUser -> {
+                updateState(MainViewState.Cancelled(s.videoPath))
             }
             else -> {
                 // noop
@@ -85,4 +89,15 @@ class MainViewModel : ViewModel() {
             disableErrors = true,
         )
     }
+
+    fun onShowCameraAndRecordVideo(activity: Activity) {
+        Settings.overlayShowDetection = true
+        LunaID.showCamera(
+            activity,
+            cameraUIDelegate,
+            disableErrors = true,
+            recordVideo = true,
+        )
+    }
+
 }

@@ -29,6 +29,16 @@
         android:contentDescription="@null"
         android:scaleType="fitCenter" />
 
+    <TextView
+        android:id="@+id/videoFilePath"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:text="here text"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toTopOf="@id/showCameraWithDetection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <Button
         android:id="@+id/showCameraWithDetection"
         android:text="Find bestshot with detection"
@@ -42,7 +52,18 @@
 
     <Button
         android:id="@+id/showCameraWithFrame"
-        android:text="Find bestshota with frame"
+        android:text="Find bestshot with frame"
+        android:backgroundTint="@color/teal_700"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/showCameraAndRecordVideo"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/showCameraAndRecordVideo"
+        android:text="Find beshtosh and record video"
         android:backgroundTint="@color/teal_700"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

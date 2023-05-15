@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 
@@ -35,10 +36,23 @@ class MainFragment : Fragment() {
             is MainViewState.Init -> {} // noop
             is MainViewState.Image -> {
                 renderImage(s)
+                renderVideoPath(s.videoPath)
             }
             is MainViewState.Error -> {
                 renderError(s)
             }
+            is MainViewState.Cancelled -> {
+                renderVideoPath(s.videoPath)
+            }
+        }
+    }
+
+    private fun renderVideoPath(videoPath: String?) {
+        binding.videoFilePath.isVisible = videoPath != null
+
+        if (videoPath != null) {
+            val t = "Video session path:\n$videoPath"
+            binding.videoFilePath.text = t
         }
     }
 
@@ -63,6 +77,10 @@ class MainFragment : Fragment() {
             }
             showCameraWithFrame.setOnClickListener {
                 viewModel.onShowCameraWithFrameClicked(requireActivity())
+            }
+            showCameraAndRecordVideo.setOnClickListener {
+                viewModel.onShowCameraAndRecordVideo(requireActivity())
+
             }
         }
         return binding.root

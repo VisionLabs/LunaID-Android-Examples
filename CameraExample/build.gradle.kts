@@ -73,6 +73,6 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.5.1")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
-    implementation("ai.visionlabs.lunaid:core:1.2.4@aar")
+    implementation("ai.visionlabs.lunaid:core:1.3.1@aar")
 //    implementation(project(":lunaCore"))
 }

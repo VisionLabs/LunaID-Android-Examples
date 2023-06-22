@@ -39,6 +39,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <CheckBox
+        android:id="@+id/darkTheme"
+        android:text="Enable DarkTheme?"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/showCameraWithDetection"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:background="#EDF1F3"/>
+
+
     <Button
         android:id="@+id/showCameraWithDetection"
         android:text="Find bestshot with detection"

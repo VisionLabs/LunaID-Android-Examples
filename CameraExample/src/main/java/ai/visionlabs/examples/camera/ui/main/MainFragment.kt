@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 
 class MainFragment : Fragment() {
 
+    val TAG = "@@@"
+
     companion object {
         fun newInstance() = MainFragment()
     }
@@ -32,6 +34,7 @@ class MainFragment : Fragment() {
     }
 
     private fun updateUi(s: MainViewState) {
+        Log.d(TAG, "updateUi() called with: s = $s")
         when (s) {
             is MainViewState.Init -> {} // noop
             is MainViewState.Image -> {
@@ -48,12 +51,10 @@ class MainFragment : Fragment() {
     }
 
     private fun renderVideoPath(videoPath: String?) {
-        binding.videoFilePath.isVisible = videoPath != null
+        Log.d(TAG, "renderVideoPath() called with: videoPath = $videoPath")
 
-        if (videoPath != null) {
-            val t = "Video session path:\n$videoPath"
-            binding.videoFilePath.text = t
-        }
+        val t = "Video session path:\n$videoPath"
+        binding.videoFilePath.text = t
     }
 
     private fun renderError(s: MainViewState.Error) {

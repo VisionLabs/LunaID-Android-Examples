@@ -38,6 +38,7 @@ class MainViewModel : ViewModel() {
 
         override fun canceled(videoPath: String?) {
             Log.d("@@@", "cancelled")
+            updateState(MainViewState.Cancelled(videoPath))
         }
 
         override fun error(error: LunaError) {

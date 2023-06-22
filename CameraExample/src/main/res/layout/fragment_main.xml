@@ -31,9 +31,9 @@
 
     <TextView
         android:id="@+id/videoFilePath"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:visibility="visible"
-        android:text="here text"
+        android:text="no session"
         android:layout_margin="8dp"
         app:layout_constraintBottom_toTopOf="@id/showCameraWithDetection"
         android:layout_width="match_parent"

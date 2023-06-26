@@ -4,14 +4,20 @@ import ai.visionlabs.examples.camera.databinding.FragmentOverlayBinding
 import ai.visionlabs.examples.camera.ui.Settings
 import android.graphics.RectF
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.os.postDelayed
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import ru.visionlabs.sdk.R
 import ru.visionlabs.sdk.lunacamera.presentation.camera.messageResId
 import ru.visionlabs.sdk.lunacore.LunaError
+import ru.visionlabs.sdk.lunacore.LunaInteraction
 
 class OverlayFragment : Fragment() {
 
@@ -21,6 +27,9 @@ class OverlayFragment : Fragment() {
 
     private var _binding: FragmentOverlayBinding? = null
     private val binding get() = _binding!!
+
+    private val interactionShowHandler = Handler(Looper.getMainLooper())
+    private val MESSAGE_DELAY = 500L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +61,25 @@ class OverlayFragment : Fragment() {
         when (action) {
             "error" -> processError(event)
             "detect" -> processDetectRect(event)
+            "interaction" -> processInteraction(event)
+        }
+    }
+
+    private fun processInteraction(event: Map<String, Any>) {
+        val interactionState = event["state"] as LunaInteraction
+
+        val textId = interactionState.messageResId()
+        val text: String = if (textId == null) {
+            ""
+        } else {
+            getString(textId)
+        }
+
+        binding.overlayInteraction.text = text
+
+        interactionShowHandler.removeCallbacksAndMessages(null)
+        interactionShowHandler.postDelayed(MESSAGE_DELAY) {
+            binding.overlayInteraction.text = ""
         }
     }
 

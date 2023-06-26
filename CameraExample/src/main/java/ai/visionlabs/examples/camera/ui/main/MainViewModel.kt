@@ -78,7 +78,9 @@ class MainViewModel : ViewModel() {
         LunaID.showCamera(
             activity,
             cameraUIDelegate,
-            disableErrors = true,
+            LunaID.ShowCameraParams(
+                disableErrors = true,
+            )
         )
     }
 
@@ -87,7 +89,9 @@ class MainViewModel : ViewModel() {
         LunaID.showCamera(
             activity,
             cameraUIDelegate,
-            disableErrors = true,
+            LunaID.ShowCameraParams(
+                disableErrors = true,
+            )
         )
     }
 
@@ -96,8 +100,24 @@ class MainViewModel : ViewModel() {
         LunaID.showCamera(
             activity,
             cameraUIDelegate,
-            disableErrors = true,
-            recordVideo = true,
+            LunaID.ShowCameraParams(
+                disableErrors = true,
+                recordVideo = true,
+            )
+        )
+    }
+
+    fun onShowCameraWithInteraction(activity: Activity) {
+        Settings.overlayShowDetection = true
+        LunaID.showCamera(
+            activity,
+            cameraUIDelegate,
+            LunaID.ShowCameraParams(
+                disableErrors = true,
+                disableInteractionTips = true,
+                interactionEnabled = true,
+                interactionTimeoutMs = 10_000,
+            )
         )
     }
 

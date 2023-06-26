@@ -32,11 +32,22 @@
 
     <TextView
         android:id="@+id/overlay_error"
-        android:text="overlay bottom text"
+        android:text="overlay error text"
         android:paddingEnd="40dp"
         android:paddingBottom="100dp"
         android:layout_gravity="bottom|end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/overlay_interaction"
+        android:text="overlay interaction text"
+        android:paddingEnd="40dp"
+        android:textColor="@color/purple_500"
+        android:paddingBottom="100dp"
+        android:layout_gravity="bottom|start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 
 </FrameLayout>

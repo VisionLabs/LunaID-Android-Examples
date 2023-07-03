@@ -16,11 +16,11 @@ sealed class MainViewState {
 
     object Init : MainViewState()
 
-    class Error(val message: String?) : MainViewState()
+    data class Error(val message: String?) : MainViewState()
 
-    class Image(val image: BestShot, val videoPath: String?) : MainViewState()
+    data class Image(val image: BestShot, val videoPath: String?) : MainViewState()
 
-    class Cancelled(val videoPath: String?) : MainViewState()
+    data class Cancelled(val videoPath: String?) : MainViewState()
 }
 
 class MainViewModel : ViewModel() {

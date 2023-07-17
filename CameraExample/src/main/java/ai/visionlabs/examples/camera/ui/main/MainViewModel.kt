@@ -121,4 +121,13 @@ class MainViewModel : ViewModel() {
         )
     }
 
+    fun onShowCameraWithLiveness(activity: Activity) {
+        Settings.overlayShowDetection = true
+        LunaID.showCamera(
+            activity,
+            cameraUIDelegate,
+            LunaID.ShowCameraParams(
+            )
+        )
+    }
 }

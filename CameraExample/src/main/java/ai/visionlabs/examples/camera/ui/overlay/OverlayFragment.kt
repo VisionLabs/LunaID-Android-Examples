@@ -6,30 +6,35 @@ import android.graphics.RectF
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.os.postDelayed
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import ru.visionlabs.sdk.R
-import ru.visionlabs.sdk.lunacamera.presentation.camera.messageResId
-import ru.visionlabs.sdk.lunacore.LunaError
-import ru.visionlabs.sdk.lunacore.LunaInteraction
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.visionlabs.sdk.lunacore.Interaction
+import ru.visionlabs.sdk.lunacore.LunaID
+import ru.visionlabs.sdk.lunacore.LunaInteractionType
+import ru.visionlabs.sdk.lunacore.faceengine.DetectionError
+import ru.visionlabs.sdk.lunacore.faceengine.messageResId
 
 class OverlayFragment : Fragment() {
 
-    private val viewModel: OverlayViewModel by lazy {
-        ViewModelProvider(this, OverlayViewModelFactory()).get(OverlayViewModel::class.java)
-    }
+    private val viewModel: OverlayViewModel by viewModels()
 
     private var _binding: FragmentOverlayBinding? = null
     private val binding get() = _binding!!
 
-    private val interactionShowHandler = Handler(Looper.getMainLooper())
-    private val MESSAGE_DELAY = 500L
+    private val interactionTipsHandler = Handler(Looper.getMainLooper())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,55 +54,79 @@ class OverlayFragment : Fragment() {
         binding.overlayViewport.isVisible = !Settings.overlayShowDetection
         binding.overlayDetection.isVisible = Settings.overlayShowDetection
 
-        viewModel.overlayDelegate.receive.observe(viewLifecycleOwner) {
-            processEvent(it)
-        }
+        LunaID.detectionCoordinates()
+            .flowOn(Dispatchers.IO)
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                processDetectRect(it.data)
+            }
+            .flowOn(Dispatchers.Main)
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+
+
+        LunaID.allEvents()
+            .filterIsInstance<LunaID.Event.StateInteractionStarted>()
+            .flowOn(Dispatchers.IO)
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                Log.d("@@@@OVER_INTERACTION", "event: $it")
+                processInteractionEvent(it.type)
+            }
+            .flowOn(Dispatchers.Main)
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+
+        LunaID.detectionErrors()
+            .flowOn(Dispatchers.IO)
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                Log.d("@@@@OVER_ERROR", "event: $it")
+                processError(it.error)
+            }
+            .flowOn(Dispatchers.Main)
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+
     }
 
-    private fun processEvent(event: Map<String, Any>?) {
-        event ?: return
-        val action = event.getOrDefault("action", null) ?: return
+    private fun processInteractionEvent(@LunaInteractionType type: Int) {
+        val text = getInteractionTip(type)
 
-        when (action) {
-            "error" -> processError(event)
-            "detect" -> processDetectRect(event)
-            "interaction" -> processInteraction(event)
-        }
-    }
-
-    private fun processInteraction(event: Map<String, Any>) {
-        val interactionState = event["state"] as LunaInteraction
-
-        val textId = interactionState.messageResId()
-        val text: String = if (textId == null) {
-            ""
-        } else {
-            getString(textId)
-        }
+        interactionTipsHandler.removeCallbacksAndMessages(null)
 
         binding.overlayInteraction.text = text
 
-        interactionShowHandler.removeCallbacksAndMessages(null)
-        interactionShowHandler.postDelayed(MESSAGE_DELAY) {
-            binding.overlayInteraction.text = ""
+        interactionTipsHandler.removeCallbacksAndMessages(null)
+    }
+
+
+    private fun getInteractionTip(@LunaInteractionType interactionType: Int): String {
+        return when (interactionType) {
+            Interaction.BLINK ->  {
+                "please blink"
+            }
+            Interaction.YAW_LEFT -> {
+                "please yaw left"
+            }
+            Interaction.YAW_RIGHT -> {
+                "please yaw right"
+            }
+            Interaction.PITCH_UP -> {
+                "please pitch up"
+            }
+            Interaction.PITCH_DOWN -> {
+                "please pitch down"
+            }
+            else -> throw IllegalArgumentException("unrecognized interaction type: $interactionType")
         }
     }
 
-    private fun processDetectRect(event: Map<String, Any>) {
+    private fun processDetectRect(rect: RectF) {
         if (!Settings.overlayShowDetection) return
-
-        val rect = event["detect_rect"] as RectF
-        val isError = event["is_error"] as Boolean
-
-        binding.overlayDetection.updateFaceRect(rect, isError)
+        binding.overlayDetection.updateFaceRect(rect)
     }
 
-    private fun processError(event: Map<String, Any>) {
-        val error = event["error"]
-        if (error is LunaError) {
-            val errorTextResId = error.messageResId() ?: return
-            binding.overlayError.setText(errorTextResId)
-        }
+    private fun processError(error: DetectionError) {
+        val errorTextResId = error.messageResId() ?: return
+        binding.overlayError.setText(errorTextResId)
     }
 
     override fun onDestroyView() {

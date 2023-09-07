@@ -69,10 +69,11 @@ dependencies {
     implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
 
+    implementation ("androidx.fragment:fragment-ktx:1.6.1")
     // NOTE: specify both to avoid possible build errors
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.5.1")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
-    implementation("ai.visionlabs.lunaid:core:1.4.4@aar")
-//    implementation(project(":lunaCore"))
+//    implementation("ai.visionlabs.lunaid:core:1.4.4@aar")
+    implementation(project(":lunaCore"))
 }

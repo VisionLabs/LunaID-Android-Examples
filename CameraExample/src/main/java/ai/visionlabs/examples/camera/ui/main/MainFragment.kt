@@ -28,11 +28,15 @@ class MainFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        viewModel.init(this.viewLifecycleOwner)
-
         viewModel.stateLiveData.observe(this) {
             updateUi(it)
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.init(this.viewLifecycleOwner)
+
     }
 
     private fun updateUi(s: MainViewState) {

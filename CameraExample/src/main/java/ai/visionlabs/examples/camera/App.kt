@@ -13,7 +13,6 @@ class App : Application() {
         LunaID.init(
             app = this@App,
             lunaConfig = LunaConfig.create(),
-            areDescriptorsEnabled = true,
         )
     }
 }

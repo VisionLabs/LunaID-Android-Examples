@@ -44,22 +44,6 @@ android {
             isUniversalApk = true
         }
     }
-
-    androidResources {
-        ignoreAssetsPatterns.addAll(
-            listOf(
-                "!glasses_estimation_flwr_arm.plan",
-                "!glasses_estimation_flwr_cpu.plan",
-                "!mask_clf_v3_arm.plan",
-                "!mask_clf_v3_cpu.plan",
-                "!oslm_v4_model_1_arm.plan",
-                "!oslm_v4_model_1_cpu.plan",
-                "!oslm_v4_model_2_arm.plan",
-                "!oslm_v4_model_2_cpu.plan",
-            )
-        )
-    }
-
 }
 
 dependencies {
@@ -74,6 +58,12 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.5.1")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
-//    implementation("ai.visionlabs.lunaid:core:1.4.4@aar")
-    implementation(project(":lunaCore"))
+    implementation("ai.visionlabs.lunaid:core:1.6.0@aar")
+    implementation("ai.visionlabs.lunaid:cnn52:1.6.0@aar")
+    implementation("ai.visionlabs.lunaid:cnn59:1.6.0@aar")
+
+//    implementation(project(":lunaCore"))
+//    implementation(project(":models-cnn52"))
+//    implementation(project(":models-cnn59"))
+//    implementation(project(":models-oslm"))
 }

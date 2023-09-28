@@ -9,6 +9,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import ru.visionlabs.sdk.lunacore.utils.LunaUtils
+import ru.visionlabs.sdk.lunacore.utils.LunaUtils.V52
+import ru.visionlabs.sdk.lunacore.utils.LunaUtils.V59
 
 
 class MainFragment : Fragment() {
@@ -44,6 +47,8 @@ class MainFragment : Fragment() {
         when (s) {
             is MainViewState.Init -> {} // noop
             is MainViewState.Image -> {
+                val dv52 = LunaUtils.getDescriptor(s.image.image, V52)
+                val dv59 = LunaUtils.getDescriptor(s.image.image, V59)
                 renderImage(s)
                 renderVideoPath(s.videoPath)
             }

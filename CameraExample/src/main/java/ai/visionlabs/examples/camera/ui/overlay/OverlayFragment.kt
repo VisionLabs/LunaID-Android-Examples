@@ -1,5 +1,6 @@
 package ai.visionlabs.examples.camera.ui.overlay
 
+import ai.visionlabs.examples.camera.App
 import ai.visionlabs.examples.camera.databinding.FragmentOverlayBinding
 import ai.visionlabs.examples.camera.ui.Settings
 import android.graphics.RectF
@@ -53,6 +54,7 @@ class OverlayFragment : Fragment() {
 
         binding.overlayViewport.isVisible = !Settings.overlayShowDetection
         binding.overlayDetection.isVisible = Settings.overlayShowDetection
+        binding.overlayLegend.isVisible = Settings.overlayShowDetection
 
         LunaID.detectionCoordinates()
             .flowOn(Dispatchers.IO)
@@ -121,7 +123,19 @@ class OverlayFragment : Fragment() {
 
     private fun processDetectRect(rect: RectF) {
         if (!Settings.overlayShowDetection) return
-        binding.overlayDetection.updateFaceRect(rect)
+        Log.d("@@@@", "@@@@")
+
+        val frameSize = App.lunaConfig.detectFrameSize
+        val frameSizeRect = RectF(
+            0f, 0f, frameSize.toFloat(), frameSize.toFloat(),
+        ).apply {  offsetTo(rect.left, rect.top) }
+
+        val borderDistancePx = App.lunaConfig.borderDistance
+        binding.overlayDetection.update(
+            faceDetectionRect = rect,
+            minFaceDetectionRect = frameSizeRect,
+            borderDistancePx = borderDistancePx,
+        )
     }
 
     private fun processError(error: DetectionError) {

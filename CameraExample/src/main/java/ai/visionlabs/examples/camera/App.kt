@@ -7,12 +7,17 @@ import ru.visionlabs.sdk.lunacore.LunaID
 
 class App : Application() {
 
+    companion object {
+        lateinit var lunaConfig: LunaConfig
+    }
+
     override fun onCreate() {
         super.onCreate()
 
+        lunaConfig = LunaConfig.create()
         LunaID.init(
             app = this@App,
-            lunaConfig = LunaConfig.create(),
+            lunaConfig = lunaConfig
         )
     }
 }

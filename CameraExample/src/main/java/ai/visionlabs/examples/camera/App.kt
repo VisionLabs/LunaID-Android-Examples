@@ -14,7 +14,12 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        lunaConfig = LunaConfig.create()
+        lunaConfig = LunaConfig.create(
+            borderDistanceLeft = 100,
+            borderDistanceTop = 40,
+            borderDistanceRight = 20,
+            borderDistanceBottom = 400,
+        )
         LunaID.init(
             app = this@App,
             lunaConfig = lunaConfig

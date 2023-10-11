@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.postDelayed
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,10 +24,13 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.visionlabs.sdk.lunacore.Interaction
+import ru.visionlabs.sdk.lunacore.LunaConfig
 import ru.visionlabs.sdk.lunacore.LunaID
 import ru.visionlabs.sdk.lunacore.LunaInteractionType
 import ru.visionlabs.sdk.lunacore.faceengine.DetectionError
 import ru.visionlabs.sdk.lunacore.faceengine.messageResId
+import ru.visionlabs.sdk.lunacore.utils.LunaUtils
+import ru.visionlabs.sdk.lunacore.utils.LunaUtils.scalePreviewDistance
 
 class OverlayFragment : Fragment() {
 
@@ -36,6 +40,7 @@ class OverlayFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val interactionTipsHandler = Handler(Looper.getMainLooper())
+    private val errorShowHandler = Handler(Looper.getMainLooper())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -121,26 +126,55 @@ class OverlayFragment : Fragment() {
         }
     }
 
+    /**
+     * here we are enabling preview for various [LunaConfig] params
+     * related to detection borders.
+     * namely:
+     * [LunaConfig.borderDistanceLeft]
+     * [LunaConfig.borderDistanceTop]
+     * [LunaConfig.borderDistanceRight]
+     * [LunaConfig.borderDistanceBottom]
+     * [LunaConfig.detectFrameSize]
+     *
+     */
     private fun processDetectRect(rect: RectF) {
         if (!Settings.overlayShowDetection) return
-        Log.d("@@@@", "@@@@")
 
-        val frameSize = App.lunaConfig.detectFrameSize
+        val lc = App.lunaConfig
+
+        val frameSize = lc.detectFrameSize
         val frameSizeRect = RectF(
             0f, 0f, frameSize.toFloat(), frameSize.toFloat(),
         ).apply {  offsetTo(rect.left, rect.top) }
+        val scaledFrameSizedRect = LunaUtils.scalePreviewRect(frameSizeRect)
 
-        val borderDistancePx = App.lunaConfig.borderDistance
+        val w = binding.overlayDetection.measuredWidth
+        val h = binding.overlayDetection.measuredHeight
+
+        val borderDistanceRect = if (w > 0 && h > 0) RectF(
+            scalePreviewDistance(lc.borderDistanceLeft),
+            scalePreviewDistance(lc.borderDistanceTop),
+            w - scalePreviewDistance(lc.borderDistanceRight),
+            h - scalePreviewDistance(lc.borderDistanceBottom),
+        ) else null
+
         binding.overlayDetection.update(
             faceDetectionRect = rect,
-            minFaceDetectionRect = frameSizeRect,
-            borderDistancePx = borderDistancePx,
+            minFaceDetectionRect = scaledFrameSizedRect,
+            borderDistanceRect = borderDistanceRect,
         )
     }
 
     private fun processError(error: DetectionError) {
         val errorTextResId = error.messageResId() ?: return
-        binding.overlayError.setText(errorTextResId)
+
+        errorShowHandler.post {
+            errorShowHandler.removeCallbacksAndMessages(null)
+            binding.overlayError.setText(errorTextResId)
+        }
+        errorShowHandler.postDelayed(2000L) {
+            binding.overlayError.setText("")
+        }
     }
 
     override fun onDestroyView() {

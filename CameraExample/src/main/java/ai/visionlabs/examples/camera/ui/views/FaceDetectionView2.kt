@@ -31,7 +31,7 @@ public class FaceDetectionView2 @JvmOverloads constructor(
         strokeWidth = STROKE_WIDTH
         style = Paint.Style.STROKE
         isAntiAlias = true
-        color = Color.MAGENTA
+        color = Color.BLUE
     }
 
     private var minSizeFaceRect: RectF? = null
@@ -53,18 +53,10 @@ public class FaceDetectionView2 @JvmOverloads constructor(
     fun update(
         faceDetectionRect: RectF,
         minFaceDetectionRect: RectF,
-        borderDistancePx: Int,
+        borderDistanceRect: RectF?,
     ) {
-        val width: Int = measuredWidth
-        val height: Int = measuredHeight
-
-        if (width > 0 && height > 0 && borderDistancePx > 0) {
-            borderRect = RectF(
-                borderDistancePx.toFloat(),
-                borderDistancePx.toFloat(),
-                width.toFloat() - borderDistancePx,
-                height.toFloat() - borderDistancePx,
-            )
+        if (borderDistanceRect != null) {
+            borderRect = borderDistanceRect
         } else {
             borderRect = null
         }

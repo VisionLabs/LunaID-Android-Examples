@@ -33,25 +33,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
-    androidResources {
-        ignoreAssetsPatterns.addAll(
-            listOf(
-                "!glasses_estimation_flwr_arm.plan",
-                "!glasses_estimation_flwr_cpu.plan",
-                "!mask_clf_v3_arm.plan",
-                "!mask_clf_v3_cpu.plan",
-                "!oslm_v4_model_1_arm.plan",
-                "!oslm_v4_model_1_cpu.plan",
-                "!oslm_v4_model_2_arm.plan",
-                "!oslm_v4_model_2_cpu.plan",
-                "!cnn59m_arm.plan",
-                "!cnn59m_cpu.plan",
-                "!cnndescriptor_59.conf",
-            )
-        )
-    }
-
 }
 
 dependencies {
@@ -64,7 +45,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
 
 
-    implementation("ai.visionlabs.lunaid:core:1.6.0@aar")
+    implementation("ai.visionlabs.lunaid:core:1.7.0@aar")
 //    implementation(project(":lunaCore"))
 
 }

@@ -19,6 +19,9 @@ class App : Application() {
             borderDistanceTop = 40,
             borderDistanceRight = 20,
             borderDistanceBottom = 400,
+            acceptOccludedFaces = false,
+            acceptOneEyed = false,
+            startDelayMs = 10_000,
         )
         LunaID.init(
             app = this@App,

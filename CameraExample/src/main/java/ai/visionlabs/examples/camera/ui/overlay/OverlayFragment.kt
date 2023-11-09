@@ -97,11 +97,13 @@ class OverlayFragment : Fragment() {
     private fun processInteractionEvent(@LunaInteractionType type: Int) {
         val text = getInteractionTip(type)
 
-        interactionTipsHandler.removeCallbacksAndMessages(null)
-
-        binding.overlayInteraction.text = text
-
-        interactionTipsHandler.removeCallbacksAndMessages(null)
+        interactionTipsHandler.post {
+            interactionTipsHandler.removeCallbacksAndMessages(null)
+            binding.overlayInteraction.text = text
+        }
+        errorShowHandler.postDelayed(2000L) {
+            binding.overlayError.text = ""
+        }
     }
 
 

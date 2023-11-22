@@ -11,4 +11,7 @@ object Settings {
     @JvmStatic
     var overlayShowDetection = false
 
+    @JvmStatic
+    var commandsOverridden = false
+
 }

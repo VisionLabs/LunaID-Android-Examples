@@ -97,6 +97,13 @@ class MainFragment : Fragment() {
             showCameraWithInteraction.setOnClickListener {
                 viewModel.onShowCameraWithInteraction(requireActivity())
             }
+            showCameraWithCommands.setOnClickListener {
+                viewModel.onShowCameraWithCommands(
+                    requireActivity(),
+                    binding.overrideStart.isChecked,
+                    binding.overrideClose.isChecked
+                )
+            }
             darkTheme.setOnCheckedChangeListener { _, isChecked ->
                 AppCompatDelegate.setDefaultNightMode(
                     if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO

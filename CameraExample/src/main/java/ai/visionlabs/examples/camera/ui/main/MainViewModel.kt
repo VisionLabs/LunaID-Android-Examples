@@ -2,8 +2,9 @@ package ai.visionlabs.examples.camera.ui.main
 
 import ai.visionlabs.examples.camera.ui.Settings
 import android.app.Activity
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -18,8 +19,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import ru.visionlabs.sdk.lunacore.BestShot
 import ru.visionlabs.sdk.lunacore.BlinkInteraction
+import ru.visionlabs.sdk.lunacore.CloseCameraCommand
+import ru.visionlabs.sdk.lunacore.Commands
 import ru.visionlabs.sdk.lunacore.Interactions
 import ru.visionlabs.sdk.lunacore.LunaID
+import ru.visionlabs.sdk.lunacore.StartBestShotSearchCommand
 
 sealed class MainViewState {
 
@@ -37,6 +41,11 @@ class MainViewModel : ViewModel() {
     private val mutableStateLiveData = MutableLiveData<MainViewState>(MainViewState.Init)
     val stateLiveData: LiveData<MainViewState> = mutableStateLiveData
 
+
+    private var handler: Handler? = null
+    private var commands = Commands.Builder().build()
+
+
     fun updateState(s: MainViewState) {
         mutableStateLiveData.postValue(s)
     }
@@ -48,17 +57,18 @@ class MainViewModel : ViewModel() {
         LunaID.finishStates()
             .map { it.result }
             .flowOn(Dispatchers.IO)
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.CREATED)
             .onEach {
+                Log.d("@@@", "event incoming. $it")
                 when (it) {
                     is LunaID.FinishResult.ResultSuccess -> {
                         Log.d("@@@", "bestShot: ${it.data}")
-                        updateState(
-                            MainViewState.Image(
-                                it.data.bestShot,
-                                it.data.videoPath
-                            )
-                        )
+
+                        if (Settings.commandsOverridden && commands.isCloseOverridden()) {
+                            processSuccessWithDelay(it)
+                        } else {
+                            processSuccessImmediately(it)
+                        }
                     }
                     is LunaID.FinishResult.ResultFailed -> {
                         val t = it.data
@@ -83,6 +93,33 @@ class MainViewModel : ViewModel() {
 
     }
 
+    private fun processSuccessImmediately(result: LunaID.FinishResult.ResultSuccess) {
+        updateState(
+            MainViewState.Image(
+                result.data.bestShot,
+                result.data.videoPath
+            )
+        )
+    }
+
+    private fun processSuccessWithDelay(finishResult: LunaID.FinishResult.ResultSuccess) {
+        val finishDelayMs = 5_000L
+
+        handler?.removeCallbacksAndMessages(null)
+        handler?.postDelayed(
+            {
+                LunaID.sendCommand(CloseCameraCommand)
+
+                updateState(
+                    MainViewState.Image(
+                        finishResult.data.bestShot,
+                        finishResult.data.videoPath
+                    )
+                )
+            }, finishDelayMs
+        )
+    }
+
     override fun onCleared() {
         Log.d("@@@@", "Main VM cleared")
         super.onCleared()
@@ -90,6 +127,8 @@ class MainViewModel : ViewModel() {
 
     fun onShowCameraWithDetectionClicked(activity: Activity) {
         Settings.overlayShowDetection = true
+        Settings.commandsOverridden = false
+
         LunaID.showCamera(
             activity,
             LunaID.ShowCameraParams(
@@ -100,6 +139,8 @@ class MainViewModel : ViewModel() {
 
     fun onShowCameraWithFrameClicked(activity: Activity) {
         Settings.overlayShowDetection = false
+        Settings.commandsOverridden = false
+
         LunaID.showCamera(
             activity,
             LunaID.ShowCameraParams(
@@ -110,6 +151,8 @@ class MainViewModel : ViewModel() {
 
     fun onShowCameraAndRecordVideo(activity: Activity) {
         Settings.overlayShowDetection = true
+        Settings.commandsOverridden = false
+
         LunaID.showCamera(
             activity,
             LunaID.ShowCameraParams(
@@ -121,6 +164,8 @@ class MainViewModel : ViewModel() {
 
     fun onShowCameraWithInteraction(activity: Activity) {
         Settings.overlayShowDetection = true
+        Settings.commandsOverridden = false
+
         LunaID.showCamera(
             activity,
             LunaID.ShowCameraParams(
@@ -132,11 +177,39 @@ class MainViewModel : ViewModel() {
         )
     }
 
-    fun onShowCameraWithLiveness(activity: Activity) {
+    fun onShowCameraWithCommands(
+        activity: Activity,
+        overrideStart: Boolean,
+        overrideClose: Boolean
+    ) {
         Settings.overlayShowDetection = true
+        Settings.commandsOverridden = true
+
+        handler?.removeCallbacksAndMessages(null)
+        handler = Handler(Looper.getMainLooper())
+
+        commands = Commands.Builder().apply {
+            if (overrideStart) override(StartBestShotSearchCommand)
+            if (overrideClose) override(CloseCameraCommand)
+        }.build()
+
+        if (commands.isStartOverridden()) {
+            setupStartDelay()
+        }
+
         LunaID.showCamera(
             activity,
-            LunaID.ShowCameraParams()
+            LunaID.ShowCameraParams(disableErrors = false),
+            commands = commands,
         )
     }
+
+    private fun setupStartDelay() {
+        val startDelayMs = 3_000L
+        handler?.postDelayed(
+            {
+                LunaID.sendCommand(StartBestShotSearchCommand)
+            }, startDelayMs)
+    }
+
 }

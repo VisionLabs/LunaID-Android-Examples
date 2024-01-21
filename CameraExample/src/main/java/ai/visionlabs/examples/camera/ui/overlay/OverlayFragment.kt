@@ -70,6 +70,14 @@ class OverlayFragment : Fragment() {
             .flowOn(Dispatchers.Main)
             .launchIn(viewLifecycleOwner.lifecycleScope)
 
+        LunaID.allEvents()
+            .flowOn(Dispatchers.IO)
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                Log.d("@@@@EVENT", "event: $it")
+            }
+            .flowOn(Dispatchers.Main)
+            .launchIn(viewLifecycleOwner.lifecycleScope)
 
         LunaID.allEvents()
             .filterIsInstance<LunaID.Event.StateInteractionStarted>()
@@ -101,7 +109,7 @@ class OverlayFragment : Fragment() {
             interactionTipsHandler.removeCallbacksAndMessages(null)
             binding.overlayInteraction.text = text
         }
-        errorShowHandler.postDelayed(2000L) {
+        interactionTipsHandler.postDelayed(1000L) {
             binding.overlayError.text = ""
         }
     }
@@ -174,7 +182,7 @@ class OverlayFragment : Fragment() {
             errorShowHandler.removeCallbacksAndMessages(null)
             binding.overlayError.setText(errorTextResId)
         }
-        errorShowHandler.postDelayed(2000L) {
+        errorShowHandler.postDelayed(1000L) {
             binding.overlayError.setText("")
         }
     }

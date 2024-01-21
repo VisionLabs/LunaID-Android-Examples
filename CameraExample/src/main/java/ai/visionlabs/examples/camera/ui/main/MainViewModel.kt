@@ -24,6 +24,7 @@ import ru.visionlabs.sdk.lunacore.Commands
 import ru.visionlabs.sdk.lunacore.Interactions
 import ru.visionlabs.sdk.lunacore.LunaID
 import ru.visionlabs.sdk.lunacore.StartBestShotSearchCommand
+import ru.visionlabs.sdk.lunacore.YawLeftInteraction
 
 sealed class MainViewState {
 
@@ -172,6 +173,7 @@ class MainViewModel : ViewModel() {
                 disableErrors = true,
             ),
             interactions = Interactions.Builder()
+                .addInteraction(YawLeftInteraction())
                 .addInteraction(BlinkInteraction())
                 .build()
         )

@@ -63,3 +63,6 @@ include(":PlatformAPIExample")
 //
 //include (":models-mask")
 //project(":models-mask").projectDir = File(rootDir, "../sdk/lunaid/mask")
+//
+//include (":models-glasses")
+//project(":models-glasses").projectDir = File(rootDir, "../sdk/lunaid/glasses")

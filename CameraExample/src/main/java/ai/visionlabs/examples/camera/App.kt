@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import ru.visionlabs.sdk.lunacore.LunaConfig
 import ru.visionlabs.sdk.lunacore.LunaID
+import ru.visionlabs.sdk.lunacore.liveness.GlassesCheckType
 
 class App : Application() {
 
@@ -15,10 +16,6 @@ class App : Application() {
         super.onCreate()
 
         lunaConfig = LunaConfig.create(
-            borderDistanceLeft = 100,
-            borderDistanceTop = 40,
-            borderDistanceRight = 20,
-            borderDistanceBottom = 400,
             acceptOccludedFaces = false,
             acceptOneEyed = false,
             foundFaceDelay = 1_000L,
@@ -29,7 +26,8 @@ class App : Application() {
 
             interactionDelayMs = 2_000L,
             acceptEyesClosed = true,
-            acceptGlasses = false,
+
+            glassesChecks = setOf(GlassesCheckType.GLASSES_CHECK_SUN, GlassesCheckType.GLASSES_CHECK_DIOPTER)
         )
 
         if (LunaID.activateLicense(applicationContext)) {

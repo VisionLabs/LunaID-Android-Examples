@@ -134,6 +134,12 @@ class MainViewModel : ViewModel() {
             activity,
             LunaID.ShowCameraParams(
                 disableErrors = true,
+                borderDistance = LunaID.ShowCameraParams.Companion.BorderDistance(
+                    left = 100,
+                    top = 40,
+                    right = 20,
+                    bottom = 400,
+                )
             )
         )
     }

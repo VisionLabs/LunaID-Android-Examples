@@ -151,6 +151,7 @@ class OverlayFragment : Fragment() {
         if (!Settings.overlayShowDetection) return
 
         val lc = App.lunaConfig
+        val bd = LunaID.showCameraParams.borderDistance
 
         val frameSize = lc.detectFrameSize
         val frameSizeRect = RectF(
@@ -162,10 +163,10 @@ class OverlayFragment : Fragment() {
         val h = binding.overlayDetection.measuredHeight
 
         val borderDistanceRect = if (w > 0 && h > 0) RectF(
-            scalePreviewDistance(lc.borderDistanceLeft),
-            scalePreviewDistance(lc.borderDistanceTop),
-            w - scalePreviewDistance(lc.borderDistanceRight),
-            h - scalePreviewDistance(lc.borderDistanceBottom),
+            scalePreviewDistance(bd.left),
+            scalePreviewDistance(bd.top),
+            w - scalePreviewDistance(bd.right),
+            h - scalePreviewDistance(bd.bottom),
         ) else null
 
         binding.overlayDetection.update(

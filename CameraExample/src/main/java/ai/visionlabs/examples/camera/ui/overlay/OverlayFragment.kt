@@ -182,9 +182,9 @@ class OverlayFragment : Fragment() {
         errorShowHandler.post {
             errorShowHandler.removeCallbacksAndMessages(null)
             binding.overlayError.setText(errorTextResId)
-        }
-        errorShowHandler.postDelayed(1000L) {
-            binding.overlayError.setText("")
+            errorShowHandler.postDelayed(1000L) {
+                binding.overlayError.text = ""
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package ai.visionlabs.examples.camera.ui.main
 
+import ai.visionlabs.examples.camera.BuildConfig
 import ai.visionlabs.examples.camera.databinding.FragmentMainBinding
 import android.os.Bundle
 import android.util.Log
@@ -45,7 +46,9 @@ class MainFragment : Fragment() {
     private fun updateUi(s: MainViewState) {
         Log.d(TAG, "updateUi() called with: s = $s")
         when (s) {
-            is MainViewState.Init -> {} // noop
+            is MainViewState.Init -> {
+                binding.sdkVersion.text = BuildConfig.SDK_VERSION
+            }
             is MainViewState.Image -> {
                 val dv52 = LunaUtils.getDescriptor(s.image.image, V52)
                 val dv59 = LunaUtils.getDescriptor(s.image.image, V59)

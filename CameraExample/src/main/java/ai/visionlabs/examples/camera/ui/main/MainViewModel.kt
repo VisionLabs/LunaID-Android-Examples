@@ -179,8 +179,8 @@ class MainViewModel : ViewModel() {
                 disableErrors = true,
             ),
             interactions = Interactions.Builder()
-                .addInteraction(YawLeftInteraction())
-                .addInteraction(BlinkInteraction())
+                .addInteraction(YawLeftInteraction(timeoutMs = 100_000))
+                .addInteraction(BlinkInteraction(timeoutMs = 100_000))
                 .build()
         )
     }

@@ -19,7 +19,7 @@ class App : Application() {
             acceptOccludedFaces = false,
             acceptOneEyed = false,
             foundFaceDelay = 1_000L,
-            detectFrameSize = 100,
+            detectFrameSize = 350,
 
             skipFrames = 0,
             detectorStep = 0,
@@ -27,7 +27,7 @@ class App : Application() {
             interactionDelayMs = 2_000L,
             acceptEyesClosed = true,
 
-            glassesChecks = setOf(GlassesCheckType.GLASSES_CHECK_SUN, GlassesCheckType.GLASSES_CHECK_DIOPTER)
+            glassesChecks = setOf(GlassesCheckType.GLASSES_CHECK_SUN)
         )
 
         if (LunaID.activateLicense(applicationContext)) {

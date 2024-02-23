@@ -23,8 +23,11 @@ import ru.visionlabs.sdk.lunacore.CloseCameraCommand
 import ru.visionlabs.sdk.lunacore.Commands
 import ru.visionlabs.sdk.lunacore.Interactions
 import ru.visionlabs.sdk.lunacore.LunaID
+import ru.visionlabs.sdk.lunacore.PitchDownInteraction
+import ru.visionlabs.sdk.lunacore.PitchUpInteraction
 import ru.visionlabs.sdk.lunacore.StartBestShotSearchCommand
 import ru.visionlabs.sdk.lunacore.YawLeftInteraction
+import ru.visionlabs.sdk.lunacore.YawRightInteraction
 
 sealed class MainViewState {
 
@@ -179,8 +182,11 @@ class MainViewModel : ViewModel() {
                 disableErrors = true,
             ),
             interactions = Interactions.Builder()
-                .addInteraction(YawLeftInteraction(timeoutMs = 100_000))
-                .addInteraction(BlinkInteraction(timeoutMs = 100_000))
+                .addInteraction(BlinkInteraction(timeoutMs = 30_000))
+                .addInteraction(YawLeftInteraction(timeoutMs = 30_000, startAngleDeg = 15, endAngleDeg = 20))
+                .addInteraction(YawRightInteraction(timeoutMs = 30_000, startAngleDeg = 15, endAngleDeg = 20))
+                .addInteraction(PitchUpInteraction(timeoutMs = 30_000, startAngleDeg = 10, endAngleDeg = 15))
+                .addInteraction(PitchDownInteraction(timeoutMs = 30_000, startAngleDeg = 5, endAngleDeg = 10))
                 .build()
         )
     }

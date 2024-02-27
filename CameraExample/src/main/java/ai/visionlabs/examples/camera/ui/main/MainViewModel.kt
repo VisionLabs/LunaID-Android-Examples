@@ -186,7 +186,7 @@ class MainViewModel : ViewModel() {
                 .addInteraction(YawLeftInteraction(timeoutMs = 30_000, startAngleDeg = 15, endAngleDeg = 20))
                 .addInteraction(YawRightInteraction(timeoutMs = 30_000, startAngleDeg = 15, endAngleDeg = 20))
                 .addInteraction(PitchUpInteraction(timeoutMs = 30_000, startAngleDeg = 10, endAngleDeg = 15))
-                .addInteraction(PitchDownInteraction(timeoutMs = 30_000, startAngleDeg = 5, endAngleDeg = 10))
+                .addInteraction(PitchDownInteraction(timeoutMs = 30_000, startAngleDeg = 10, endAngleDeg = 15))
                 .build()
         )
     }

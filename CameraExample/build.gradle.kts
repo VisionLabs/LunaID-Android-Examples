@@ -65,7 +65,7 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
 
-//    implementation("ai.visionlabs.lunaid:core:$sdkVersion@aar")
+    implementation("ai.visionlabs.lunaid:core:$sdkVersion@aar")
 
     implementation("ai.visionlabs.lunaid:common-arm:$sdkVersion@aar")
     implementation("ai.visionlabs.lunaid:cnn52-arm:$sdkVersion@aar")
@@ -74,15 +74,15 @@ dependencies {
     implementation("ai.visionlabs.lunaid:oslm-arm:$sdkVersion@aar")
     implementation("ai.visionlabs.lunaid:glasses-arm:$sdkVersion@aar")
 
-    implementation("ai.visionlabs.lunaid:common-x86:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:cnn52-x86:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:cnn59-x86:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:mask-x86:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:oslm-x86:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:glasses-x86:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:common-x86:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:cnn52-x86:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:cnn59-x86:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:mask-x86:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:oslm-x86:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:glasses-x86:$sdkVersion@aar")
 
 //    implementation(files("libs/lunaCore-release.aar"))
-    implementation(project(":lunaCore"))
+//    implementation(project(":lunaCore"))
 //    implementation(project(":models-mask"))
 //    implementation(project(":models-cnn52"))
 //    implementation(project(":models-cnn59"))

@@ -18,13 +18,13 @@ class App : Application() {
         lunaConfig = LunaConfig.create(
             acceptOccludedFaces = false,
             acceptOneEyed = false,
-            foundFaceDelay = 1_000L,
+            foundFaceDelay = 200L,
             detectFrameSize = 350,
 
-            skipFrames = 0,
-            detectorStep = 0,
+            skipFrames = 50,
+            detectorStep = 1,
 
-            interactionDelayMs = 2_000L,
+            interactionDelayMs = 200L,
             acceptEyesClosed = true,
 
             glassesChecks = setOf(GlassesCheckType.GLASSES_CHECK_SUN)

@@ -2,6 +2,7 @@ package ai.visionlabs.examples.camera.ui.main
 
 import ai.visionlabs.examples.camera.ui.Settings
 import android.app.Activity
+import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -176,6 +177,7 @@ class MainViewModel : ViewModel() {
             activity,
             LunaID.ShowCameraParams(
                 disableErrors = true,
+                statusBarColorHex = Color.GREEN
             ),
             interactions = Interactions.Builder()
                 .addInteraction(BlinkInteraction(timeoutMs = 30_000))

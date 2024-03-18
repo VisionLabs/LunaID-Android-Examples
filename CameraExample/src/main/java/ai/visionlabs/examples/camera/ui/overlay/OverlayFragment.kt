@@ -190,6 +190,8 @@ class OverlayFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        interactionTipsHandler.removeCallbacksAndMessages(null)
+        errorShowHandler.removeCallbacksAndMessages(null)
         _binding = null
     }
 

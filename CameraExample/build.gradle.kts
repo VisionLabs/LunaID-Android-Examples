@@ -72,7 +72,7 @@ dependencies {
     implementation("ai.visionlabs.lunaid:cnn59-arm:$sdkVersion@aar")
     implementation("ai.visionlabs.lunaid:mask-arm:$sdkVersion@aar")
     implementation("ai.visionlabs.lunaid:oslm-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:glasses-arm:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:glasses-arm:$sdkVersion@aar")
 
 //    implementation("ai.visionlabs.lunaid:common-x86:$sdkVersion@aar")
 //    implementation("ai.visionlabs.lunaid:cnn52-x86:$sdkVersion@aar")
@@ -81,11 +81,13 @@ dependencies {
 //    implementation("ai.visionlabs.lunaid:oslm-x86:$sdkVersion@aar")
 //    implementation("ai.visionlabs.lunaid:glasses-x86:$sdkVersion@aar")
 
-//    implementation(files("libs/lunaCore-release.aar"))
-    implementation(project(":lunaCore"))
+    implementation(files("libs/lunaCore-release.aar"))
+    implementation(files("libs/models-glasses-arm-release.aar"))
+//    implementation(project(":lunaCore"))
+//    implementation(project(":models-glasses"))
 //    implementation(project(":models-mask"))
 //    implementation(project(":models-cnn52"))
 //    implementation(project(":models-cnn59"))
 //    implementation(project(":models-oslm"))
-//    implementation(project(":models-glasses"))
+
 }

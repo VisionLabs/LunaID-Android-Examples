@@ -64,5 +64,5 @@ project(":lunaCore").projectDir = File(rootDir, "../sdk/lunaid/core")
 //include (":models-mask")
 //project(":models-mask").projectDir = File(rootDir, "../sdk/lunaid/mask")
 //
-//include (":models-glasses")
-//project(":models-glasses").projectDir = File(rootDir, "../sdk/lunaid/glasses")
+include (":models-glasses")
+project(":models-glasses").projectDir = File(rootDir, "../sdk/lunaid/glasses-arm")

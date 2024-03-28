@@ -20,14 +20,13 @@ class App : Application() {
             acceptOneEyed = false,
             foundFaceDelay = 700L,
             detectFrameSize = 350,
-
             skipFrames = 50,
             detectorStep = 1,
-
             interactionDelayMs = 200L,
             acceptEyesClosed = false,
-
-            glassesChecks = setOf(GlassesCheckType.GLASSES_CHECK_SUN)
+            glassesChecks = setOf(GlassesCheckType.GLASSES_CHECK_SUN),
+            usePrimaryFaceTracking = true,
+            faceSimilarityThreshold = 0.5f,
         )
 
         if (LunaID.activateLicense(applicationContext)) {

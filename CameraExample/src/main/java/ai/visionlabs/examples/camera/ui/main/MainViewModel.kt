@@ -28,7 +28,6 @@ import ru.visionlabs.sdk.lunacore.PitchUpInteraction
 import ru.visionlabs.sdk.lunacore.StartBestShotSearchCommand
 import ru.visionlabs.sdk.lunacore.YawLeftInteraction
 import ru.visionlabs.sdk.lunacore.YawRightInteraction
-import ru.visionlabs.sdk.lunacore.borderdistances.InitBorderDistancesStrategy
 
 sealed class MainViewState {
 
@@ -138,7 +137,6 @@ class MainViewModel : ViewModel() {
             activity,
             LunaID.ShowCameraParams(
                 disableErrors = true,
-                borderDistanceStrategy = InitBorderDistancesStrategy.Default
             )
         )
     }

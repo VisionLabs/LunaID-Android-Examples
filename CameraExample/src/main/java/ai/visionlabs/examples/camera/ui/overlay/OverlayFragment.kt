@@ -60,6 +60,7 @@ class OverlayFragment : Fragment() {
         binding.overlayViewport.isVisible = !Settings.overlayShowDetection
         binding.overlayDetection.isVisible = Settings.overlayShowDetection
         binding.overlayLegend.isVisible = Settings.overlayShowDetection
+        binding.faceZone.isVisible = Settings.commandsOverridden
 
         LunaID.detectionCoordinates()
             .flowOn(Dispatchers.IO)

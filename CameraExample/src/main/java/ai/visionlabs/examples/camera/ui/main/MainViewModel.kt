@@ -1,5 +1,6 @@
 package ai.visionlabs.examples.camera.ui.main
 
+import ai.visionlabs.examples.camera.R
 import ai.visionlabs.examples.camera.ui.Settings
 import android.app.Activity
 import android.os.Handler
@@ -209,7 +210,10 @@ class MainViewModel : ViewModel() {
 
         LunaID.showCamera(
             activity,
-            LunaID.ShowCameraParams(disableErrors = false),
+            LunaID.ShowCameraParams(
+                disableErrors = false,
+                borderDistanceStrategy = InitBorderDistancesStrategy.WithViewId(R.id.faceZone)
+            ),
             commands = commands,
         )
     }

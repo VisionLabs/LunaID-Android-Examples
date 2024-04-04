@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.postDelayed
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -99,6 +100,19 @@ class OverlayFragment : Fragment() {
                 processError(it.error)
             }
             .flowOn(Dispatchers.Main)
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+
+        LunaID.allEvents()
+            .flowOn(Dispatchers.IO)
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                if(it is LunaID.Event.SecurityCheck.Success){
+                    Toast.makeText(this.activity, "Security validation success", Toast.LENGTH_SHORT).show()
+                }else if(it is LunaID.Event.SecurityCheck.Failure){
+                    Toast.makeText(this.activity, "Security validation failed", Toast.LENGTH_SHORT).show()
+                    requireActivity().finish()
+                }
+            }.flowOn(Dispatchers.Main)
             .launchIn(viewLifecycleOwner.lifecycleScope)
 
     }

@@ -1,4 +1,4 @@
-val sdkVersion: String by project
+val sdkVersion: String = DepVersions.sdkVersion
 
 plugins {
     id("com.android.application")
@@ -8,18 +8,15 @@ plugins {
 
 android {
     namespace = "ai.visionlabs.examples.camera"
-    compileSdk = 33
+    compileSdk = DepVersions.compileSdkVersion
     buildFeatures.buildConfig = true
 
     defaultConfig {
         applicationId = "ai.visionlabs.examples.camera"
-        minSdk = 21
-        targetSdk = 33
+        minSdk = DepVersions.minSdkVersion
+        targetSdk = DepVersions.targetSdkVersion
         versionCode = 1
         versionName = "1.0"
-
-        buildConfigField("String", "SDK_VERSION", "\"$sdkVersion\"")
-
     }
 
     buildTypes {
@@ -65,7 +62,7 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
 
-    implementation("ai.visionlabs.lunaid:core:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:core:$sdkVersion@aar")
 
     implementation("ai.visionlabs.lunaid:common-arm:$sdkVersion@aar")
     implementation("ai.visionlabs.lunaid:cnn52-arm:$sdkVersion@aar")
@@ -81,7 +78,7 @@ dependencies {
 //    implementation("ai.visionlabs.lunaid:oslm-x86:$sdkVersion@aar")
 //    implementation("ai.visionlabs.lunaid:glasses-x86:$sdkVersion@aar")
 
-//    implementation(files("libs/lunaCore-release.aar"))
+    implementation(files("libs/lunaCore-release.aar"))
 //    implementation(files("libs/models-glasses-arm-release.aar"))
 //    implementation(project(":lunaCore"))
 //    implementation(project(":models-glasses"))

@@ -49,8 +49,8 @@ rootProject.name = "Luna ID Examples"
 include(":CameraExample")
 //include(":PlatformAPIExample")
 
-//include(":lunaCore")
-//project(":lunaCore").projectDir = File(rootDir, "../sdk/lunaid/core")
+include(":lunaCore")
+project(":lunaCore").projectDir = File(rootDir, "../sdk/lunaid/core")
 //
 //include (":models-cnn52")
 //project(":models-cnn52").projectDir = File(rootDir, "../sdk/lunaid/cnn52")

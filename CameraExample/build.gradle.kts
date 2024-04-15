@@ -81,9 +81,9 @@ dependencies {
 //    implementation("ai.visionlabs.lunaid:oslm-x86:$sdkVersion@aar")
 //    implementation("ai.visionlabs.lunaid:glasses-x86:$sdkVersion@aar")
 
-    implementation(files("libs/lunaCore-release.aar"))
+//    implementation(files("libs/lunaCore-release.aar"))
 //    implementation(files("libs/models-glasses-arm-release.aar"))
-//    implementation(project(":lunaCore"))
+    implementation(project(":lunaCore"))
 //    implementation(project(":models-glasses"))
 //    implementation(project(":models-mask"))
 //    implementation(project(":models-cnn52"))

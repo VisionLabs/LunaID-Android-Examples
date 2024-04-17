@@ -49,20 +49,23 @@ rootProject.name = "Luna ID Examples"
 include(":CameraExample")
 //include(":PlatformAPIExample")
 
-include(":lunaCore")
-project(":lunaCore").projectDir = File(rootDir, "../sdk/lunaid/core")
+//include(":lunaCore")
+//project(":lunaCore").projectDir = File(rootDir, "../sdk/lunaid/core")
+//
+//include (":models-common")
+//project(":models-common").projectDir = File(rootDir, "../sdk/lunaid/common-arm")
 //
 //include (":models-cnn52")
-//project(":models-cnn52").projectDir = File(rootDir, "../sdk/lunaid/cnn52")
+//project(":models-cnn52").projectDir = File(rootDir, "../sdk/lunaid/cnn52-arm")
 //
 //include (":models-cnn59")
-//project(":models-cnn59").projectDir = File(rootDir, "../sdk/lunaid/cnn59")
+//project(":models-cnn59").projectDir = File(rootDir, "../sdk/lunaid/cnn59-arm")
 //
 //include (":models-oslm")
-//project(":models-oslm").projectDir = File(rootDir, "../sdk/lunaid/oslm")
+//project(":models-oslm").projectDir = File(rootDir, "../sdk/lunaid/oslm-arm")
 //
 //include (":models-mask")
-//project(":models-mask").projectDir = File(rootDir, "../sdk/lunaid/mask")
+//project(":models-mask").projectDir = File(rootDir, "../sdk/lunaid/mask-arm")
 //
-include (":models-glasses")
-project(":models-glasses").projectDir = File(rootDir, "../sdk/lunaid/glasses-arm")
+//include (":models-glasses")
+//project(":models-glasses").projectDir = File(rootDir, "../sdk/lunaid/glasses-arm")

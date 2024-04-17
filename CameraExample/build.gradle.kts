@@ -64,15 +64,14 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.5.1")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
-
 //    implementation("ai.visionlabs.lunaid:core:$sdkVersion@aar")
 
-    implementation("ai.visionlabs.lunaid:common-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:cnn52-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:cnn59-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:mask-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:oslm-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:glasses-arm:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:common-arm:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:cnn52-arm:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:cnn59-arm:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:mask-arm:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:oslm-arm:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:glasses-arm:$sdkVersion@aar")
 
 //    implementation("ai.visionlabs.lunaid:common-x86:$sdkVersion@aar")
 //    implementation("ai.visionlabs.lunaid:cnn52-x86:$sdkVersion@aar")
@@ -81,9 +80,16 @@ dependencies {
 //    implementation("ai.visionlabs.lunaid:oslm-x86:$sdkVersion@aar")
 //    implementation("ai.visionlabs.lunaid:glasses-x86:$sdkVersion@aar")
 
-//    implementation(files("libs/lunaCore-release.aar"))
-//    implementation(files("libs/models-glasses-arm-release.aar"))
-    implementation(project(":lunaCore"))
+    implementation(files("libs/lunaid-core-c50d7b1a.aar"))
+    implementation(files("libs/lunaid-cnn52-arm-c50d7b1a.aar"))
+    implementation(files("libs/lunaid-cnn59-arm-c50d7b1a.aar"))
+    implementation(files("libs/lunaid-common-arm-c50d7b1a.aar"))
+    implementation(files("libs/lunaid-glasses-arm-c50d7b1a.aar"))
+    implementation(files("libs/lunaid-mask-arm-c50d7b1a.aar"))
+    implementation(files("libs/lunaid-oslm-arm-c50d7b1a.aar"))
+
+//    implementation(project(":lunaCore"))
+//    implementation(project(":models-common"))
 //    implementation(project(":models-glasses"))
 //    implementation(project(":models-mask"))
 //    implementation(project(":models-cnn52"))

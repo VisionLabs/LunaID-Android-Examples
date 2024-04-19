@@ -9,7 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import ru.visionlabs.sdk.lunacore.LunaID
 import ru.visionlabs.sdk.lunacore.utils.LunaUtils
 import ru.visionlabs.sdk.lunacore.utils.LunaUtils.V52
 import ru.visionlabs.sdk.lunacore.utils.LunaUtils.V59
@@ -41,6 +49,24 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.init(this.viewLifecycleOwner)
 
+        LunaID.engineInitStatus
+            .flowWithLifecycle(this.lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                if(it is LunaID.EngineInitStatus.InProgress) {
+                    binding.showCameraWithDetection.isEnabled = false
+                    binding.showCameraWithFrame.isEnabled = false
+                    binding.showCameraAndRecordVideo.isEnabled = false
+                    binding.showCameraWithInteraction.isEnabled = false
+                    binding.showCameraWithCommands.isEnabled = false
+                }else if(it is LunaID.EngineInitStatus.Success) {
+                    binding.showCameraWithDetection.isEnabled = true
+                    binding.showCameraWithFrame.isEnabled = true
+                    binding.showCameraAndRecordVideo.isEnabled = true
+                    binding.showCameraWithInteraction.isEnabled = true
+                    binding.showCameraWithCommands.isEnabled = true
+                }
+            }.flowOn(Dispatchers.Main)
+            .launchIn(this.lifecycleScope)
     }
 
     private fun updateUi(s: MainViewState) {

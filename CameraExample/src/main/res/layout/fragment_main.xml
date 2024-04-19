@@ -73,45 +73,49 @@
         android:layout_marginEnd="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <Button
-        android:id="@+id/showCameraWithDetection"
-        android:text="Find bestshot with detection"
-        android:backgroundTint="@color/teal_700"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/showCameraWithFrame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/showCameraWithDetection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/teal_700"
+            android:enabled="false"
+            android:text="Find bestshot with detection"
+            app:layout_constraintBottom_toTopOf="@id/showCameraWithFrame"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/showCameraWithFrame"
-        android:text="Find bestshot with frame"
-        android:backgroundTint="@color/teal_700"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/showCameraAndRecordVideo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/showCameraWithFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/teal_700"
+            android:enabled="false"
+            android:text="Find bestshot with frame"
+            app:layout_constraintBottom_toTopOf="@id/showCameraAndRecordVideo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/showCameraAndRecordVideo"
         android:text="Find beshtosh and record video"
         android:backgroundTint="@color/teal_700"
+        android:enabled="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/showCameraWithInteraction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <Button
-        android:id="@+id/showCameraWithInteraction"
-        android:text="Find bestshot with interaction"
-        android:backgroundTint="@color/teal_700"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/showCameraWithCommands"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/showCameraWithInteraction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/teal_700"
+            android:enabled="false"
+            android:text="Find bestshot with interaction"
+            app:layout_constraintBottom_toTopOf="@id/showCameraWithCommands"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     <Button
         android:id="@+id/showCameraWithCommands"
         android:text="Find bestshot with commands"
@@ -119,6 +123,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:enabled="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

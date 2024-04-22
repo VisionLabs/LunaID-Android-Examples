@@ -41,7 +41,8 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     is LunaID.EngineInitStatus.Failure -> {
-                        Log.e("EngineInitStatus", "Engine init failed. Stopping activity")
+                        Log.e("EngineInitStatus", it.cause?.message ?: "Unknown error")
+                        Log.e("EngineInitStatus", it.cause?.stackTraceToString() ?: "No stackTrace")
                         finish()
                     }
 

@@ -2,6 +2,7 @@ package ai.visionlabs.examples.camera.ui.main
 
 import ai.visionlabs.examples.camera.BuildConfig
 import ai.visionlabs.examples.camera.databinding.FragmentMainBinding
+import ai.visionlabs.examples.camera.ui.settings.SettingsFragment
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,6 +22,7 @@ import ru.visionlabs.sdk.lunacore.LunaID
 import ru.visionlabs.sdk.lunacore.utils.LunaUtils
 import ru.visionlabs.sdk.lunacore.utils.LunaUtils.V52
 import ru.visionlabs.sdk.lunacore.utils.LunaUtils.V59
+import ru.visionlabs.sdk.R
 
 
 class MainFragment : Fragment() {
@@ -137,6 +139,12 @@ class MainFragment : Fragment() {
                 AppCompatDelegate.setDefaultNightMode(
                     if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
                 )
+            }
+            settingsButton.setOnClickListener {
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, SettingsFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
         }
         return binding.root

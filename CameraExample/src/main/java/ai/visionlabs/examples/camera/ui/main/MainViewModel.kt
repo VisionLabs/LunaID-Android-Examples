@@ -92,6 +92,8 @@ class MainViewModel : ViewModel() {
                     is LunaID.FinishResult.ResultCancelled -> {
                         updateState(MainViewState.Cancelled(it.data.videoPath))
                     }
+
+                    else -> {}
                 }
             }
             .flowOn(Dispatchers.Main)

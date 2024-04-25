@@ -61,8 +61,8 @@ project(":models-cnn52").projectDir = File(rootDir, "../sdk/lunaid/cnn52-arm")
 include (":models-cnn59")
 project(":models-cnn59").projectDir = File(rootDir, "../sdk/lunaid/cnn59-arm")
 
-include (":models-oslm")
-project(":models-oslm").projectDir = File(rootDir, "../sdk/lunaid/oslm-arm")
+//include (":models-oslm")
+//project(":models-oslm").projectDir = File(rootDir, "../sdk/lunaid/oslm-arm")
 
 include (":models-mask")
 project(":models-mask").projectDir = File(rootDir, "../sdk/lunaid/mask-arm")

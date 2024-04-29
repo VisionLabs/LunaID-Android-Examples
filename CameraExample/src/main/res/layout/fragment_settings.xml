@@ -37,11 +37,6 @@
             android:text="Launch"/>
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/chosen_photo"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:src="@mipmap/ic_launcher"/>
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

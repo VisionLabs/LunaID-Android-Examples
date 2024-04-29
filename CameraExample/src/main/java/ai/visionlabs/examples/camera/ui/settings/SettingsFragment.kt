@@ -35,7 +35,6 @@ class SettingsFragment : Fragment() {
 
         val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
-                binding.chosenPhoto.setImageURI(uri)
                 Settings.overlayShowDetection = true
                 Settings.commandsOverridden = false
 

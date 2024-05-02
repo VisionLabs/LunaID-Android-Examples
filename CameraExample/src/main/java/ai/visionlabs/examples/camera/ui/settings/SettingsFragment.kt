@@ -38,7 +38,7 @@ class SettingsFragment : Fragment() {
                 Settings.overlayShowDetection = true
                 Settings.commandsOverridden = false
 
-                LunaID.testPhotoUri = uri
+//                LunaID.testPhotoUri = uri
                 LunaID.showCamera(
                     requireContext(),
                     LunaID.ShowCameraParams(

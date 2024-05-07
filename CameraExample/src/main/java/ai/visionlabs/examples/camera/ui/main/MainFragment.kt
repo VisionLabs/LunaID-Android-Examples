@@ -142,8 +142,8 @@ class MainFragment : Fragment() {
             }
             settingsButton.setOnClickListener {
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, SettingsFragment())
-                    .addToBackStack(null)
+                    .add(R.id.container, SettingsFragment())
+                    .addToBackStack("")
                     .commit()
             }
         }

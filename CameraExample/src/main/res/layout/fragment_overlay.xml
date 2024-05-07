@@ -22,11 +22,11 @@
 
     <View
         android:id="@+id/faceZone"
-        android:layout_width="200dp"
-        android:layout_height="300dp"
-        android:background="#1D000000"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
         android:layout_gravity="top|center"
-        android:layout_marginTop="150dp"/>
+        android:layout_marginTop="150dp"
+        android:background="#1D000000" />
 
     <ImageView
         android:id="@+id/overlay_close"

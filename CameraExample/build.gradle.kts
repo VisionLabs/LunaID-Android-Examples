@@ -27,6 +27,13 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
         }
+//        getByName ("debug"){
+//            isDebuggable = false
+//            isMinifyEnabled = false
+//            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
+//            applicationIdSuffix= ".debug"
+//        }
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -64,12 +71,12 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.5.1")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
-    implementation("ai.visionlabs.lunaid:core:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:common-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:cnn52-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:cnn59-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:mask-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:glasses-arm:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:core:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:common-arm:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:cnn52-arm:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:cnn59-arm:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:mask-arm:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:glasses-arm:$sdkVersion@aar")
 //    implementation("ai.visionlabs.lunaid:oslm-arm:$sdkVersion@aar")
 
 //    implementation("ai.visionlabs.lunaid:common-x86:$sdkVersion@aar")
@@ -79,21 +86,21 @@ dependencies {
 //    implementation("ai.visionlabs.lunaid:oslm-x86:$sdkVersion@aar")
 //    implementation("ai.visionlabs.lunaid:glasses-x86:$sdkVersion@aar")
 
-//    implementation(files("libs/lunaid-core-9f7183c7.aar"))
-//    implementation(files("libs/lunaid-cnn52-arm-9f7183c7.aar"))
-//    implementation(files("libs/lunaid-cnn59-arm-9f7183c7.aar"))
-//    implementation(files("libs/lunaid-common-arm-9f7183c7.aar"))
-//    implementation(files("libs/lunaid-glasses-arm-9f7183c7.aar"))
-//    implementation(files("libs/lunaid-mask-arm-9f7183c7.aar"))
-//    implementation(files("libs/lunaid-oslm-arm-9f7183c7.aar"))
+//    implementation(files("libs/lunaid-core-602cf9db.aar"))
+//    implementation(files("libs/lunaid-cnn52-arm-602cf9db.aar"))
+//    implementation(files("libs/lunaid-cnn59-arm-602cf9db.aar"))
+//    implementation(files("libs/lunaid-common-arm-602cf9db.aar"))
+//    implementation(files("libs/lunaid-glasses-arm-602cf9db.aar"))
+//    implementation(files("libs/lunaid-mask-arm-602cf9db.aar"))
+//    implementation(files("libs/lunaid-oslm-arm-602cf9db.aar"))
 
-//    implementation(project(":lunaCore"))
-//    implementation(project(":models-cnn52"))
-//    implementation(project(":models-cnn59"))
-//    implementation(project(":models-common"))
-//    implementation(project(":models-glasses"))
-//    implementation(project(":models-mask"))
-//    implementation(project(":models-oslm"))
+    implementation(project(":lunaCore"))
+    implementation(project(":models-cnn52"))
+    implementation(project(":models-cnn59"))
+    implementation(project(":models-common"))
+    implementation(project(":models-glasses"))
+    implementation(project(":models-mask"))
+    implementation(project(":models-oslm"))
 
 
 }

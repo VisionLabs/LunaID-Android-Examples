@@ -4,6 +4,7 @@ import android.app.Application
 import ru.visionlabs.sdk.lunacore.LunaConfig
 import ru.visionlabs.sdk.lunacore.LunaID
 import ru.visionlabs.sdk.lunacore.liveness.GlassesCheckType
+import ru.visionlabs.sdk.lunacore.liveness.LivenessType
 
 class App : Application() {
 
@@ -14,7 +15,9 @@ class App : Application() {
             foundFaceDelay = 700L,
             skipFrames = 50,
             interactionDelayMs = 200L,
-            glassesChecks = setOf(GlassesCheckType.GLASSES_CHECK_SUN)
+            livenessType = LivenessType.None,
+            bestShotsCount = 1,
+            acceptEyesClosed = false,
         )
     }
 

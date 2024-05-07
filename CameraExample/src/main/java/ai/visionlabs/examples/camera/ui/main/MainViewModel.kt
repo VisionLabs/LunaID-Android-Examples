@@ -140,6 +140,7 @@ class MainViewModel : ViewModel() {
         LunaID.showCamera(
             activity,
             LunaID.ShowCameraParams(
+                logToFile = true,
                 disableErrors = true,
                 borderDistanceStrategy = InitBorderDistancesStrategy.Default
             )

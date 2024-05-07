@@ -2,6 +2,9 @@ package ai.visionlabs.examples.camera.ui.settings
 
 import ai.visionlabs.examples.camera.databinding.FragmentSettingsBinding
 import ai.visionlabs.examples.camera.ui.Settings
+import android.content.Context
+import android.graphics.BitmapFactory
+import android.hardware.Camera
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -33,24 +36,39 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            if (uri != null) {
-                Settings.overlayShowDetection = true
-                Settings.commandsOverridden = false
-
-//                LunaID.testPhotoUri = uri
-                LunaID.showCamera(
-                    requireContext(),
-                    LunaID.ShowCameraParams(
-                        disableErrors = true,
-                        borderDistanceStrategy = InitBorderDistancesStrategy.Default
+        val pickImageLauncher =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                if (uri != null) {
+                    Settings.overlayShowDetection = true
+                    Settings.commandsOverridden = false
+                    LunaID.testPhotoUri = uri
+                    LunaID.testPhotoSize = getImageSize(requireActivity(), uri)
+                    LunaID.showCamera(
+                        requireContext(),
+                        LunaID.ShowCameraParams(
+                            disableErrors = true,
+                            borderDistanceStrategy = InitBorderDistancesStrategy.Default
+                        )
                     )
-                )
+                }
             }
-        }
 
         binding.settingsButton.setOnClickListener {
             pickImageLauncher.launch("image/*")
+        }
+    }
+
+    fun getImageSize(context: Context, imageUri: Uri): Camera.Size? {
+        val inputStream = context.contentResolver.openInputStream(imageUri) ?: return null
+        inputStream.use {
+            val options = BitmapFactory.Options().apply {
+                inJustDecodeBounds = true
+            }
+            BitmapFactory.decodeStream(inputStream, null, options)
+            if (options.outWidth != -1 && options.outHeight != -1) {
+                return Camera.open().Size(options.outWidth, options.outHeight)
+            }
+            return null
         }
     }
 }

@@ -16,8 +16,10 @@ class App : Application() {
             skipFrames = 50,
             interactionDelayMs = 200L,
             livenessType = LivenessType.None,
-            bestShotsCount = 1,
+            bestShotsCount = 10,
             acceptEyesClosed = false,
+            glassesChecks = setOf(GlassesCheckType.GLASSES_CHECK_SUN),
+            ags = 0.3F,
         )
     }
 

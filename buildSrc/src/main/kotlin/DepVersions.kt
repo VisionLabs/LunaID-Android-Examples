@@ -10,7 +10,7 @@ public object DepVersions {
     const val buildToolsVersion = "34.0.0"
     const val ndkVersion = "21.0.6113669"
     const val cmakeVersion =  "3.22.1"
-    const val sdkVersion = "1.10.0"
+    const val sdkVersion = "1.10.1"
 
 
 //    const val gradleVersion = "7.6.1"

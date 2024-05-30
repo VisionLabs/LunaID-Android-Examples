@@ -78,8 +78,8 @@ class MainFragment : Fragment() {
                 binding.sdkVersion.text = BuildConfig.SDK_VERSION
             }
             is MainViewState.Image -> {
-                val dv52 = LunaUtils.getDescriptor(s.image.image, V52)
-                val dv59 = LunaUtils.getDescriptor(s.image.image, V59)
+//                val dv52 = LunaUtils.getDescriptor(s.image.image, V52)
+//                val dv59 = LunaUtils.getDescriptor(s.image.image, V59)
                 renderImage(s)
                 renderVideoPath(s.videoPath)
             }

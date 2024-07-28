@@ -43,6 +43,10 @@ class OverlayFragment : Fragment() {
     private val interactionTipsHandler = Handler(Looper.getMainLooper())
     private val errorShowHandler = Handler(Looper.getMainLooper())
 
+    companion object{
+        private const val TAG = "OverlayFragment"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -76,7 +80,7 @@ class OverlayFragment : Fragment() {
             .flowOn(Dispatchers.IO)
             .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d("@@@@EVENT", "event: $it")
+                Log.d(TAG, "onViewCreated() collect event: $it")
             }
             .flowOn(Dispatchers.Main)
             .launchIn(viewLifecycleOwner.lifecycleScope)
@@ -86,7 +90,7 @@ class OverlayFragment : Fragment() {
             .flowOn(Dispatchers.IO)
             .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d("@@@@OVER_INTERACTION", "event: $it")
+                Log.d(TAG, "onViewCreated() collect interaction event: $it")
                 processInteractionEvent(it.type)
             }
             .flowOn(Dispatchers.Main)
@@ -96,16 +100,19 @@ class OverlayFragment : Fragment() {
             .flowOn(Dispatchers.IO)
             .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d("@@@@OVER_ERROR", "event: $it")
+                Log.d(TAG, "onViewCreated() collect error event: $it")
                 processError(it.error)
             }
             .flowOn(Dispatchers.Main)
             .launchIn(viewLifecycleOwner.lifecycleScope)
 
         LunaID.allEvents()
+            .filterIsInstance<LunaID.Event.SecurityCheck>()
             .flowOn(Dispatchers.IO)
             .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach {
+                Log.d(TAG, "onViewCreated() collect security check event: $it")
+
                 if(it is LunaID.Event.SecurityCheck.Success){
                     Toast.makeText(this.activity, "Security validation success", Toast.LENGTH_SHORT).show()
                 }else if(it is LunaID.Event.SecurityCheck.Failure){

@@ -27,7 +27,7 @@ import ru.visionlabs.sdk.R
 
 class MainFragment : Fragment() {
 
-    val TAG = "@@@"
+    val TAG = "MainFragment"
 
     companion object {
         fun newInstance() = MainFragment()

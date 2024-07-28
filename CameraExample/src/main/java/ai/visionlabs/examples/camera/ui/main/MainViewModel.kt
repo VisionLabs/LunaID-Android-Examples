@@ -57,7 +57,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun init(viewLifecycleOwner: LifecycleOwner) {
-        Log.d("@@@@", "Main VM created")
+        Log.d(TAG, "init() Main VM created")
 
 
         LunaID.finishStates()
@@ -65,10 +65,10 @@ class MainViewModel : ViewModel() {
             .flowOn(Dispatchers.IO)
             .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.CREATED)
             .onEach {
-                Log.d("@@@", "event incoming. $it")
+                Log.d(TAG, "init() collect finish state: $it")
                 when (it) {
                     is LunaID.FinishResult.ResultSuccess -> {
-                        Log.d("@@@", "bestShot: ${it.data}")
+                        Log.d(TAG, "init() ResultSuccess, bestShot: ${it.data}")
 
                         if (Settings.commandsOverridden && commands.isCloseOverridden()) {
                             processSuccessWithDelay(it)
@@ -77,6 +77,8 @@ class MainViewModel : ViewModel() {
                         }
                     }
                     is LunaID.FinishResult.ResultFailed -> {
+                        Log.d(TAG, "init() ResultFailed")
+
                         val t = it.data
 
                         val m = when(t) {
@@ -90,6 +92,8 @@ class MainViewModel : ViewModel() {
                         updateState(MainViewState.Error(m))
                     }
                     is LunaID.FinishResult.ResultCancelled -> {
+                        Log.d(TAG, "init() ResultCancelled")
+
                         updateState(MainViewState.Cancelled(it.data.videoPath))
                     }
 
@@ -102,38 +106,32 @@ class MainViewModel : ViewModel() {
     }
 
     private fun processSuccessImmediately(result: LunaID.FinishResult.ResultSuccess) {
-        updateState(
-            MainViewState.Image(
-                result.data.bestShot,
-                result.data.videoPath
-            )
-        )
+        Log.d(TAG, "processSuccessImmediately()")
+        updateState(MainViewState.Image(result.data.bestShot,result.data.videoPath))
     }
 
-    private fun processSuccessWithDelay(finishResult: LunaID.FinishResult.ResultSuccess) {
+    private fun processSuccessWithDelay(result: LunaID.FinishResult.ResultSuccess) {
         val finishDelayMs = 5_000L
+        Log.d(TAG, "processSuccessWithDelay() delay: $finishDelayMs")
 
         handler?.removeCallbacksAndMessages(null)
         handler?.postDelayed(
             {
                 LunaID.sendCommand(CloseCameraCommand)
+                updateState(MainViewState.Image(result.data.bestShot,result.data.videoPath))
 
-                updateState(
-                    MainViewState.Image(
-                        finishResult.data.bestShot,
-                        finishResult.data.videoPath
-                    )
-                )
             }, finishDelayMs
         )
     }
 
     override fun onCleared() {
-        Log.d("@@@@", "Main VM cleared")
+        Log.d(TAG, "onCleared()")
         super.onCleared()
     }
 
     fun onShowCameraWithDetectionClicked(activity: Activity) {
+        Log.d(TAG, "onShowCameraWithDetectionClicked()")
+
         Settings.overlayShowDetection = true
         Settings.commandsOverridden = false
 
@@ -147,6 +145,8 @@ class MainViewModel : ViewModel() {
     }
 
     fun onShowCameraWithFrameClicked(activity: Activity) {
+        Log.d(TAG, "onShowCameraWithFrameClicked()")
+
         Settings.overlayShowDetection = false
         Settings.commandsOverridden = false
 
@@ -159,6 +159,8 @@ class MainViewModel : ViewModel() {
     }
 
     fun onShowCameraAndRecordVideo(activity: Activity) {
+        Log.d(TAG, "onShowCameraAndRecordVideo()")
+
         Settings.overlayShowDetection = true
         Settings.commandsOverridden = false
 
@@ -172,6 +174,8 @@ class MainViewModel : ViewModel() {
     }
 
     fun onShowCameraWithInteraction(activity: Activity) {
+        Log.d(TAG, "onShowCameraWithInteraction()")
+
         Settings.overlayShowDetection = true
         Settings.commandsOverridden = false
 
@@ -195,6 +199,8 @@ class MainViewModel : ViewModel() {
         overrideStart: Boolean,
         overrideClose: Boolean
     ) {
+        Log.d(TAG, "onShowCameraWithCommands()")
+
         Settings.overlayShowDetection = true
         Settings.commandsOverridden = true
 
@@ -222,10 +228,13 @@ class MainViewModel : ViewModel() {
 
     private fun setupStartDelay() {
         val startDelayMs = 3_000L
-        handler?.postDelayed(
-            {
-                LunaID.sendCommand(StartBestShotSearchCommand)
-            }, startDelayMs)
+
+        Log.d(TAG, "setupStartDelay() delay: $startDelayMs")
+
+        handler?.postDelayed({ LunaID.sendCommand(StartBestShotSearchCommand) }, startDelayMs)
     }
 
+    companion object{
+        private const val TAG = "MainViewModel"
+    }
 }

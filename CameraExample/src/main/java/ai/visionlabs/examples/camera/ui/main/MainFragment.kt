@@ -100,7 +100,7 @@ class MainFragment : Fragment() {
     }
 
     private fun renderError(s: MainViewState.Error) {
-        Log.d("@@@@@", "error: ${s.message}")
+        Log.d(TAG, "error: ${s.message}")
     }
 
     private fun renderImage(s: MainViewState.Image) {

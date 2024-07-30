@@ -169,6 +169,7 @@ class MainViewModel : ViewModel() {
             LunaID.ShowCameraParams(
                 disableErrors = true,
                 recordVideo = true,
+                recordingTimeMillis = 10000
             )
         )
     }

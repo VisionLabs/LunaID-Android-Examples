@@ -19,7 +19,11 @@ android {
         versionName = "1.0"
 
         buildConfigField("String", "SDK_VERSION", "\"$sdkVersion\"")
-
+        externalNativeBuild {
+            cmake {
+                cppFlags.add("-v")
+            }
+        }
     }
 
     buildTypes {
@@ -70,14 +74,15 @@ dependencies {
     implementation("ai.visionlabs.lunaid:cnn59-arm:$sdkVersion@aar")
     implementation("ai.visionlabs.lunaid:mask-arm:$sdkVersion@aar")
     implementation("ai.visionlabs.lunaid:glasses-arm:$sdkVersion@aar")
-//    implementation("ai.visionlabs.lunaid:oslm-arm:$sdkVersion@aar")
+    implementation("ai.visionlabs.lunaid:oslm-arm:$sdkVersion@aar")
 
-//    implementation("ai.visionlabs.lunaid:common-x86:$sdkVersion@aar")
-//    implementation("ai.visionlabs.lunaid:cnn52-x86:$sdkVersion@aar")
-//    implementation("ai.visionlabs.lunaid:cnn59-x86:$sdkVersion@aar")
-//    implementation("ai.visionlabs.lunaid:mask-x86:$sdkVersion@aar")
-//    implementation("ai.visionlabs.lunaid:oslm-x86:$sdkVersion@aar")
-//    implementation("ai.visionlabs.lunaid:glasses-x86:$sdkVersion@aar")
+//    implementation(files("libs/lunaCore-release.aar"))
+//    implementation(files("libs/lunaid-cnn52-arm-release.aar"))
+//    implementation(files("libs/models-cnn59-arm-release.aar"))
+//    implementation(files("libs/models-common-arm-release.aar"))
+//    implementation(files("libs/models-glasses-arm-release.aar"))
+//    implementation(files("libs/models-mask-arm-release.aar"))
+//    implementation(files("libs/lunaid-oslm-arm-602cf9db.aar"))
 
 //    implementation(files("libs/lunaid-core-9f7183c7.aar"))
 //    implementation(files("libs/lunaid-cnn52-arm-9f7183c7.aar"))

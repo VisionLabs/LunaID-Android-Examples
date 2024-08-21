@@ -4,17 +4,22 @@ import android.app.Application
 import ru.visionlabs.sdk.lunacore.LunaConfig
 import ru.visionlabs.sdk.lunacore.LunaID
 import ru.visionlabs.sdk.lunacore.liveness.GlassesCheckType
+import ru.visionlabs.sdk.lunacore.liveness.LivenessType
+import ru.visionlabs.sdk.lunaweb.v6.AuthConfig
 
 class App : Application() {
 
     companion object {
         val lunaConfig = LunaConfig.create(
             acceptOccludedFaces = false,
-            acceptOneEyed = true,
-            foundFaceDelay = 700L,
-            skipFrames = 50,
-            interactionDelayMs = 200L,
-            glassesChecks = setOf(GlassesCheckType.GLASSES_CHECK_SUN)
+            acceptOneEyed = false,
+            acceptOneEyeClose = false,
+            usePrimaryFaceTracking = true,
+            livenessType = LivenessType.Offline,
+//            foundFaceDelay = 700L,
+//            skipFrames = 50,
+//            interactionDelayMs = 200L,
+//            glassesChecks = setOf(GlassesCheckType.GLASSES_CHECK_SUN),
         )
     }
 

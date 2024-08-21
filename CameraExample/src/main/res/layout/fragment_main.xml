@@ -59,13 +59,24 @@
 
     <CheckBox
         android:id="@+id/darkTheme"
-        android:text="Enable DarkTheme?"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/videoFilePath"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:text="Enable DarkTheme?"
+        app:layout_constraintBottom_toTopOf="@id/videoFilePath"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/videoQuality"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="High video quality?"
+        app:layout_constraintBottom_toTopOf="@id/videoFilePath"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bestShotImage" />
 
     <TextView
         android:id="@+id/videoFilePath"

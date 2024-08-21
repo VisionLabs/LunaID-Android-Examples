@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import ru.visionlabs.grafika.TextureMovieEncoder
 import ru.visionlabs.sdk.lunacore.BestShot
 import ru.visionlabs.sdk.lunacore.BlinkInteraction
 import ru.visionlabs.sdk.lunacore.CloseCameraCommand
@@ -29,6 +30,7 @@ import ru.visionlabs.sdk.lunacore.PitchUpInteraction
 import ru.visionlabs.sdk.lunacore.StartBestShotSearchCommand
 import ru.visionlabs.sdk.lunacore.YawLeftInteraction
 import ru.visionlabs.sdk.lunacore.YawRightInteraction
+import ru.visionlabs.sdk.lunacore.borderdistances.BorderDistancesInPx
 import ru.visionlabs.sdk.lunacore.borderdistances.InitBorderDistancesStrategy
 
 sealed class MainViewState {
@@ -50,6 +52,8 @@ class MainViewModel : ViewModel() {
 
     private var handler: Handler? = null
     private var commands = Commands.Builder().build()
+
+//    private var videoQuality = TextureMovieEncoder.VideoQuality.LOW
 
 
     fun updateState(s: MainViewState) {
@@ -76,10 +80,11 @@ class MainViewModel : ViewModel() {
                             processSuccessImmediately(it)
                         }
                     }
+
                     is LunaID.FinishResult.ResultFailed -> {
                         val t = it.data
 
-                        val m = when(t) {
+                        val m = when (t) {
                             is LunaID.FinishFailedData.InteractionFailed -> "Interaction failed"
                             is LunaID.FinishFailedData.LivenessCheckFailed -> "Liveness check failed (not live)"
                             is LunaID.FinishFailedData.LivenessCheckError -> "Liveness check error"
@@ -89,6 +94,7 @@ class MainViewModel : ViewModel() {
 
                         updateState(MainViewState.Error(m))
                     }
+
                     is LunaID.FinishResult.ResultCancelled -> {
                         updateState(MainViewState.Cancelled(it.data.videoPath))
                     }
@@ -136,12 +142,11 @@ class MainViewModel : ViewModel() {
     fun onShowCameraWithDetectionClicked(activity: Activity) {
         Settings.overlayShowDetection = true
         Settings.commandsOverridden = false
-
         LunaID.showCamera(
             activity,
             LunaID.ShowCameraParams(
                 disableErrors = true,
-                borderDistanceStrategy = InitBorderDistancesStrategy.Default
+                borderDistanceStrategy = InitBorderDistancesStrategy.WithDp(bottomPaddingInDp = 10)
             )
         )
     }
@@ -166,7 +171,7 @@ class MainViewModel : ViewModel() {
             activity,
             LunaID.ShowCameraParams(
                 disableErrors = true,
-                recordVideo = true,
+                recordVideo = true, //            videoQuality = TextureMovieEncoder.VideoQuality.HIGH
             )
         )
     }
@@ -181,11 +186,35 @@ class MainViewModel : ViewModel() {
                 disableErrors = true,
             ),
             interactions = Interactions.Builder()
-                .addInteraction(BlinkInteraction(timeoutMs = 30_000))
-                .addInteraction(YawLeftInteraction(timeoutMs = 30_000, startAngleDeg = 15, endAngleDeg = 20))
-                .addInteraction(YawRightInteraction(timeoutMs = 30_000, startAngleDeg = 15, endAngleDeg = 20))
-                .addInteraction(PitchUpInteraction(timeoutMs = 30_000, startAngleDeg = 10, endAngleDeg = 15))
-                .addInteraction(PitchDownInteraction(timeoutMs = 30_000, startAngleDeg = 10, endAngleDeg = 15))
+                .addInteraction(BlinkInteraction(timeoutMs = 30_000, acceptOneEyed = true))
+                .addInteraction(
+                    YawLeftInteraction(
+                        timeoutMs = 30_000,
+                        startAngleDeg = 15,
+                        endAngleDeg = 20
+                    )
+                )
+                .addInteraction(
+                    YawRightInteraction(
+                        timeoutMs = 30_000,
+                        startAngleDeg = 15,
+                        endAngleDeg = 20
+                    )
+                )
+                .addInteraction(
+                    PitchUpInteraction(
+                        timeoutMs = 30_000,
+                        startAngleDeg = 10,
+                        endAngleDeg = 15
+                    )
+                )
+                .addInteraction(
+                    PitchDownInteraction(
+                        timeoutMs = 30_000,
+                        startAngleDeg = 10,
+                        endAngleDeg = 15
+                    )
+                )
                 .build()
         )
     }
@@ -220,12 +249,18 @@ class MainViewModel : ViewModel() {
         )
     }
 
+    fun onChangeVideoQuality(isChecked: Boolean) {
+//        videoQuality =
+//            if (isChecked) TextureMovieEncoder.VideoQuality.HIGH else TextureMovieEncoder.VideoQuality.LOW
+    }
+
     private fun setupStartDelay() {
         val startDelayMs = 3_000L
         handler?.postDelayed(
             {
                 LunaID.sendCommand(StartBestShotSearchCommand)
-            }, startDelayMs)
+            }, startDelayMs
+        )
     }
 
 }

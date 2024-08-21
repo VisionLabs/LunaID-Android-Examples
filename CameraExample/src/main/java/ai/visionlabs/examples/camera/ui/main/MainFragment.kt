@@ -140,6 +140,9 @@ class MainFragment : Fragment() {
                     if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
                 )
             }
+            videoQuality.setOnCheckedChangeListener {_,isChecked ->
+                viewModel.onChangeVideoQuality(isChecked)
+            }
             settingsButton.setOnClickListener {
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.container, SettingsFragment())
@@ -149,7 +152,6 @@ class MainFragment : Fragment() {
         }
         return binding.root
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

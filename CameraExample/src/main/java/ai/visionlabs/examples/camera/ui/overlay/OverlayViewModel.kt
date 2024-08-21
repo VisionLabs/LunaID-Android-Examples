@@ -7,11 +7,11 @@ class OverlayViewModel(
 ) : ViewModel() {
 
     init {
-        Log.d("@@@@", "overlay VM created")
+        Log.d("OverlayViewModel", "init()")
     }
 
     override fun onCleared() {
-        Log.d("@@@@", "overlay VM cleared")
+        Log.d("OverlayViewModel", "onCleared()")
         super.onCleared()
     }
 

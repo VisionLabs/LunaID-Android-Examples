@@ -27,7 +27,7 @@ import ru.visionlabs.sdk.R
 
 class MainFragment : Fragment() {
 
-    val TAG = "@@@"
+    val TAG = "MainFragment"
 
     companion object {
         fun newInstance() = MainFragment()
@@ -100,7 +100,7 @@ class MainFragment : Fragment() {
     }
 
     private fun renderError(s: MainViewState.Error) {
-        Log.d("@@@@@", "error: ${s.message}")
+        Log.d(TAG, "error: ${s.message}")
     }
 
     private fun renderImage(s: MainViewState.Image) {

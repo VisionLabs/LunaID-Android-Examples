@@ -3,9 +3,7 @@ package ai.visionlabs.examples.camera
 import android.app.Application
 import ru.visionlabs.sdk.lunacore.LunaConfig
 import ru.visionlabs.sdk.lunacore.LunaID
-import ru.visionlabs.sdk.lunacore.liveness.GlassesCheckType
 import ru.visionlabs.sdk.lunacore.liveness.LivenessType
-import ru.visionlabs.sdk.lunaweb.v6.AuthConfig
 
 class App : Application() {
 
@@ -16,6 +14,7 @@ class App : Application() {
             acceptOneEyeClose = false,
             usePrimaryFaceTracking = true,
             livenessType = LivenessType.Offline,
+            checkSecurity = false
 //            foundFaceDelay = 700L,
 //            skipFrames = 50,
 //            interactionDelayMs = 200L,

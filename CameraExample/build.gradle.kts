@@ -93,12 +93,12 @@ dependencies {
 //    implementation(files("libs/lunaid-oslm-arm-9f7183c7.aar"))
 
     implementation(project(":lunaCore"))
-//    implementation(project(":models-cnn52"))
-//    implementation(project(":models-cnn59"))
-//    implementation(project(":models-common"))
-//    implementation(project(":models-glasses"))
-//    implementation(project(":models-mask"))
-//    implementation(project(":models-oslm"))
+    implementation(project(":models-cnn52"))
+    implementation(project(":models-cnn59"))
+    implementation(project(":models-common"))
+    implementation(project(":models-glasses"))
+    implementation(project(":models-mask"))
+    implementation(project(":models-oslm"))
 
 
 }

@@ -67,5 +67,8 @@ project(":models-oslm").projectDir = File(rootDir, "../sdk/lunaid/oslm-arm")
 include (":models-mask")
 project(":models-mask").projectDir = File(rootDir, "../sdk/lunaid/mask-arm")
 
+include (":models-mouthestimator")
+project(":models-mouthestimator").projectDir = File(rootDir, "../sdk/lunaid/mouthestimator-arm")
+
 include (":models-glasses")
 project(":models-glasses").projectDir = File(rootDir, "../sdk/lunaid/glasses-arm")

@@ -98,6 +98,7 @@ dependencies {
     implementation(project(":models-common"))
     implementation(project(":models-glasses"))
     implementation(project(":models-mask"))
+    implementation(project(":models-mouthestimator"))
     implementation(project(":models-oslm"))
 
 

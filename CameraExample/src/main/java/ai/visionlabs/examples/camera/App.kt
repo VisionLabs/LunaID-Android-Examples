@@ -10,6 +10,7 @@ class App : Application() {
     companion object {
         val lunaConfig = LunaConfig.create(
             acceptOccludedFaces = false,
+            acceptOccludedMouth = false,
             acceptOneEyed = false,
             acceptOneEyeClose = false,
             usePrimaryFaceTracking = true,

@@ -1,3 +1,6 @@
+import com.android.build.gradle.internal.api.ApkVariantOutputImpl
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+
 val sdkVersion: String = DepVersions.sdkVersion
 
 plugins {
@@ -33,6 +36,14 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+
+    applicationVariants.configureEach {
+        outputs.configureEach {
+            val filter = (this as? BaseVariantOutputImpl)?.getFilter(com.android.build.OutputFile.ABI) ?: "universal"
+            (this as? ApkVariantOutputImpl)?.outputFileName = "${rootProject.name}_${System.currentTimeMillis()}_${filter}_${buildType.name}.apk"
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8

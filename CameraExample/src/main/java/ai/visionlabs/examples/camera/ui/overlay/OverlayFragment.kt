@@ -178,11 +178,12 @@ class OverlayFragment : Fragment() {
 
         val w = binding.overlayDetection.measuredWidth
         val h = binding.overlayDetection.measuredHeight
-        val minFaceSideToMinScreenSide = lc.minFaceSideToMinScreenSide
-        val frameSize = if(w < h) w*minFaceSideToMinScreenSide else h*minFaceSideToMinScreenSide
+//        val minFaceSideToMinScreenSide = lc.minFaceSideToMinScreenSide
+//        val frameSize = if(w < h) w*minFaceSideToMinScreenSide else h*minFaceSideToMinScreenSide
 
         val frameSizeRect = RectF(
-            0f, 0f, frameSize, frameSize,
+            0f, 0f, 350f, 350f,
+//            0f, 0f, frameSize, frameSize,
         ).apply {  offsetTo(rect.left, rect.top) }
         val scaledFrameSizedRect = LunaUtils.scalePreviewRect(frameSizeRect)
 

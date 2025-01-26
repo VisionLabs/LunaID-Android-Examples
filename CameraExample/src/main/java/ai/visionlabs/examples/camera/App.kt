@@ -15,6 +15,7 @@ class App : Application() {
             acceptOneEyeClose = false,
             usePrimaryFaceTracking = true,
             livenessType = LivenessType.Offline,
+            detectFrameSize = 100
 //            minFaceSideToMinScreenSide = 0.25f
 //            foundFaceDelay = 700L,
 //            skipFrames = 50,

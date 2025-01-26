@@ -71,7 +71,8 @@ class OverlayFragment : Fragment() {
             .flowOn(Dispatchers.IO)
             .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                processDetectRect(it.data)
+                //todo
+//                processDetectRect(it.data)
             }
             .flowOn(Dispatchers.Main)
             .launchIn(viewLifecycleOwner.lifecycleScope)

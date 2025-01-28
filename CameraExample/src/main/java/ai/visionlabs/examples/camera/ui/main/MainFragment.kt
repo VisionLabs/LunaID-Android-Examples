@@ -143,12 +143,6 @@ class MainFragment : Fragment() {
             videoQuality.setOnCheckedChangeListener {_,isChecked ->
                 viewModel.onChangeVideoQuality(isChecked)
             }
-            settingsButton.setOnClickListener {
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, SettingsFragment())
-                    .addToBackStack(null)
-                    .commit()
-            }
         }
         return binding.root
     }

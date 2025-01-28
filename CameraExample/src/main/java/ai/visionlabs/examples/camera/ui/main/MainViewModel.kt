@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import ru.visionlabs.grafika.TextureMovieEncoder
 import ru.visionlabs.sdk.lunacore.BestShot
 import ru.visionlabs.sdk.lunacore.BlinkInteraction
 import ru.visionlabs.sdk.lunacore.CloseCameraCommand
@@ -30,7 +29,6 @@ import ru.visionlabs.sdk.lunacore.PitchUpInteraction
 import ru.visionlabs.sdk.lunacore.StartBestShotSearchCommand
 import ru.visionlabs.sdk.lunacore.YawLeftInteraction
 import ru.visionlabs.sdk.lunacore.YawRightInteraction
-import ru.visionlabs.sdk.lunacore.borderdistances.BorderDistancesInPx
 import ru.visionlabs.sdk.lunacore.borderdistances.InitBorderDistancesStrategy
 
 sealed class MainViewState {

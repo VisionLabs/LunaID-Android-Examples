@@ -20,13 +20,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import ru.visionlabs.sdk.lunacore.BestShot
 import ru.visionlabs.sdk.lunacore.BlinkInteraction
-import ru.visionlabs.sdk.lunacore.CloseCameraCommand
-import ru.visionlabs.sdk.lunacore.Commands
+import ru.visionlabs.sdk.lunacore.unknown.CloseCameraCommand
+import ru.visionlabs.sdk.lunacore.unknown.Commands
 import ru.visionlabs.sdk.lunacore.Interactions
 import ru.visionlabs.sdk.lunacore.LunaID
 import ru.visionlabs.sdk.lunacore.PitchDownInteraction
 import ru.visionlabs.sdk.lunacore.PitchUpInteraction
-import ru.visionlabs.sdk.lunacore.StartBestShotSearchCommand
+import ru.visionlabs.sdk.lunacore.unknown.StartBestShotSearchCommand
 import ru.visionlabs.sdk.lunacore.YawLeftInteraction
 import ru.visionlabs.sdk.lunacore.YawRightInteraction
 import ru.visionlabs.sdk.lunacore.borderdistances.InitBorderDistancesStrategy

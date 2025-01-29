@@ -69,40 +69,17 @@ android {
 }
 
 dependencies {
-    implementation ("androidx.core:core-ktx:1.9.0")
-    implementation ("androidx.appcompat:appcompat:1.6.1")
-    implementation ("com.google.android.material:material:1.8.0")
-    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
+    implementation ("androidx.core:core-ktx:1.15.0")
+    implementation ("androidx.appcompat:appcompat:1.7.0")
+    implementation ("com.google.android.material:material:1.12.0")
+    implementation ("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
 
-    implementation ("androidx.fragment:fragment-ktx:1.6.1")
+    implementation ("androidx.fragment:fragment-ktx:1.8.5")
     // NOTE: specify both to avoid possible build errors
-    implementation ("androidx.lifecycle:lifecycle-viewmodel:2.5.1")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel:2.8.7")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
 
-//    implementation("ai.visionlabs.lunaid:core:$sdkVersion@aar")
-//    implementation("ai.visionlabs.lunaid:common-arm:$sdkVersion@aar")
-//    implementation("ai.visionlabs.lunaid:cnn52-arm:$sdkVersion@aar")
-//    implementation("ai.visionlabs.lunaid:cnn59-arm:$sdkVersion@aar")
-//    implementation("ai.visionlabs.lunaid:mask-arm:$sdkVersion@aar")
-//    implementation("ai.visionlabs.lunaid:glasses-arm:$sdkVersion@aar")
-//    implementation("ai.visionlabs.lunaid:oslm-arm:$sdkVersion@aar")
-
-//    implementation(files("libs/lunaCore-release.aar"))
-//    implementation(files("libs/lunaid-cnn52-arm-release.aar"))
-//    implementation(files("libs/models-cnn59-arm-release.aar"))
-//    implementation(files("libs/models-common-arm-release.aar"))
-//    implementation(files("libs/models-glasses-arm-release.aar"))
-//    implementation(files("libs/models-mask-arm-release.aar"))
-//    implementation(files("libs/lunaid-oslm-arm-602cf9db.aar"))
-
-//    implementation(files("libs/lunaid-core-9f7183c7.aar"))
-//    implementation(files("libs/lunaid-cnn52-arm-9f7183c7.aar"))
-//    implementation(files("libs/lunaid-cnn59-arm-9f7183c7.aar"))
-//    implementation(files("libs/lunaid-common-arm-9f7183c7.aar"))
-//    implementation(files("libs/lunaid-glasses-arm-9f7183c7.aar"))
-//    implementation(files("libs/lunaid-mask-arm-9f7183c7.aar"))
-//    implementation(files("libs/lunaid-oslm-arm-9f7183c7.aar"))
 
     implementation(project(":lunaCore"))
     implementation(project(":models-cnn52"))

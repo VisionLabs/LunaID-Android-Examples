@@ -18,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import ru.visionlabs.sdk.lunacore.LunaID
 import ru.visionlabs.sdk.lunacore.utils.LunaUtils
 import ru.visionlabs.sdk.lunacore.utils.LunaUtils.V52
@@ -67,6 +68,13 @@ class MainFragment : Fragment() {
                 }
             }.flowOn(Dispatchers.Main)
             .launchIn(this.lifecycleScope)
+
+        LunaID.eventChannel.receiveAsFlow()
+            .onEach {
+                if(it is LunaID.Event.Finished){
+                    binding.bestShotImage.setImageBitmap(LunaID.bestShot!!.warp)
+                }
+            }.launchIn(this.lifecycleScope)
     }
 
     private fun updateUi(s: MainViewState) {

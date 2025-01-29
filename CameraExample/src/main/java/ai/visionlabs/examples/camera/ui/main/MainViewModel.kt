@@ -1,7 +1,6 @@
 package ai.visionlabs.examples.camera.ui.main
 
 import ai.visionlabs.examples.camera.R
-import ai.visionlabs.examples.camera.ui.Settings
 import android.app.Activity
 import android.os.Handler
 import android.os.Looper
@@ -61,72 +60,73 @@ class MainViewModel : ViewModel() {
     fun init(viewLifecycleOwner: LifecycleOwner) {
         Log.d(TAG, "init() Main VM created")
 
-
-        LunaID.finishStates()
-            .map { it.result }
-            .flowOn(Dispatchers.IO)
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.CREATED)
-            .onEach {
-                Log.d(TAG, "init() collect finish state: $it")
-                when (it) {
-                    is LunaID.FinishResult.ResultSuccess -> {
-                        Log.d(TAG, "init() ResultSuccess, bestShot: ${it.data}")
-
-                        if (Settings.commandsOverridden && commands.isCloseOverridden()) {
-                            processSuccessWithDelay(it)
-                        } else {
-                            processSuccessImmediately(it)
-                        }
-                    }
-
-                    is LunaID.FinishResult.ResultFailed -> {
-                        Log.d(TAG, "init() ResultFailed")
-
-                        val t = it.data
-
-                        val m = when (t) {
-                            is LunaID.FinishFailedData.InteractionFailed -> "Interaction failed"
-                            is LunaID.FinishFailedData.LivenessCheckFailed -> "Liveness check failed (not live)"
-                            is LunaID.FinishFailedData.LivenessCheckError -> "Liveness check error"
-                            is LunaID.FinishFailedData.UnknownError -> "unrecognized error"
-                            else -> "unrecognized error"
-                        }
-
-                        updateState(MainViewState.Error(m))
-                    }
-
-                    is LunaID.FinishResult.ResultCancelled -> {
-                        Log.d(TAG, "init() ResultCancelled")
-
-                        updateState(MainViewState.Cancelled(it.data.videoPath))
-                    }
-
-                    else -> {}
-                }
-            }
-            .flowOn(Dispatchers.Main)
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+//
+//        LunaID.finishStates()
+//            .map { it.result }
+//            .flowOn(Dispatchers.IO)
+//            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.CREATED)
+//            .onEach {
+//                Log.d(TAG, "init() collect finish state: $it")
+//                when (it) {
+//                    is LunaID.FinishResult.Success -> {
+//                        Log.d(TAG, "init() ResultSuccess, bestShot: ${it.data}")
+//
+//                        if (Settings.commandsOverridden && commands.isCloseOverridden()) {
+//                            processSuccessWithDelay(it)
+//                        } else {
+//                            processSuccessImmediately(it)
+//                        }
+//                    }
+//
+//                    is LunaID.FinishResult.Failed -> {
+//                        Log.d(TAG, "init() ResultFailed")
+//
+//                        val t = it.data
+//
+//                        val m = when (t) {
+//                            is LunaID.FinishFailedData.InteractionFailed -> "Interaction failed"
+//                            is LunaID.FinishFailedData.LivenessCheckFailed -> "Liveness check failed (not live)"
+//                            is LunaID.FinishFailedData.LivenessCheckError -> "Liveness check error"
+//                            is LunaID.FinishFailedData.UnknownError -> "unrecognized error"
+//                            else -> "unrecognized error"
+//                        }
+//
+//                        updateState(MainViewState.Error(m))
+//                    }
+//
+//                    is LunaID.FinishResult.ResultCancelled -> {
+//                        Log.d(TAG, "init() ResultCancelled")
+//
+//                        updateState(MainViewState.Cancelled(it.data.videoPath))
+//                    }
+//
+//                    else -> {}
+//                }
+//            }
+//            .flowOn(Dispatchers.Main)
+//            .launchIn(viewLifecycleOwner.lifecycleScope)
 
     }
-
-    private fun processSuccessImmediately(result: LunaID.FinishResult.ResultSuccess) {
-        Log.d(TAG, "processSuccessImmediately()")
-        updateState(MainViewState.Image(result.data.bestShot,result.data.videoPath))
-    }
-
-    private fun processSuccessWithDelay(result: LunaID.FinishResult.ResultSuccess) {
-        val finishDelayMs = 5_000L
-        Log.d(TAG, "processSuccessWithDelay() delay: $finishDelayMs")
-
-        handler?.removeCallbacksAndMessages(null)
-        handler?.postDelayed(
-            {
-                LunaID.sendCommand(CloseCameraCommand)
-                updateState(MainViewState.Image(result.data.bestShot,result.data.videoPath))
-
-            }, finishDelayMs
-        )
-    }
+//
+//    private fun processSuccessImmediately(result: LunaID.FinishResult.Success) {
+//        Log.d(TAG, "processSuccessImmediately()")
+//        updateState(MainViewState.Image(result.data.bestShot,result.data.videoPath))
+//    }
+//
+//    private fun processSuccessWithDelay(result: LunaID.FinishResult.Success) {
+//        val finishDelayMs = 5_000L
+//        Log.d(TAG, "processSuccessWithDelay() delay: $finishDelayMs")
+//
+//        handler?.removeCallbacksAndMessages(null)
+//        handler?.postDelayed(
+//            {
+//                TODO("CloseCameraCommand")
+////                LunaID.sendCommand(CloseCameraCommand)
+////                updateState(MainViewState.Image(result.data.bestShot,result.data.videoPath))
+//
+//            }, finishDelayMs
+//        )
+//    }
 
     override fun onCleared() {
         Log.d(TAG, "onCleared()")
@@ -136,8 +136,6 @@ class MainViewModel : ViewModel() {
     fun onShowCameraWithDetectionClicked(activity: Activity) {
         Log.d(TAG, "onShowCameraWithDetectionClicked()")
 
-        Settings.overlayShowDetection = true
-        Settings.commandsOverridden = false
         LunaID.showCamera(
             activity,
             LunaID.ShowCameraParams(
@@ -150,9 +148,6 @@ class MainViewModel : ViewModel() {
     fun onShowCameraWithFrameClicked(activity: Activity) {
         Log.d(TAG, "onShowCameraWithFrameClicked()")
 
-        Settings.overlayShowDetection = false
-        Settings.commandsOverridden = false
-
         LunaID.showCamera(
             activity,
             LunaID.ShowCameraParams(
@@ -163,9 +158,6 @@ class MainViewModel : ViewModel() {
 
     fun onShowCameraAndRecordVideo(activity: Activity) {
         Log.d(TAG, "onShowCameraAndRecordVideo()")
-
-        Settings.overlayShowDetection = true
-        Settings.commandsOverridden = false
 
         LunaID.showCamera(
             activity,
@@ -179,9 +171,6 @@ class MainViewModel : ViewModel() {
 
     fun onShowCameraWithInteraction(activity: Activity) {
         Log.d(TAG, "onShowCameraWithInteraction()")
-
-        Settings.overlayShowDetection = true
-        Settings.commandsOverridden = false
 
         LunaID.showCamera(
             activity,
@@ -229,9 +218,6 @@ class MainViewModel : ViewModel() {
     ) {
         Log.d(TAG, "onShowCameraWithCommands()")
 
-        Settings.overlayShowDetection = true
-        Settings.commandsOverridden = true
-
         handler?.removeCallbacksAndMessages(null)
         handler = Handler(Looper.getMainLooper())
 
@@ -241,7 +227,8 @@ class MainViewModel : ViewModel() {
         }.build()
 
         if (commands.isStartOverridden()) {
-            setupStartDelay()
+            TODO("setup with delay")
+//            setupStartDelay()
         }
 
         LunaID.showCamera(
@@ -250,7 +237,6 @@ class MainViewModel : ViewModel() {
                 disableErrors = false,
                 borderDistanceStrategy = InitBorderDistancesStrategy.WithViewId(R.id.faceZone)
             ),
-            commands = commands,
         )
     }
 
@@ -260,12 +246,12 @@ class MainViewModel : ViewModel() {
     }
 
     private fun setupStartDelay() {
-        val startDelayMs = 3_000L
-        handler?.postDelayed(
-            {
-                LunaID.sendCommand(StartBestShotSearchCommand)
-            }, startDelayMs
-        )
+//        val startDelayMs = 3_000L
+//        handler?.postDelayed(
+//            {
+//                LunaID.sendCommand(StartBestShotSearchCommand)
+//            }, startDelayMs
+//        )
     }
 
     companion object{

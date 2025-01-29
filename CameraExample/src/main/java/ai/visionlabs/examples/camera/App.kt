@@ -26,6 +26,6 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        LunaID.activateLicense(this, lunaConfig)
+        LunaID.initEngine(this, lunaConfig)
     }
 }

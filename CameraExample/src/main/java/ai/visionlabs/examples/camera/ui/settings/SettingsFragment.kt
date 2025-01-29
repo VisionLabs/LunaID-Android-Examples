@@ -1,7 +1,6 @@
 package ai.visionlabs.examples.camera.ui.settings
 
 import ai.visionlabs.examples.camera.databinding.FragmentSettingsBinding
-import ai.visionlabs.examples.camera.ui.Settings
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -35,9 +34,7 @@ class SettingsFragment : Fragment() {
 
         val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
-                Settings.overlayShowDetection = true
-                Settings.commandsOverridden = false
-
+                //todo map photo with previewToCameraRation
 //                LunaID.testPhotoUri = uri
                 LunaID.showCamera(
                     requireContext(),

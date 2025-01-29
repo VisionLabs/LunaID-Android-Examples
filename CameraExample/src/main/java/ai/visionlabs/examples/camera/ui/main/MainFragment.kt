@@ -59,13 +59,11 @@ class MainFragment : Fragment() {
                     binding.showCameraWithFrame.isEnabled = false
                     binding.showCameraAndRecordVideo.isEnabled = false
                     binding.showCameraWithInteraction.isEnabled = false
-                    binding.showCameraWithCommands.isEnabled = false
                 }else if(it is LunaID.EngineInitStatus.Success) {
                     binding.showCameraWithDetection.isEnabled = true
                     binding.showCameraWithFrame.isEnabled = true
                     binding.showCameraAndRecordVideo.isEnabled = true
                     binding.showCameraWithInteraction.isEnabled = true
-                    binding.showCameraWithCommands.isEnabled = true
                 }
             }.flowOn(Dispatchers.Main)
             .launchIn(this.lifecycleScope)
@@ -127,21 +125,6 @@ class MainFragment : Fragment() {
             }
             showCameraWithInteraction.setOnClickListener {
                 viewModel.onShowCameraWithInteraction(requireActivity())
-            }
-            showCameraWithCommands.setOnClickListener {
-                viewModel.onShowCameraWithCommands(
-                    requireActivity(),
-                    binding.overrideStart.isChecked,
-                    binding.overrideClose.isChecked
-                )
-            }
-            darkTheme.setOnCheckedChangeListener { _, isChecked ->
-                AppCompatDelegate.setDefaultNightMode(
-                    if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-                )
-            }
-            videoQuality.setOnCheckedChangeListener {_,isChecked ->
-                viewModel.onChangeVideoQuality(isChecked)
             }
         }
         return binding.root

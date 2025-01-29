@@ -48,35 +48,14 @@
     <ImageView
         android:id="@+id/bestShotImage"
         android:layout_width="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/message"
-        app:layout_constraintBottom_toTopOf="@id/darkTheme"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="0dp"
         android:layout_margin="16dp"
         android:contentDescription="@null"
-        android:scaleType="fitCenter" />
-
-    <CheckBox
-        android:id="@+id/darkTheme"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="Enable DarkTheme?"
-        app:layout_constraintBottom_toTopOf="@id/videoFilePath"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <CheckBox
-        android:id="@+id/videoQuality"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:text="High video quality?"
-        app:layout_constraintBottom_toTopOf="@id/videoFilePath"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/videoFilePath"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bestShotImage" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/message" />
 
     <TextView
         android:id="@+id/videoFilePath"
@@ -138,39 +117,13 @@
             android:backgroundTint="@color/teal_700"
             android:enabled="false"
             android:text="Find bestshot with interaction"
-            app:layout_constraintBottom_toTopOf="@id/showCameraWithCommands"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-    <Button
-        android:id="@+id/showCameraWithCommands"
-        android:text="Find bestshot with commands"
-        android:backgroundTint="@color/teal_700"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:enabled="false"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <CheckBox
-                android:id="@+id/override_start"
-                android:text="Override Start"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"/>
-            <CheckBox
-                android:id="@+id/override_close"
-                android:text="Override Close"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

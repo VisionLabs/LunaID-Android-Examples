@@ -2,7 +2,6 @@ package ai.visionlabs.examples.camera.ui.overlay
 
 import ai.visionlabs.examples.camera.App
 import ai.visionlabs.examples.camera.databinding.FragmentOverlayBinding
-import ai.visionlabs.examples.camera.ui.Settings
 import android.graphics.RectF
 import android.os.Bundle
 import android.os.Handler
@@ -61,67 +60,67 @@ class OverlayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.overlayViewport.isVisible = !Settings.overlayShowDetection
-        binding.overlayDetection.isVisible = Settings.overlayShowDetection
-        binding.overlayLegend.isVisible = Settings.overlayShowDetection
-        binding.faceZone.isVisible = Settings.commandsOverridden
-
-        LunaID.detectionCoordinates()
-            .flowOn(Dispatchers.IO)
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .onEach {
-                //todo
-//                processDetectRect(it.data)
-            }
-            .flowOn(Dispatchers.Main)
-            .launchIn(viewLifecycleOwner.lifecycleScope)
-
-        LunaID.allEvents()
-            .flowOn(Dispatchers.IO)
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .onEach {
-                Log.d(TAG, "onViewCreated() collect event: $it")
-            }
-            .flowOn(Dispatchers.Main)
-            .launchIn(viewLifecycleOwner.lifecycleScope)
-
-        LunaID.allEvents()
-            .filterIsInstance<LunaID.Event.StateInteractionStarted>()
-            .flowOn(Dispatchers.IO)
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .onEach {
-                Log.d(TAG, "onViewCreated() collect interaction event: $it")
-                processInteractionEvent(it.type)
-            }
-            .flowOn(Dispatchers.Main)
-            .launchIn(viewLifecycleOwner.lifecycleScope)
-
-        LunaID.detectionErrors()
-            .flowOn(Dispatchers.IO)
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .onEach {
-                Log.d(TAG, "onViewCreated() collect error event: $it")
-                processError(it.error)
-            }
-            .flowOn(Dispatchers.Main)
-            .launchIn(viewLifecycleOwner.lifecycleScope)
-
-        LunaID.allEvents()
-            .filterIsInstance<LunaID.Event.SecurityCheck>()
-            .flowOn(Dispatchers.IO)
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-            .onEach {
-                Log.d(TAG, "onViewCreated() collect security check event: $it")
-
-                if(it is LunaID.Event.SecurityCheck.Success){
-                    Toast.makeText(this.activity, "Security validation success", Toast.LENGTH_SHORT).show()
-                }else if(it is LunaID.Event.SecurityCheck.Failure){
-                    Toast.makeText(this.activity, "Security validation failed", Toast.LENGTH_SHORT).show()
-                    requireActivity().finish()
-                }
-            }.flowOn(Dispatchers.Main)
-            .launchIn(viewLifecycleOwner.lifecycleScope)
+//
+//        binding.overlayViewport.isVisible = !Settings.overlayShowDetection
+//        binding.overlayDetection.isVisible = Settings.overlayShowDetection
+//        binding.overlayLegend.isVisible = Settings.overlayShowDetection
+//        binding.faceZone.isVisible = Settings.commandsOverridden
+//
+//        LunaID.detectionCoordinates()
+//            .flowOn(Dispatchers.IO)
+//            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+//            .onEach {
+//                //todo
+////                processDetectRect(it.data)
+//            }
+//            .flowOn(Dispatchers.Main)
+//            .launchIn(viewLifecycleOwner.lifecycleScope)
+//
+//        LunaID.allEvents()
+//            .flowOn(Dispatchers.IO)
+//            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+//            .onEach {
+//                Log.d(TAG, "onViewCreated() collect event: $it")
+//            }
+//            .flowOn(Dispatchers.Main)
+//            .launchIn(viewLifecycleOwner.lifecycleScope)
+//
+//        LunaID.allEvents()
+//            .filterIsInstance<LunaID.Event.InteractionStarted>()
+//            .flowOn(Dispatchers.IO)
+//            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+//            .onEach {
+//                Log.d(TAG, "onViewCreated() collect interaction event: $it")
+//                processInteractionEvent(it.type)
+//            }
+//            .flowOn(Dispatchers.Main)
+//            .launchIn(viewLifecycleOwner.lifecycleScope)
+//
+//        LunaID.detectionErrors()
+//            .flowOn(Dispatchers.IO)
+//            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+//            .onEach {
+//                Log.d(TAG, "onViewCreated() collect error event: $it")
+//                processError(it.error)
+//            }
+//            .flowOn(Dispatchers.Main)
+//            .launchIn(viewLifecycleOwner.lifecycleScope)
+//
+//        LunaID.allEvents()
+//            .filterIsInstance<LunaID.Event.SecurityCheck>()
+//            .flowOn(Dispatchers.IO)
+//            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+//            .onEach {
+//                Log.d(TAG, "onViewCreated() collect security check event: $it")
+//
+//                if(it is LunaID.Event.SecurityCheck.Success){
+//                    Toast.makeText(this.activity, "Security validation success", Toast.LENGTH_SHORT).show()
+//                }else if(it is LunaID.Event.SecurityCheck.Failure){
+//                    Toast.makeText(this.activity, "Security validation failed", Toast.LENGTH_SHORT).show()
+//                    requireActivity().finish()
+//                }
+//            }.flowOn(Dispatchers.Main)
+//            .launchIn(viewLifecycleOwner.lifecycleScope)
 
     }
 
@@ -170,37 +169,37 @@ class OverlayFragment : Fragment() {
      * [LunaConfig.detectFrameSize]
      *
      */
-    private fun processDetectRect(rect: RectF) {
-        if (!Settings.overlayShowDetection) return
-
-        val lc = App.lunaConfig
-        val bd = LunaID.borderDistances
-
-
-        val w = binding.overlayDetection.measuredWidth
-        val h = binding.overlayDetection.measuredHeight
-//        val minFaceSideToMinScreenSide = lc.minFaceSideToMinScreenSide
-//        val frameSize = if(w < h) w*minFaceSideToMinScreenSide else h*minFaceSideToMinScreenSide
-
-        val frameSizeRect = RectF(
-            0f, 0f, 350f, 350f,
-//            0f, 0f, frameSize, frameSize,
-        ).apply {  offsetTo(rect.left, rect.top) }
-        val scaledFrameSizedRect = LunaUtils.scalePreviewRect(frameSizeRect)
-
-        val borderDistanceRect = if (w > 0 && h > 0) RectF(
-            scalePreviewDistance(bd.fromLeft),
-            scalePreviewDistance(bd.fromTop),
-            w - scalePreviewDistance(bd.fromRight),
-            h - scalePreviewDistance(bd.fromBottom),
-        ) else null
-
-        binding.overlayDetection.update(
-            faceDetectionRect = rect,
-            minFaceDetectionRect = scaledFrameSizedRect,
-            borderDistanceRect = borderDistanceRect,
-        )
-    }
+//    private fun processDetectRect(rect: RectF) {
+//        if (!Settings.overlayShowDetection) return
+//
+//        val lc = App.lunaConfig
+//        val bd = LunaID.borderDistances
+//
+//
+//        val w = binding.overlayDetection.measuredWidth
+//        val h = binding.overlayDetection.measuredHeight
+////        val minFaceSideToMinScreenSide = lc.minFaceSideToMinScreenSide
+////        val frameSize = if(w < h) w*minFaceSideToMinScreenSide else h*minFaceSideToMinScreenSide
+//
+//        val frameSizeRect = RectF(
+//            0f, 0f, 350f, 350f,
+////            0f, 0f, frameSize, frameSize,
+//        ).apply {  offsetTo(rect.left, rect.top) }
+//        val scaledFrameSizedRect = LunaUtils.scalePreviewRect(frameSizeRect)
+//
+//        val borderDistanceRect = if (w > 0 && h > 0) RectF(
+//            scalePreviewDistance(bd.fromLeft),
+//            scalePreviewDistance(bd.fromTop),
+//            w - scalePreviewDistance(bd.fromRight),
+//            h - scalePreviewDistance(bd.fromBottom),
+//        ) else null
+//
+//        binding.overlayDetection.update(
+//            faceDetectionRect = rect,
+//            minFaceDetectionRect = scaledFrameSizedRect,
+//            borderDistanceRect = borderDistanceRect,
+//        )
+//    }
 
     private fun processError(error: DetectionError) {
         val errorTextResId = error.messageResId() ?: return

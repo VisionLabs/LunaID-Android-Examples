@@ -72,7 +72,7 @@ class MainFragment : Fragment() {
         LunaID.eventChannel.receiveAsFlow()
             .onEach {
                 if(it is LunaID.Event.Finished){
-                    binding.bestShotImage.setImageBitmap(LunaID.bestShot!!.warp)
+                    binding.bestShotImage.setImageBitmap(it.bestShot.warp)
                 }
             }.launchIn(this.lifecycleScope)
     }

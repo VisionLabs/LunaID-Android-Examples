@@ -57,13 +57,13 @@ class MainFragment : Fragment() {
             .onEach {
                 if(it is LunaID.EngineInitStatus.InProgress) {
                     binding.showCameraWithDetection.isEnabled = false
-                    binding.showCameraWithFrame.isEnabled = false
-                    binding.showCameraAndRecordVideo.isEnabled = false
+//                    binding.showCameraWithFrame.isEnabled = false
+//                    binding.showCameraAndRecordVideo.isEnabled = false
                     binding.showCameraWithInteraction.isEnabled = false
                 }else if(it is LunaID.EngineInitStatus.Success) {
                     binding.showCameraWithDetection.isEnabled = true
-                    binding.showCameraWithFrame.isEnabled = true
-                    binding.showCameraAndRecordVideo.isEnabled = true
+//                    binding.showCameraWithFrame.isEnabled = true
+//                    binding.showCameraAndRecordVideo.isEnabled = true
                     binding.showCameraWithInteraction.isEnabled = true
                 }
             }.flowOn(Dispatchers.Main)
@@ -124,13 +124,13 @@ class MainFragment : Fragment() {
             showCameraWithDetection.setOnClickListener {
                 viewModel.onShowCameraWithDetectionClicked(requireActivity())
             }
-            showCameraWithFrame.setOnClickListener {
-                viewModel.onShowCameraWithFrameClicked(requireActivity())
-            }
-            showCameraAndRecordVideo.setOnClickListener {
-                viewModel.onShowCameraAndRecordVideo(requireActivity())
-
-            }
+//            showCameraWithFrame.setOnClickListener {
+//                viewModel.onShowCameraWithFrameClicked(requireActivity())
+//            }
+//            showCameraAndRecordVideo.setOnClickListener {
+//                viewModel.onShowCameraAndRecordVideo(requireActivity())
+//
+//            }
             showCameraWithInteraction.setOnClickListener {
                 viewModel.onShowCameraWithInteraction(requireActivity())
             }

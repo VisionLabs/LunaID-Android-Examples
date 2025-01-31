@@ -68,6 +68,14 @@ class OverlayFragment : Fragment() {
         binding.overlayLegend.isVisible = false
         binding.faceZone.isVisible = false
 
+        LunaID.currentInteractionType
+            .onEach {
+                Log.d(TAG,"onViewCreated: collected $it")
+                if(it!=null){
+                    _binding?.overlayInteraction?.text = getInteractionTip(it)
+                }
+            }.launchIn(lifecycleScope)
+
         LunaID.eventChannel.receiveAsFlow()
             .onEach {
                 when(it){

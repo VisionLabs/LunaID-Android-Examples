@@ -71,7 +71,6 @@ class OverlayFragment : Fragment() {
 
         LunaID.currentInteractionType
             .filterNotNull()
-            .flowOn(Dispatchers.Main)
             .onEach {
                 Log.d(TAG,"onViewCreated: collected interaction $it")
                 _binding?.overlayInteraction?.text = getInteractionTip(it)

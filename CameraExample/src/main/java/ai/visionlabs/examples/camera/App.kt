@@ -13,7 +13,7 @@ class App : Application() {
             acceptOccludedMouth = false,
             acceptOneEyed = false,
             acceptOneEyeClose = false,
-            usePrimaryFaceTracking = true,
+            usePrimaryFaceTracking = false,
             livenessType = LivenessType.Offline,
             minFaceSideToMinScreenSide = 0.3f
 //            minFaceSideToMinScreenSide = 0.25f

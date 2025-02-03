@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -69,20 +70,16 @@ class OverlayFragment : Fragment() {
         binding.faceZone.isVisible = false
 
         LunaID.currentInteractionType
+            .filterNotNull()
+            .flowOn(Dispatchers.Main)
             .onEach {
-                Log.d(TAG,"onViewCreated: collected $it")
-                if(it!=null){
-                    _binding?.overlayInteraction?.text = getInteractionTip(it)
-                }
+                Log.d(TAG,"onViewCreated: collected interaction $it")
+                _binding?.overlayInteraction?.text = getInteractionTip(it)
             }.launchIn(lifecycleScope)
 
         LunaID.eventChannel.receiveAsFlow()
             .onEach {
                 when(it){
-                    is LunaID.Event.InteractionStarted -> {
-                        Log.d(TAG, "onViewCreated() interaction started")
-                        _binding?.overlayInteraction?.text = getInteractionTip(it.type)
-                    }
                     is LunaID.Event.SecurityCheck.Success -> {
                         Log.d(TAG, "onViewCreated() collect security SUCCESS")
                     }
@@ -99,7 +96,7 @@ class OverlayFragment : Fragment() {
                     is LunaID.Event.InteractionEnded -> {
                         Log.d(TAG, "onViewCreated() interaction ended")
                     }
-                    LunaID.Event.InteractionFailed -> {
+                    is LunaID.Event.InteractionFailed -> {
                         Log.d(TAG, "onViewCreated() interaction failed")
                     }
                     is LunaID.Event.InteractionTimeout -> {
@@ -108,18 +105,19 @@ class OverlayFragment : Fragment() {
                     is LunaID.Event.LivenessCheckError -> {
                         Log.d(TAG, "onViewCreated() liveness check error ${it.cause}")
                     }
-                    LunaID.Event.LivenessCheckFailed -> {
+                    is LunaID.Event.LivenessCheckFailed -> {
                         Log.d(TAG, "onViewCreated() liveness check failed")
                     }
-                    LunaID.Event.LivenessCheckStarted -> {
+                    is LunaID.Event.LivenessCheckStarted -> {
                         Log.d(TAG, "onViewCreated() liveness check started")
                     }
-                    LunaID.Event.Started -> {
+                    is LunaID.Event.Started -> {
                         Log.d(TAG, "onViewCreated() started")
                     }
                     is LunaID.Event.UnknownError -> {
                         Log.d(TAG, "onViewCreated() unknown error ${it.cause}")
                     }
+                    else -> { Log.d(TAG,"onViewCreated() collected unknown event") }
                 }
             }
             .launchIn(this.lifecycleScope)

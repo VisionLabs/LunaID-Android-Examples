@@ -1,27 +1,17 @@
 package ai.visionlabs.examples.camera.ui.overlay
 
-import ai.visionlabs.examples.camera.App
 import ai.visionlabs.examples.camera.databinding.FragmentOverlayBinding
-import android.graphics.RectF
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.os.postDelayed
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -34,8 +24,6 @@ import ru.visionlabs.sdk.lunacore.LunaID
 import ru.visionlabs.sdk.lunacore.LunaInteractionType
 import ru.visionlabs.sdk.lunacore.faceengine.DetectionError
 import ru.visionlabs.sdk.lunacore.faceengine.messageResId
-import ru.visionlabs.sdk.lunacore.utils.LunaUtils
-import ru.visionlabs.sdk.lunacore.utils.LunaUtils.scalePreviewDistance
 
 class OverlayFragment : Fragment() {
 
@@ -69,6 +57,7 @@ class OverlayFragment : Fragment() {
         binding.overlayLegend.isVisible = false
         binding.faceZone.isVisible = false
 
+
         LunaID.currentInteractionType
             .filterNotNull()
             .onEach {
@@ -88,10 +77,6 @@ class OverlayFragment : Fragment() {
                     }
                     is LunaID.Event.FaceFound -> {
                         Log.d(TAG, "onViewCreated() face found")
-                    }
-                    is LunaID.Event.Finished -> {
-                        Log.d(TAG, "onViewCreated() finished")
-                        this.activity?.finish()
                     }
                     is LunaID.Event.InteractionEnded -> {
                         Log.d(TAG, "onViewCreated() interaction ended")

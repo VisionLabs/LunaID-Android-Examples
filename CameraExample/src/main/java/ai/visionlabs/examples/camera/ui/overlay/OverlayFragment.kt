@@ -53,9 +53,9 @@ class OverlayFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 //
 //        binding.overlayViewport.isVisible = true
-        binding.overlayDetection.isVisible = false
-        binding.overlayLegend.isVisible = false
-        binding.faceZone.isVisible = false
+//        binding.overlayDetection.isVisible = false
+//        binding.overlayLegend.isVisible = false
+//        binding.faceZone.isVisible = false
 
 
         LunaID.currentInteractionType

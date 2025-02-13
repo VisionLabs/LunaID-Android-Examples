@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -51,11 +52,11 @@ class OverlayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//
-//        binding.overlayViewport.isVisible = true
-//        binding.overlayDetection.isVisible = false
-//        binding.overlayLegend.isVisible = false
-//        binding.faceZone.isVisible = false
+
+        binding.overlayViewport.isVisible = false
+        binding.overlayDetection.isVisible = false
+        binding.overlayLegend.isVisible = false
+        binding.faceZone.isVisible = false
 
 
         LunaID.currentInteractionType
@@ -86,9 +87,13 @@ class OverlayFragment : Fragment() {
                     }
                     is LunaID.Event.InteractionTimeout -> {
                         Log.d(TAG, "onViewCreated() interaction timeout")
+                        Toast.makeText(this.activity, "Interaction timeout", Toast.LENGTH_LONG).show()
+                        activity?.finish();
                     }
                     is LunaID.Event.LivenessCheckError -> {
                         Log.d(TAG, "onViewCreated() liveness check error ${it.cause}")
+                        Toast.makeText(this.activity, "liveness check error", Toast.LENGTH_LONG).show()
+                        activity?.finish();
                     }
                     is LunaID.Event.LivenessCheckFailed -> {
                         Log.d(TAG, "onViewCreated() liveness check failed")

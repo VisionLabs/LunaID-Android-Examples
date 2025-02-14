@@ -14,7 +14,7 @@ class App : Application() {
             acceptOneEyed = false,
             acceptOneEyeClose = false,
             usePrimaryFaceTracking = false,
-            livenessType = LivenessType.None,
+            livenessType = LivenessType.Offline,
             minFaceSideToMinScreenSide = 0.3f
 //            minFaceSideToMinScreenSide = 0.25f
 //            foundFaceDelay = 700L,

@@ -96,7 +96,8 @@ class OverlayFragment : Fragment() {
                         activity?.finish();
                     }
                     is LunaID.Event.LivenessCheckFailed -> {
-                        Log.d(TAG, "onViewCreated() liveness check failed")
+                        Toast.makeText(this.activity, "liveness check error", Toast.LENGTH_LONG).show()
+                        activity?.finish();
                     }
                     is LunaID.Event.LivenessCheckStarted -> {
                         Log.d(TAG, "onViewCreated() liveness check started")

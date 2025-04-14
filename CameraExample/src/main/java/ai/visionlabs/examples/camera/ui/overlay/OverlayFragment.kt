@@ -74,6 +74,7 @@ class OverlayFragment : Fragment() {
                         Log.d(TAG, "onViewCreated() collect security SUCCESS")
                     }
                     is LunaID.Event.SecurityCheck.Failure -> {
+                        activity?.finish()
                         Log.d(TAG, "onViewCreated() collect security FAILURE")
                     }
                     is LunaID.Event.FaceFound -> {
@@ -97,7 +98,7 @@ class OverlayFragment : Fragment() {
                         Log.d(TAG, "onViewCreated() Liveness Check Failed")
 
                         // todo fix several events incoming
-//                        activity?.finish()
+                        activity?.finish()
                         Toast.makeText(this.activity, "liveness check error", Toast.LENGTH_LONG).show()
                     }
                     is LunaID.Event.LivenessCheckStarted -> {
@@ -114,8 +115,7 @@ class OverlayFragment : Fragment() {
             }
             .launchIn(this.lifecycleScope)
 
-        LunaID.errorChannel.receiveAsFlow()
-            .sample(1000)
+        LunaID.errorFlow
             .onEach {
                 binding.overlayError.text = getString(it.error.messageResId()!!)
                 delay(1000)

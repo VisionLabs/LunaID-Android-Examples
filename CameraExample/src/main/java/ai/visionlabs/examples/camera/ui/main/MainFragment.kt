@@ -2,6 +2,9 @@ package ai.visionlabs.examples.camera.ui.main
 
 import ai.visionlabs.examples.camera.BuildConfig
 import ai.visionlabs.examples.camera.databinding.FragmentMainBinding
+import android.content.Context
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +22,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import ru.visionlabs.sdk.lunacore.LunaID
+import ru.visionlabs.sdk.lunacore.utils.VideoUtils
+import java.io.File
+import java.io.FileOutputStream
 
 
 class MainFragment : Fragment() {
@@ -69,9 +75,68 @@ class MainFragment : Fragment() {
             .onEach {
                 Log.d(TAG, "onViewCreated() collected bestshot, draw it")
                 binding.bestShotImage.setImageBitmap(it.bestShot.warp)
+                saveBestShotFound(requireContext(),it)
             }.flowOn(Dispatchers.Main)
             .launchIn(this.lifecycleScope)
     }
+    fun saveBestShotFound(
+        context: Context,
+        bestShotFound: LunaID.Event.BestShotFound
+    ) {
+        try {
+            val outputDir = File(context.filesDir, "best_shots").apply { if (!exists()) mkdirs() }
+
+            // Save BestShot image
+            val bestShotFile = File(outputDir, "best_shot.jpg")
+            bestShotFound.bestShot.image.compress(
+                Bitmap.CompressFormat.JPEG,
+                95,
+                FileOutputStream(bestShotFile)
+            )
+
+            // Save BestShot warp image
+            val warpFile = File(outputDir, "warp_image.jpg")
+            bestShotFound.bestShot.warp.compress(Bitmap.CompressFormat.JPEG, 95, FileOutputStream(warpFile))
+
+            // Save interaction frames
+            bestShotFound.interactionFrames?.forEachIndexed { index, frame ->
+                val interactionFrameFile = File(outputDir, "interaction_frame_${index}.jpg")
+                frame.image.compress(Bitmap.CompressFormat.JPEG, 90, FileOutputStream(interactionFrameFile))
+            }
+
+            // Handle video if available
+            bestShotFound.videoPath?.let { path ->
+                Log.d("SaveBestShot", "Video path: $path")
+
+                val videoInputUri = Uri.fromFile(File(path))
+                val originalVideoFile = File(outputDir, "original_video.mp4")
+                val compressedVideoFile = File(outputDir, "compressed_video.mp4")
+
+                // Copy original video
+                context.contentResolver.openInputStream(videoInputUri)?.use { input ->
+                    FileOutputStream(originalVideoFile).use { output ->
+                        input.copyTo(output)
+                    }
+                    Log.d("SaveBestShot", "Original video copied to: ${originalVideoFile.absolutePath}")
+                } ?: Log.e("SaveBestShot", "Failed to open input stream for original video")
+
+                // Compress video
+                VideoUtils.compressVideo(
+                    context,
+                    videoInputUri,
+                    compressedVideoFile,
+                    onSuccess = { Log.d("SaveBestShot", "Video compressed successfully: ${compressedVideoFile.absolutePath}") },
+                    onFailure = { throwable ->
+                        Log.e("SaveBestShot", "Video compression failed", throwable)
+                    }
+                )
+            } ?: Log.w("SaveBestShot", "No video path provided")
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 
     private fun updateUi(s: MainViewState) {
         Log.d(TAG, "updateUi() called with: s = $s")

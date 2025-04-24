@@ -1,9 +1,7 @@
 package ai.visionlabs.examples.camera.ui.main
 
-import ai.visionlabs.examples.camera.R
 import android.app.Activity
 import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -11,16 +9,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.visionlabs.sdk.lunacore.BestShot
 import ru.visionlabs.sdk.lunacore.BlinkInteraction
-import ru.visionlabs.sdk.lunacore.unknown.CloseCameraCommand
-import ru.visionlabs.sdk.lunacore.unknown.Commands
+import ru.visionlabs.sdk.lunacore.Commands
+
 import ru.visionlabs.sdk.lunacore.Interactions
+import ru.visionlabs.sdk.lunacore.LunaAspectRatioStrategy
 import ru.visionlabs.sdk.lunacore.LunaID
 import ru.visionlabs.sdk.lunacore.PitchDownInteraction
 import ru.visionlabs.sdk.lunacore.PitchUpInteraction
-import ru.visionlabs.sdk.lunacore.unknown.StartBestShotSearchCommand
 import ru.visionlabs.sdk.lunacore.YawLeftInteraction
 import ru.visionlabs.sdk.lunacore.YawRightInteraction
-import ru.visionlabs.sdk.lunacore.borderdistances.InitBorderDistancesStrategy
+import ru.visionlabs.sdk.lunacore.borderdistances.BorderDistancesStrategy
 
 sealed class MainViewState {
 
@@ -58,7 +56,13 @@ class MainViewModel : ViewModel() {
             activity,
             LunaID.ShowCameraParams(
                 disableErrors = true,
-                borderDistanceStrategy = InitBorderDistancesStrategy.WithDp(bottomPaddingInDp = 10)
+                borderDistanceStrategy = BorderDistancesStrategy.WithDp(bottomPaddingInDp = 20, leftPaddingInDp = 20, rightPaddingInDp = 20, topPaddingInDp = 20),
+                recordVideo = true,
+                recordingTimeMillis = 10000,
+                checkSecurity = true,
+                preferredAnalysisFrameWidth = 720,
+                preferredAnalysisFrameHeight =720 ,
+                aspectRatioStrategy = LunaAspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY
             )
         )
     }
@@ -70,6 +74,9 @@ class MainViewModel : ViewModel() {
             activity,
             LunaID.ShowCameraParams(
                 disableErrors = true,
+                recordVideo = true,
+                recordingTimeMillis = 10000,
+                checkSecurity = true
             )
         )
     }
@@ -82,7 +89,10 @@ class MainViewModel : ViewModel() {
             LunaID.ShowCameraParams(
                 disableErrors = true,
                 recordVideo = true,
-                recordingTimeMillis = 10000
+                recordingTimeMillis = 10000,
+                preferredAnalysisFrameWidth = 720,
+                preferredAnalysisFrameHeight =720 ,
+                aspectRatioStrategy = LunaAspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY,
             )
         )
     }
@@ -95,7 +105,10 @@ class MainViewModel : ViewModel() {
             LunaID.ShowCameraParams(
                 disableErrors = true,
                 recordVideo = true,
-                recordingTimeMillis = 5000
+                recordingTimeMillis = 5000,
+                preferredAnalysisFrameHeight = 1200,
+                preferredAnalysisFrameWidth = 1200,
+                aspectRatioStrategy = LunaAspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY
             ),
             interactions = Interactions.Builder()
                 .addInteraction(BlinkInteraction(timeoutMs = 30_000, acceptOneEyed = true))

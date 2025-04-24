@@ -69,6 +69,12 @@ android {
 }
 
 dependencies {
+    implementation("androidx.activity:activity:1.10.0")
+    implementation("androidx.camera:camera-core:1.5.0-alpha05")
+    implementation("androidx.camera:camera-camera2:1.5.0-alpha05")
+    implementation("androidx.camera:camera-lifecycle:1.5.0-alpha05")
+    implementation("androidx.camera:camera-video:1.5.0-alpha05")
+    implementation("androidx.camera:camera-view:1.5.0-alpha05")
     implementation ("androidx.core:core-ktx:1.15.0")
     implementation ("androidx.appcompat:appcompat:1.7.0")
     implementation ("com.google.android.material:material:1.12.0")
@@ -79,16 +85,21 @@ dependencies {
     // NOTE: specify both to avoid possible build errors
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.8.7")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+    implementation("ai.visionlabs.lunaid-core:1.16.0")
+    implementation("ai.visionlabs.lunaid-common-arm:1.16.0")
+    implementation("ai.visionlabs.lunaid-mask-arm:1.16.0")
+    implementation("ai.visionlabs.lunaid-glasses-arm:1.16.0")
+    implementation("ai.visionlabs.lunaid-cnn59-arm:1.16.0")
+    implementation("ai.visionlabs.lunaid-security:1.16.0")
 
+        implementation("ai.visionlabs.lunaid:core:$sdkVersion@aar")
+    implementation("ai.visionlabs.lunaid:common-arm:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:cnn52-arm:$sdkVersion@aar")
+    implementation("ai.visionlabs.lunaid:cnn59-arm:$sdkVersion@aar")
+    implementation("ai.visionlabs.lunaid:mask-arm:$sdkVersion@aar")
+    implementation("ai.visionlabs.lunaid:mouthestimator-arm:$sdkVersion@aar")
+    implementation("ai.visionlabs.lunaid:mouthestimator-arm:$sdkVersion@aar")
 
-    implementation(project(":lunaCore"))
-    implementation(project(":models-cnn52"))
-    implementation(project(":models-cnn59"))
-    implementation(project(":models-common"))
-    implementation(project(":models-glasses"))
-    implementation(project(":models-mask"))
-    implementation(project(":models-mouthestimator"))
-    implementation(project(":models-oslm"))
 
 
 }

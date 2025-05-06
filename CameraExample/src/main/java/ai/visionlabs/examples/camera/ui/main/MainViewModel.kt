@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModel
 import ru.visionlabs.sdk.lunacore.BestShot
 import ru.visionlabs.sdk.lunacore.BlinkInteraction
 import ru.visionlabs.sdk.lunacore.Commands
-
 import ru.visionlabs.sdk.lunacore.Interactions
 import ru.visionlabs.sdk.lunacore.LunaAspectRatioStrategy
 import ru.visionlabs.sdk.lunacore.LunaID
@@ -19,6 +18,8 @@ import ru.visionlabs.sdk.lunacore.PitchUpInteraction
 import ru.visionlabs.sdk.lunacore.YawLeftInteraction
 import ru.visionlabs.sdk.lunacore.YawRightInteraction
 import ru.visionlabs.sdk.lunacore.borderdistances.BorderDistancesStrategy
+import ai.visionlabs.examples.camera.R
+import ai.visionlabs.examples.camera.ui.Settings
 
 sealed class MainViewState {
 
@@ -51,6 +52,7 @@ class MainViewModel : ViewModel() {
 
     fun onShowCameraWithDetectionClicked(activity: Activity) {
         Log.d(TAG, "onShowCameraWithDetectionClicked()")
+        Settings.isFaceZoneVisible = false
 
         LunaID.showCamera(
             activity,
@@ -69,11 +71,12 @@ class MainViewModel : ViewModel() {
 
     fun onShowCameraWithFrameClicked(activity: Activity) {
         Log.d(TAG, "onShowCameraWithFrameClicked()")
-
+        Settings.isFaceZoneVisible = true
         LunaID.showCamera(
             activity,
             LunaID.ShowCameraParams(
                 disableErrors = true,
+                borderDistanceStrategy = BorderDistancesStrategy.WithViewId(R.id.faceZone),
                 recordVideo = true,
                 recordingTimeMillis = 10000,
                 checkSecurity = true
@@ -83,7 +86,7 @@ class MainViewModel : ViewModel() {
 
     fun onShowCameraAndRecordVideo(activity: Activity) {
         Log.d(TAG, "onShowCameraAndRecordVideo()")
-
+        Settings.isFaceZoneVisible = false
         LunaID.showCamera(
             activity,
             LunaID.ShowCameraParams(
@@ -99,7 +102,7 @@ class MainViewModel : ViewModel() {
 
     fun onShowCameraWithInteraction(activity: Activity) {
         Log.d(TAG, "onShowCameraWithInteraction()")
-
+        Settings.isFaceZoneVisible = false
         LunaID.showCamera(
             activity,
             LunaID.ShowCameraParams(

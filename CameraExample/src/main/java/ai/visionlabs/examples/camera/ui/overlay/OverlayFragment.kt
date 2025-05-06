@@ -1,6 +1,7 @@
 package ai.visionlabs.examples.camera.ui.overlay
 
 import ai.visionlabs.examples.camera.databinding.FragmentOverlayBinding
+import ai.visionlabs.examples.camera.ui.Settings
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -52,11 +53,10 @@ class OverlayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.overlayViewport.isVisible = false
-        binding.overlayDetection.isVisible = false
+        binding.overlayDetection.isVisible = Settings.overlayShowDetection
         binding.overlayLegend.isVisible = false
-        binding.faceZone.isVisible = false
+        binding.faceZone.isVisible = Settings.isFaceZoneVisible
 
 
         LunaID.currentInteractionType
@@ -125,18 +125,9 @@ class OverlayFragment : Fragment() {
 
         LunaID.faceDetectionChannel.receiveAsFlow()
             .onEach {
-                Log.d(TAG, "onViewCreated() face detection event: $it")
+                binding.overlayDetection.updateFaceRect(it.data)
             }.launchIn(this.lifecycleScope)
 //
-//        LunaID.detectionCoordinates()
-//            .flowOn(Dispatchers.IO)
-//            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-//            .onEach {
-//                //todo
-////                processDetectRect(it.data)
-//            }
-//            .flowOn(Dispatchers.Main)
-//            .launchIn(viewLifecycleOwner.lifecycleScope)
 //
 //        LunaID.allEvents()
 //            .flowOn(Dispatchers.IO)

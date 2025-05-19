@@ -1,11 +1,8 @@
 package ai.visionlabs.examples.camera
 
 import android.app.Application
-import android.graphics.Bitmap
 import ru.visionlabs.sdk.lunacore.LunaConfig
 import ru.visionlabs.sdk.lunacore.LunaID
-import ru.visionlabs.sdk.lunacore.LunaVideoQuality
-import ru.visionlabs.sdk.lunacore.liveness.GlassesCheckType
 import ru.visionlabs.sdk.lunacore.liveness.LivenessType
 
 class App : Application() {
@@ -15,7 +12,6 @@ class App : Application() {
             acceptOccludedFaces = true,
             acceptOccludedMouth = false,
             acceptOneEyed = false,
-            acceptOneEyeClose = false,
             usePrimaryFaceTracking = false,
             livenessType = LivenessType.Offline,
 //            minFaceSideToMinScreenSide = 0.25f

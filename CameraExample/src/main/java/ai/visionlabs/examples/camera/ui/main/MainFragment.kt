@@ -61,13 +61,13 @@ class MainFragment : Fragment() {
                 if(it is LunaID.EngineInitStatus.InProgress) {
                     binding.showCameraWithDetection.isEnabled = false
                     binding.showCameraWithFrame.isEnabled = false
-                    binding.showCameraAndRecordVideo.isEnabled = false
                     binding.showCameraWithInteraction.isEnabled = false
+                    binding.showCameraWithCommands.isEnabled = false
                 }else if(it is LunaID.EngineInitStatus.Success) {
                     binding.showCameraWithDetection.isEnabled = true
                     binding.showCameraWithFrame.isEnabled = true
-                    binding.showCameraAndRecordVideo.isEnabled = true
                     binding.showCameraWithInteraction.isEnabled = true
+                    binding.showCameraWithCommands.isEnabled = true
                 }
             }.flowOn(Dispatchers.Main)
             .launchIn(this.lifecycleScope)
@@ -186,17 +186,20 @@ class MainFragment : Fragment() {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         with(binding) {
             showCameraWithDetection.setOnClickListener {
-                viewModel.onShowCameraWithDetectionClicked(requireActivity())
+                viewModel.onShowCamera(requireActivity())
             }
             showCameraWithFrame.setOnClickListener {
                 viewModel.onShowCameraWithFrameClicked(requireActivity())
             }
-//            showCameraAndRecordVideo.setOnClickListener {
-//                viewModel.onShowCameraAndRecordVideo(requireActivity())
-//
-//            }
             showCameraWithInteraction.setOnClickListener {
                 viewModel.onShowCameraWithInteraction(requireActivity())
+            }
+            showCameraWithCommands.setOnClickListener {
+                viewModel.onShowCameraWithCommands(
+                    requireActivity(),
+                    binding.overrideStart.isChecked,
+                    binding.overrideClose.isChecked
+                )
             }
 
             detectionIsVisible.setOnTouchListener { v, event ->
@@ -206,6 +209,18 @@ class MainFragment : Fragment() {
                 if (event.action == MotionEvent.ACTION_UP) {
                     binding.detectionIsVisible.isChecked = !binding.detectionIsVisible.isChecked
                     Settings.overlayShowDetection = binding.detectionIsVisible.isChecked
+                    return@setOnTouchListener true
+                }
+                return@setOnTouchListener false
+            }
+
+            recordVideo.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    return@setOnTouchListener true
+                }
+                if (event.action == MotionEvent.ACTION_UP) {
+                    binding.recordVideo.isChecked = !binding.recordVideo.isChecked
+                    Settings.recordVideo = binding.recordVideo.isChecked
                     return@setOnTouchListener true
                 }
                 return@setOnTouchListener false

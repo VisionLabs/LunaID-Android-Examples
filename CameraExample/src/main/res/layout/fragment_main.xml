@@ -65,6 +65,17 @@
         app:layout_constraintBottom_toTopOf="@id/videoFilePath"
         app:layout_constraintStart_toStartOf="parent" />
 
+
+    <CheckBox
+        android:id="@+id/recordVideo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Record video"
+        app:layout_constraintBottom_toTopOf="@id/videoFilePath"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/detectionIsVisible" />
+
     <TextView
         android:id="@+id/videoFilePath"
         android:visibility="visible"
@@ -105,17 +116,6 @@
             android:backgroundTint="@color/teal_700"
             android:enabled="false"
             android:text="Find bestshot with frame"
-            app:layout_constraintBottom_toTopOf="@id/showCameraAndRecordVideo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/showCameraAndRecordVideo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/teal_700"
-            android:enabled="false"
-            android:text="Find beshtosh and record video"
             app:layout_constraintBottom_toTopOf="@id/showCameraWithInteraction"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -129,6 +129,17 @@
             android:text="Find bestshot with interaction"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/showCameraWithCommands"
+            android:text="Find bestshot with commands"
+            android:backgroundTint="@color/teal_700"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:enabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
 
         <LinearLayout

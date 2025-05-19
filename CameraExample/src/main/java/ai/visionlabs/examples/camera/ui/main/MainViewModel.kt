@@ -1,7 +1,10 @@
 package ai.visionlabs.examples.camera.ui.main
 
+import ai.visionlabs.examples.camera.R
+import ai.visionlabs.examples.camera.ui.Settings
 import android.app.Activity
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -9,17 +12,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.visionlabs.sdk.lunacore.BestShot
 import ru.visionlabs.sdk.lunacore.BlinkInteraction
+import ru.visionlabs.sdk.lunacore.CloseCameraCommand
 import ru.visionlabs.sdk.lunacore.Commands
 import ru.visionlabs.sdk.lunacore.Interactions
-import ru.visionlabs.sdk.lunacore.LunaAspectRatioStrategy
 import ru.visionlabs.sdk.lunacore.LunaID
 import ru.visionlabs.sdk.lunacore.PitchDownInteraction
 import ru.visionlabs.sdk.lunacore.PitchUpInteraction
+import ru.visionlabs.sdk.lunacore.StartBestShotSearchCommand
 import ru.visionlabs.sdk.lunacore.YawLeftInteraction
 import ru.visionlabs.sdk.lunacore.YawRightInteraction
 import ru.visionlabs.sdk.lunacore.borderdistances.BorderDistancesStrategy
-import ai.visionlabs.examples.camera.R
-import ai.visionlabs.examples.camera.ui.Settings
 
 sealed class MainViewState {
 
@@ -50,7 +52,7 @@ class MainViewModel : ViewModel() {
         super.onCleared()
     }
 
-    fun onShowCameraWithDetectionClicked(activity: Activity) {
+    fun onShowCamera(activity: Activity) {
         Log.d(TAG, "onShowCameraWithDetectionClicked()")
         Settings.isFaceZoneVisible = false
 
@@ -59,12 +61,8 @@ class MainViewModel : ViewModel() {
             LunaID.ShowCameraParams(
                 disableErrors = true,
                 borderDistanceStrategy = BorderDistancesStrategy.WithDp(bottomPaddingInDp = 20, leftPaddingInDp = 20, rightPaddingInDp = 20, topPaddingInDp = 20),
-                recordVideo = true,
+                recordVideo = Settings.recordVideo,
                 recordingTimeMillis = 10000,
-                checkSecurity = true,
-                preferredAnalysisFrameWidth = 720,
-                preferredAnalysisFrameHeight =720 ,
-                aspectRatioStrategy = LunaAspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY
             )
         )
     }
@@ -77,25 +75,8 @@ class MainViewModel : ViewModel() {
             LunaID.ShowCameraParams(
                 disableErrors = true,
                 borderDistanceStrategy = BorderDistancesStrategy.WithViewId(R.id.faceZone),
-                recordVideo = true,
-                recordingTimeMillis = 10000,
-                checkSecurity = true
-            )
-        )
-    }
-
-    fun onShowCameraAndRecordVideo(activity: Activity) {
-        Log.d(TAG, "onShowCameraAndRecordVideo()")
-        Settings.isFaceZoneVisible = false
-        LunaID.showCamera(
-            activity,
-            LunaID.ShowCameraParams(
-                disableErrors = true,
-                recordVideo = true,
-                recordingTimeMillis = 10000,
-                preferredAnalysisFrameWidth = 720,
-                preferredAnalysisFrameHeight =720 ,
-                aspectRatioStrategy = LunaAspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY,
+                recordVideo = Settings.recordVideo,
+                recordingTimeMillis = 10000
             )
         )
     }
@@ -107,11 +88,8 @@ class MainViewModel : ViewModel() {
             activity,
             LunaID.ShowCameraParams(
                 disableErrors = true,
-                recordVideo = true,
-                recordingTimeMillis = 5000,
-                preferredAnalysisFrameHeight = 1200,
-                preferredAnalysisFrameWidth = 1200,
-                aspectRatioStrategy = LunaAspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY
+                recordVideo = Settings.recordVideo,
+                recordingTimeMillis = 5000
             ),
             interactions = Interactions.Builder()
                 .addInteraction(BlinkInteraction(timeoutMs = 30_000, acceptOneEyed = true))
@@ -144,6 +122,47 @@ class MainViewModel : ViewModel() {
                     )
                 )
                 .build()
+        )
+    }
+
+    fun onShowCameraWithCommands(
+        activity: Activity,
+        overrideStart: Boolean,
+        overrideClose: Boolean
+    ) {
+        Log.d(TAG, "onShowCameraWithCommands()")
+
+        Settings.commandsOverridden = true
+
+        handler?.removeCallbacksAndMessages(null)
+        handler = Handler(Looper.getMainLooper())
+
+        commands = Commands.Builder().apply {
+            if (overrideStart) override(StartBestShotSearchCommand)
+            if (overrideClose) override(CloseCameraCommand)
+        }.build()
+
+        if (commands.isStartOverridden()) {
+            setupStartDelay()
+        }
+
+        LunaID.showCamera(
+            activity,
+            LunaID.ShowCameraParams(
+                disableErrors = false,
+                recordVideo = Settings.recordVideo
+            ),
+            commands = commands,
+        )
+    }
+
+    private fun setupStartDelay() {
+        val startDelayMs = 5_000L
+        handler?.postDelayed(
+            {
+                Log.d(TAG, "StartBestShotSearchCommand()")
+                LunaID.sendCommand(StartBestShotSearchCommand)
+            }, startDelayMs
         )
     }
 

@@ -7,4 +7,6 @@ object Settings {
 
     var commandsOverridden = false
 
+    var recordVideo = false
+
 }

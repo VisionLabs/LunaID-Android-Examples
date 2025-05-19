@@ -58,7 +58,6 @@ class OverlayFragment : Fragment() {
         binding.overlayLegend.isVisible = false
         binding.faceZone.isVisible = Settings.isFaceZoneVisible
 
-
         LunaID.currentInteractionType
             .filterNotNull()
             .onEach {

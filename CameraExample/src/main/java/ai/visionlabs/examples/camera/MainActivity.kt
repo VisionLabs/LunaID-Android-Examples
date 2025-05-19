@@ -6,7 +6,6 @@ import ai.visionlabs.examples.camera.ui.main.MainFragment
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle

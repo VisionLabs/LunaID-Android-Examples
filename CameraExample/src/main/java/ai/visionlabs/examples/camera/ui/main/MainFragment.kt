@@ -2,12 +2,15 @@ package ai.visionlabs.examples.camera.ui.main
 
 import ai.visionlabs.examples.camera.BuildConfig
 import ai.visionlabs.examples.camera.databinding.FragmentMainBinding
+import ai.visionlabs.examples.camera.ui.Settings
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -20,7 +23,6 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.receiveAsFlow
 import ru.visionlabs.sdk.lunacore.LunaID
 import ru.visionlabs.sdk.lunacore.utils.VideoUtils
 import java.io.File
@@ -58,14 +60,14 @@ class MainFragment : Fragment() {
             .onEach {
                 if(it is LunaID.EngineInitStatus.InProgress) {
                     binding.showCameraWithDetection.isEnabled = false
-//                    binding.showCameraWithFrame.isEnabled = false
-//                    binding.showCameraAndRecordVideo.isEnabled = false
+                    binding.showCameraWithFrame.isEnabled = false
                     binding.showCameraWithInteraction.isEnabled = false
+                    binding.showCameraWithCommands.isEnabled = false
                 }else if(it is LunaID.EngineInitStatus.Success) {
                     binding.showCameraWithDetection.isEnabled = true
-//                    binding.showCameraWithFrame.isEnabled = true
-//                    binding.showCameraAndRecordVideo.isEnabled = true
+                    binding.showCameraWithFrame.isEnabled = true
                     binding.showCameraWithInteraction.isEnabled = true
+                    binding.showCameraWithCommands.isEnabled = true
                 }
             }.flowOn(Dispatchers.Main)
             .launchIn(this.lifecycleScope)
@@ -175,6 +177,7 @@ class MainFragment : Fragment() {
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -183,17 +186,44 @@ class MainFragment : Fragment() {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         with(binding) {
             showCameraWithDetection.setOnClickListener {
-                viewModel.onShowCameraWithDetectionClicked(requireActivity())
+                viewModel.onShowCamera(requireActivity())
             }
-//            showCameraWithFrame.setOnClickListener {
-//                viewModel.onShowCameraWithFrameClicked(requireActivity())
-//            }
-//            showCameraAndRecordVideo.setOnClickListener {
-//                viewModel.onShowCameraAndRecordVideo(requireActivity())
-//
-//            }
+            showCameraWithFrame.setOnClickListener {
+                viewModel.onShowCameraWithFrameClicked(requireActivity())
+            }
             showCameraWithInteraction.setOnClickListener {
                 viewModel.onShowCameraWithInteraction(requireActivity())
+            }
+            showCameraWithCommands.setOnClickListener {
+                viewModel.onShowCameraWithCommands(
+                    requireActivity(),
+                    binding.overrideStart.isChecked,
+                    binding.overrideClose.isChecked
+                )
+            }
+
+            detectionIsVisible.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    return@setOnTouchListener true
+                }
+                if (event.action == MotionEvent.ACTION_UP) {
+                    binding.detectionIsVisible.isChecked = !binding.detectionIsVisible.isChecked
+                    Settings.overlayShowDetection = binding.detectionIsVisible.isChecked
+                    return@setOnTouchListener true
+                }
+                return@setOnTouchListener false
+            }
+
+            recordVideo.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    return@setOnTouchListener true
+                }
+                if (event.action == MotionEvent.ACTION_UP) {
+                    binding.recordVideo.isChecked = !binding.recordVideo.isChecked
+                    Settings.recordVideo = binding.recordVideo.isChecked
+                    return@setOnTouchListener true
+                }
+                return@setOnTouchListener false
             }
         }
         return binding.root

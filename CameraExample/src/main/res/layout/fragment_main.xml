@@ -52,10 +52,29 @@
         android:layout_margin="16dp"
         android:contentDescription="@null"
         android:scaleType="fitCenter"
-        app:layout_constraintBottom_toTopOf="@+id/videoFilePath"
+        app:layout_constraintBottom_toTopOf="@+id/detectionIsVisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/message" />
+    <CheckBox
+        android:id="@+id/detectionIsVisible"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Show detection"
+        app:layout_constraintBottom_toTopOf="@id/videoFilePath"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <CheckBox
+        android:id="@+id/recordVideo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Record video"
+        app:layout_constraintBottom_toTopOf="@id/videoFilePath"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/detectionIsVisible" />
 
     <TextView
         android:id="@+id/videoFilePath"
@@ -68,48 +87,38 @@
         android:layout_height="wrap_content"/>
 
     <LinearLayout
-        android:orientation="vertical"
         android:id="@+id/buttonsHolder"
-        android:paddingBottom="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:orientation="vertical"
+        android:paddingBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
         <Button
             android:id="@+id/showCameraWithDetection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/teal_700"
             android:enabled="false"
-            android:text="Find bestshot with detection"
+            android:text="Find bestshot"
             app:layout_constraintBottom_toTopOf="@id/showCameraWithInteraction"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-<!--        <Button-->
-<!--            android:id="@+id/showCameraWithFrame"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:backgroundTint="@color/teal_700"-->
-<!--            android:enabled="false"-->
-<!--            android:text="Find bestshot with frame"-->
-<!--            app:layout_constraintBottom_toTopOf="@id/showCameraAndRecordVideo"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/showCameraAndRecordVideo"-->
-<!--        android:text="Find beshtosh and record video"-->
-<!--        android:backgroundTint="@color/teal_700"-->
-<!--        android:enabled="false"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/showCameraWithInteraction"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"/>-->
+        <Button
+            android:id="@+id/showCameraWithFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/teal_700"
+            android:enabled="false"
+            android:text="Find bestshot with frame"
+            app:layout_constraintBottom_toTopOf="@id/showCameraWithInteraction"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/showCameraWithInteraction"
@@ -121,10 +130,37 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <Button
+            android:id="@+id/showCameraWithCommands"
+            android:text="Find bestshot with commands"
+            android:backgroundTint="@color/teal_700"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:enabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:id="@+id/override_start"
+                android:text="Override Start"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+            <CheckBox
+                android:id="@+id/override_close"
+                android:text="Override Close"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

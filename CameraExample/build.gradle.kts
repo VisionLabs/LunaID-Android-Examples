@@ -88,11 +88,13 @@ dependencies {
 
     implementation("ai.visionlabs.lunaid:core:$sdkVersion@aar")
     implementation("ai.visionlabs.lunaid:common-arm:$sdkVersion@aar")
-//    implementation("ai.visionlabs.lunaid:cnn52-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:cnn59-arm:$sdkVersion@aar")
+//    implementation("ai.visionlabs.lunaid:cnn59-arm:$sdkVersion@aar")
+    implementation("ai.visionlabs.lunaid:cnn60-arm:$sdkVersion@aar")
+    implementation("ai.visionlabs.lunaid:security:$sdkVersion@aar")
+    implementation("ai.visionlabs.lunaid:oslm-arm:$sdkVersion@aar")
+    implementation("ai.visionlabs.lunaid:mouthestimator-arm:$sdkVersion@aar")
     implementation("ai.visionlabs.lunaid:mask-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:mouthestimator-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:mouthestimator-arm:$sdkVersion@aar")
+    implementation("ai.visionlabs.lunaid:glasses-arm:$sdkVersion@aar")
 
     implementation("ai.visionlabs.lunaid:glasses-arm:$sdkVersion@aar")
     implementation("ai.visionlabs.lunaid:security:$sdkVersion@aar")

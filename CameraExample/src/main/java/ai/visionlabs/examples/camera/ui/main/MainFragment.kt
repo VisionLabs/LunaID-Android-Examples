@@ -1,8 +1,10 @@
 package ai.visionlabs.examples.camera.ui.main
 
 import ai.visionlabs.examples.camera.BuildConfig
+import ai.visionlabs.examples.camera.R
 import ai.visionlabs.examples.camera.databinding.FragmentMainBinding
 import ai.visionlabs.examples.camera.ui.Settings
+import ai.visionlabs.examples.camera.ui.matching.MatchingFacesFragment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
@@ -31,7 +33,7 @@ import java.io.FileOutputStream
 
 class MainFragment : Fragment() {
 
-    val TAG = "MainFragment"
+    private val TAG = "MainFragment"
 
     companion object {
         fun newInstance() = MainFragment()
@@ -54,34 +56,22 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.init(this.viewLifecycleOwner)
+        observeEngineInitStatus()
+        observeBestShot()
+    }
 
-        LunaID.engineInitStatus
-            .flowWithLifecycle(this.lifecycle, Lifecycle.State.STARTED)
-            .onEach {
-                if(it is LunaID.EngineInitStatus.InProgress) {
-                    binding.showCameraWithDetection.isEnabled = false
-                    binding.showCameraWithFrame.isEnabled = false
-                    binding.showCameraWithInteraction.isEnabled = false
-                    binding.showCameraWithCommands.isEnabled = false
-                }else if(it is LunaID.EngineInitStatus.Success) {
-                    binding.showCameraWithDetection.isEnabled = true
-                    binding.showCameraWithFrame.isEnabled = true
-                    binding.showCameraWithInteraction.isEnabled = true
-                    binding.showCameraWithCommands.isEnabled = true
-                }
-            }.flowOn(Dispatchers.Main)
-            .launchIn(this.lifecycleScope)
-
+    private fun observeBestShot() {
         LunaID.bestShot
             .filterNotNull()
             .onEach {
                 Log.d(TAG, "onViewCreated() collected bestshot, draw it")
                 binding.bestShotImage.setImageBitmap(it.bestShot.warp)
-                saveBestShotFound(requireContext(),it)
+                saveBestShotFound(requireContext(), it)
             }.flowOn(Dispatchers.Main)
-            .launchIn(this.lifecycleScope)
+            .launchIn(this.viewLifecycleOwner.lifecycleScope)
     }
-    fun saveBestShotFound(
+
+    private fun saveBestShotFound(
         context: Context,
         bestShotFound: LunaID.Event.BestShotFound
     ) {
@@ -98,12 +88,20 @@ class MainFragment : Fragment() {
 
             // Save BestShot warp image
             val warpFile = File(outputDir, "warp_image.jpg")
-            bestShotFound.bestShot.warp.compress(Bitmap.CompressFormat.JPEG, 95, FileOutputStream(warpFile))
+            bestShotFound.bestShot.warp.compress(
+                Bitmap.CompressFormat.JPEG,
+                95,
+                FileOutputStream(warpFile)
+            )
 
             // Save interaction frames
             bestShotFound.interactionFrames?.forEachIndexed { index, frame ->
                 val interactionFrameFile = File(outputDir, "interaction_frame_${index}.jpg")
-                frame.image.compress(Bitmap.CompressFormat.JPEG, 90, FileOutputStream(interactionFrameFile))
+                frame.image.compress(
+                    Bitmap.CompressFormat.JPEG,
+                    90,
+                    FileOutputStream(interactionFrameFile)
+                )
             }
 
             // Handle video if available
@@ -119,7 +117,10 @@ class MainFragment : Fragment() {
                     FileOutputStream(originalVideoFile).use { output ->
                         input.copyTo(output)
                     }
-                    Log.d("SaveBestShot", "Original video copied to: ${originalVideoFile.absolutePath}")
+                    Log.d(
+                        "SaveBestShot",
+                        "Original video copied to: ${originalVideoFile.absolutePath}"
+                    )
                 } ?: Log.e("SaveBestShot", "Failed to open input stream for original video")
 
                 // Compress video
@@ -127,7 +128,12 @@ class MainFragment : Fragment() {
                     context,
                     videoInputUri,
                     compressedVideoFile,
-                    onSuccess = { Log.d("SaveBestShot", "Video compressed successfully: ${compressedVideoFile.absolutePath}") },
+                    onSuccess = {
+                        Log.d(
+                            "SaveBestShot",
+                            "Video compressed successfully: ${compressedVideoFile.absolutePath}"
+                        )
+                    },
                     onFailure = { throwable ->
                         Log.e("SaveBestShot", "Video compression failed", throwable)
                     }
@@ -139,6 +145,27 @@ class MainFragment : Fragment() {
         }
     }
 
+    private fun observeEngineInitStatus() {
+        LunaID.engineInitStatus
+            .flowWithLifecycle(this.lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                if (it is LunaID.EngineInitStatus.InProgress) {
+                    binding.showCameraWithDetection.isEnabled = false
+                    binding.showCameraWithFrame.isEnabled = false
+                    binding.showCameraWithInteraction.isEnabled = false
+                    binding.showCameraWithCommands.isEnabled = false
+                    binding.buttonOpenMatchingFaces.isEnabled = false
+                } else if (it is LunaID.EngineInitStatus.Success) {
+                    binding.showCameraWithDetection.isEnabled = true
+                    binding.showCameraWithFrame.isEnabled = true
+                    binding.showCameraWithInteraction.isEnabled = true
+                    binding.showCameraWithCommands.isEnabled = true
+                    binding.buttonOpenMatchingFaces.isEnabled = true
+                }
+            }.flowOn(Dispatchers.Main)
+            .launchIn(this.lifecycleScope)
+    }
+
 
     private fun updateUi(s: MainViewState) {
         Log.d(TAG, "updateUi() called with: s = $s")
@@ -146,15 +173,16 @@ class MainFragment : Fragment() {
             is MainViewState.Init -> {
                 binding.sdkVersion.text = BuildConfig.SDK_VERSION
             }
+
             is MainViewState.Image -> {
-//                val dv52 = LunaUtils.getDescriptor(s.image.image, V52)
-//                val dv59 = LunaUtils.getDescriptor(s.image.image, V59)
                 renderImage(s)
                 renderVideoPath(s.videoPath)
             }
+
             is MainViewState.Error -> {
                 renderError(s)
             }
+
             is MainViewState.Cancelled -> {
                 renderVideoPath(s.videoPath)
             }
@@ -202,6 +230,13 @@ class MainFragment : Fragment() {
                 )
             }
 
+            buttonOpenMatchingFaces.setOnClickListener {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.container, MatchingFacesFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit()
+            }
+
             detectionIsVisible.setOnTouchListener { v, event ->
                 if (event.action == MotionEvent.ACTION_DOWN) {
                     return@setOnTouchListener true
@@ -228,6 +263,7 @@ class MainFragment : Fragment() {
         }
         return binding.root
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

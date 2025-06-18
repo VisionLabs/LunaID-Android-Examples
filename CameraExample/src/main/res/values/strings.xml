@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Luna Example</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="match_faces">Match faces</string>
+    <string name="face_similarity_score">Face Similarity Score:</string>
+    <string name="error">Error:</string>
 </resources>

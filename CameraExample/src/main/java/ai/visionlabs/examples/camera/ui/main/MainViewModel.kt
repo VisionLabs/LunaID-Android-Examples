@@ -18,6 +18,7 @@ import ru.visionlabs.sdk.lunacore.Interactions
 import ru.visionlabs.sdk.lunacore.LunaID
 import ru.visionlabs.sdk.lunacore.PitchDownInteraction
 import ru.visionlabs.sdk.lunacore.PitchUpInteraction
+import ru.visionlabs.sdk.lunacore.ShowCameraParams
 import ru.visionlabs.sdk.lunacore.StartBestShotSearchCommand
 import ru.visionlabs.sdk.lunacore.YawLeftInteraction
 import ru.visionlabs.sdk.lunacore.YawRightInteraction
@@ -58,7 +59,7 @@ class MainViewModel : ViewModel() {
 
         LunaID.showCamera(
             activity,
-            LunaID.ShowCameraParams(
+            ShowCameraParams(
                 disableErrors = true,
                 borderDistanceStrategy = BorderDistancesStrategy.WithDp(bottomPaddingInDp = 20, leftPaddingInDp = 20, rightPaddingInDp = 20, topPaddingInDp = 20),
                 recordVideo = Settings.recordVideo,
@@ -72,7 +73,7 @@ class MainViewModel : ViewModel() {
         Settings.isFaceZoneVisible = true
         LunaID.showCamera(
             activity,
-            LunaID.ShowCameraParams(
+            ShowCameraParams(
                 disableErrors = true,
                 borderDistanceStrategy = BorderDistancesStrategy.WithViewId(R.id.faceZone),
                 recordVideo = Settings.recordVideo,
@@ -86,7 +87,7 @@ class MainViewModel : ViewModel() {
         Settings.isFaceZoneVisible = false
         LunaID.showCamera(
             activity,
-            LunaID.ShowCameraParams(
+            ShowCameraParams(
                 disableErrors = true,
                 recordVideo = Settings.recordVideo,
                 recordingTimeMillis = 5000
@@ -148,7 +149,7 @@ class MainViewModel : ViewModel() {
 
         LunaID.showCamera(
             activity,
-            LunaID.ShowCameraParams(
+            ShowCameraParams(
                 disableErrors = false,
                 recordVideo = Settings.recordVideo
             ),

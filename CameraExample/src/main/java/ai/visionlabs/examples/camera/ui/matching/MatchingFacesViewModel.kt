@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ru.visionlabs.sdk.lunacore.BestShot
 import ru.visionlabs.sdk.lunacore.LunaID
+import ru.visionlabs.sdk.lunacore.ShowCameraParams
 import ru.visionlabs.sdk.lunacore.borderdistances.BorderDistancesStrategy
 import ru.visionlabs.sdk.lunacore.utils.LunaUtils
-import ru.visionlabs.sdk.lunacore.utils.LunaUtils.V60
 
 sealed class MatchingFacesState {
 
@@ -78,13 +78,12 @@ class MatchingFacesViewModel : ViewModel() {
             _state.emit(MatchingFacesState.InProgress)
             try {
                 val descriptorFirst =
-                    LunaUtils.getDescriptor(firstBitmap, descriptorVersion = V60)
+                    LunaUtils.getDescriptor(firstBitmap)
                 val descriptorSecond =
-                    LunaUtils.getDescriptor(secondBitmap, descriptorVersion = V60)
+                    LunaUtils.getDescriptor(secondBitmap)
                 val similarityScore = LunaUtils.matchDescriptors(
                     descriptorFirst,
-                    descriptorSecond,
-                    descriptorVersion = V60
+                    descriptorSecond
                 )
                 _state.emit(
                     MatchingFacesState.MatchingResult(
@@ -103,7 +102,7 @@ class MatchingFacesViewModel : ViewModel() {
 
         LunaID.showCamera(
             activity,
-            LunaID.ShowCameraParams(
+            ShowCameraParams(
                 disableErrors = true,
                 borderDistanceStrategy = BorderDistancesStrategy.WithDp(
                     bottomPaddingInDp = 20,

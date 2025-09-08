@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import ru.visionlabs.sdk.lunacore.LunaID
+import ru.visionlabs.sdk.lunacore.ShowCameraParams
 import ru.visionlabs.sdk.lunacore.borderdistances.BorderDistancesStrategy
 
 class SettingsFragment : Fragment() {
@@ -38,7 +39,7 @@ class SettingsFragment : Fragment() {
 //                LunaID.testPhotoUri = uri
                 LunaID.showCamera(
                     requireContext(),
-                    LunaID.ShowCameraParams(
+                    ShowCameraParams(
                         disableErrors = true,
                         borderDistanceStrategy = BorderDistancesStrategy.Default
                     )

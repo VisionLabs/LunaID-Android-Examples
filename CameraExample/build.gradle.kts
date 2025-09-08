@@ -80,6 +80,7 @@ dependencies {
     implementation ("com.google.android.material:material:1.12.0")
     implementation ("androidx.constraintlayout:constraintlayout:2.2.0")
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
     implementation ("androidx.fragment:fragment-ktx:1.8.5")
     // NOTE: specify both to avoid possible build errors
@@ -88,14 +89,11 @@ dependencies {
 
     implementation("ai.visionlabs.lunaid:core:$sdkVersion@aar")
     implementation("ai.visionlabs.lunaid:common-arm:$sdkVersion@aar")
-//    implementation("ai.visionlabs.lunaid:cnn59-arm:$sdkVersion@aar")
+    implementation("ai.visionlabs.lunaid:cnn59-arm:$sdkVersion@aar")
     implementation("ai.visionlabs.lunaid:cnn60-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:security:$sdkVersion@aar")
     implementation("ai.visionlabs.lunaid:oslm-arm:$sdkVersion@aar")
     implementation("ai.visionlabs.lunaid:mouthestimator-arm:$sdkVersion@aar")
     implementation("ai.visionlabs.lunaid:mask-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:glasses-arm:$sdkVersion@aar")
-
     implementation("ai.visionlabs.lunaid:glasses-arm:$sdkVersion@aar")
     implementation("ai.visionlabs.lunaid:security:$sdkVersion@aar")
 }

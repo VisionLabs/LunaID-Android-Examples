@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.PixelFormat
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.util.Log
@@ -22,6 +23,10 @@ public class FaceDetectionView2 @JvmOverloads constructor(
     private var rect: RectF? = null
     private var rectColor = Color.GREEN
 
+    init {
+        setZOrderOnTop(true)
+        holder.setFormat(PixelFormat.TRANSPARENT)
+    }
 
     private val faceDetectionPaint = Paint().apply {
         style = Paint.Style.FILL

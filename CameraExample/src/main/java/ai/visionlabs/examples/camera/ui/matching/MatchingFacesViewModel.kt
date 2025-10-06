@@ -78,9 +78,9 @@ class MatchingFacesViewModel : ViewModel() {
             _state.emit(MatchingFacesState.InProgress)
             try {
                 val descriptorFirst =
-                    LunaUtils.getDescriptor(firstBitmap)
+                    LunaUtils.getDescriptorFromWrapped(firstBitmap)
                 val descriptorSecond =
-                    LunaUtils.getDescriptor(secondBitmap)
+                    LunaUtils.getDescriptorFromWrapped(secondBitmap)
                 val similarityScore = LunaUtils.matchDescriptors(
                     descriptorFirst,
                     descriptorSecond

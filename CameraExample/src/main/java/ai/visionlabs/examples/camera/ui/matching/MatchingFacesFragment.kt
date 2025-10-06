@@ -6,33 +6,29 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.drawToBitmap
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 
 class MatchingFacesFragment : Fragment() {
 
-
     private val TAG = "MatchingFacesFragment"
 
-    private lateinit var viewModel: MatchingFacesViewModel
+    private val viewModel: MatchingFacesViewModel by viewModels()
+    private var _binding: FragmentMatchingFacesBinding? = null
+    private val binding get() = _binding!!
+
+    private var currentBestShots: MatchingFacesState.BestShotsResult? = null
 
     companion object {
         fun newInstance() = MatchingFacesFragment()
     }
 
-    private var _binding: FragmentMatchingFacesBinding? = null
-    private val binding: FragmentMatchingFacesBinding get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this)[MatchingFacesViewModel::class.java]
-    }
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMatchingFacesBinding.inflate(inflater, container, false)
@@ -41,91 +37,95 @@ class MatchingFacesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setListeners()
-        setObserving()
+        initListeners()
+        observeViewModel()
     }
 
-    private fun setObserving() {
+    private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.state.collect {
-                when (it) {
-                    is MatchingFacesState.Error -> onError(it)
-                    is MatchingFacesState.MatchingResult -> onMatchingResult(it)
-                    is MatchingFacesState.BestShotsResult -> onBestShotsResult(it)
-                    MatchingFacesState.Init -> onInit()
-                    MatchingFacesState.InProgress -> onProgress()
+            viewModel.state.collect { state ->
+                when (state) {
+                    is MatchingFacesState.Init -> renderInit()
+                    is MatchingFacesState.InProgress -> renderProgress()
+                    is MatchingFacesState.BestShotsResult -> renderBestShots(state)
+                    is MatchingFacesState.MatchingResult -> renderMatchingResult(state)
+                    is MatchingFacesState.Error -> renderError(state)
                 }
             }
         }
     }
 
-    private fun onInit() {
-        Log.d(TAG, "onInit()")
-        binding.apply {
-            errorHolder.visibility = View.GONE
-            resultHolder.visibility = View.GONE
-            progressBar.visibility = View.GONE
+    private fun renderInit() = with(binding) {
+        Log.d(TAG, "renderInit()")
+        errorHolder.isVisible = false
+        resultHolder.isVisible = false
+        progressBar.isVisible = false
+    }
+
+    private fun renderProgress() = with(binding) {
+        Log.d(TAG, "renderProgress()")
+        errorHolder.isVisible = false
+        resultHolder.isVisible = false
+        progressBar.isVisible = true
+    }
+
+    private fun renderBestShots(result: MatchingFacesState.BestShotsResult) = with(binding) {
+        currentBestShots = result
+        Log.d(TAG, "renderBestShots(): $result")
+
+        errorHolder.isVisible = false
+        resultHolder.isVisible = false
+        progressBar.isVisible = false
+
+        matchFaces.isEnabled = result.firstImage != null && result.secondImage != null
+
+        result.firstImage?.let(firstImage::setImageBitmap)
+        result.secondImage?.let(secondImage::setImageBitmap)
+    }
+
+    private fun renderMatchingResult(result: MatchingFacesState.MatchingResult) = with(binding) {
+        Log.d(TAG, "renderMatchingResult(): $result")
+
+        errorHolder.isVisible = false
+        progressBar.isVisible = false
+        resultHolder.isVisible = true
+
+        similarityScore.text = result.score.toString()
+    }
+
+    private fun renderError(error: MatchingFacesState.Error) = with(binding) {
+        Log.d(TAG, "renderError(): $error")
+
+        errorHolder.isVisible = true
+        resultHolder.isVisible = false
+        progressBar.isVisible = false
+
+        errorMessage.text = error.message
+    }
+
+    private fun initListeners() = with(binding) {
+        changeFirstImage.setOnClickListener {
+            viewModel.findFirstFace(requireActivity())
+        }
+
+        changeSecondImage.setOnClickListener {
+            viewModel.findSecondFace(requireActivity())
+        }
+
+        matchFaces.setOnClickListener {
+            val result = currentBestShots
+            val first = result?.firstImage
+            val second = result?.secondImage
+            if (first != null && second != null) {
+                viewModel.matchFaces(first, second)
+            } else {
+                Log.w(TAG, "matchFaces() called with null images")
+            }
         }
     }
 
-    private fun onProgress() {
-        Log.d(TAG, "onProgress()")
-        binding.apply {
-            errorHolder.visibility = View.GONE
-            resultHolder.visibility = View.GONE
-            progressBar.visibility = View.VISIBLE
-        }
-    }
-
-    private fun onBestShotsResult(result: MatchingFacesState.BestShotsResult) {
-        Log.d(TAG, "onBestShotsResult(): $result")
-        binding.apply {
-            resultHolder.visibility = View.GONE
-            errorHolder.visibility = View.GONE
-            matchFaces.isEnabled = result.firstImage != null && result.secondImage != null
-            result.firstImage?.let {
-                firstImage.setImageBitmap(it)
-            }
-            result.secondImage?.let {
-                secondImage.setImageBitmap(it)
-            }
-        }
-    }
-
-    private fun onMatchingResult(result: MatchingFacesState.MatchingResult) {
-        Log.d(TAG, "onMatchingResult(): $result")
-        binding.apply {
-            errorHolder.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            resultHolder.visibility = View.VISIBLE
-            similarityScore.text = result.score.toString()
-        }
-    }
-
-    private fun onError(error: MatchingFacesState.Error) {
-        Log.d(TAG, "onError(): $error")
-        binding.apply {
-            errorHolder.visibility = View.VISIBLE
-            resultHolder.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            errorMessage.text = error.message
-        }
-    }
-
-    private fun setListeners() {
-        binding.apply {
-            changeFirstImage.setOnClickListener {
-                viewModel.findFirstFace(requireActivity())
-            }
-            changeSecondImage.setOnClickListener {
-                viewModel.findSecondFace(requireActivity())
-            }
-            matchFaces.setOnClickListener {
-                viewModel.matchFaces(
-                    binding.firstImage.drawToBitmap(),
-                    binding.secondImage.drawToBitmap()
-                )
-            }
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

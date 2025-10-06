@@ -10,7 +10,7 @@ class App : Application() {
     companion object {
         val lunaConfig = LunaConfig.create(
             acceptOccludedFaces = true,
-            acceptOccludedMouth = false,
+            acceptMask = false,
             acceptOneEyed = false,
             usePrimaryFaceTracking = false,
             livenessType = LivenessType.Offline,

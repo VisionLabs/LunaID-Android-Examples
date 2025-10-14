@@ -87,11 +87,11 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel:2.8.7")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
 
+
     implementation("ai.visionlabs.lunaid:core:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:common-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:cnn60-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:oslm-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:mask-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:glasses-arm:$sdkVersion@aar")
-    implementation("ai.visionlabs.lunaid:security:$sdkVersion@aar")
+    implementation("ai.visionlabs.lunaid:common-arm:1.19.0@aar")
+    implementation("ai.visionlabs.lunaid:cnn60-arm:1.19.0@aar")
+    implementation("ai.visionlabs.lunaid:oslm-arm:1.19.0@aar")
+    implementation("ai.visionlabs.lunaid:mask-arm:1.19.0@aar")
+    implementation("ai.visionlabs.lunaid:glasses-arm:1.19.0@aar")
 }

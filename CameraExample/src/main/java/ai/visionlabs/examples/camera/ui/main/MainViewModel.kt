@@ -90,7 +90,7 @@ class MainViewModel : ViewModel() {
             ShowCameraParams(
                 disableErrors = true,
                 recordVideo = Settings.recordVideo,
-                recordingTimeMillis = 5000
+                recordingTimeMillis = 10000
             ),
             interactions = Interactions.Builder()
                 .addInteraction(BlinkInteraction(timeoutMs = 30_000, acceptOneEyed = true))
@@ -151,7 +151,8 @@ class MainViewModel : ViewModel() {
             activity,
             ShowCameraParams(
                 disableErrors = false,
-                recordVideo = Settings.recordVideo
+                recordVideo = Settings.recordVideo,
+                recordingTimeMillis = 10000
             ),
             commands = commands,
         )

@@ -116,9 +116,11 @@ class OverlayFragment : Fragment() {
 
         LunaID.errorFlow
             .onEach {
-                binding.overlayError.text = getString(it.error.messageResId()!!)
-                delay(1000)
-                binding.overlayError.text = ""
+                it.error.messageResId()?.let { resId ->
+                    binding.overlayError.text = getString(resId)
+                    delay(1000)
+                    binding.overlayError.text = ""
+                }
             }
             .launchIn(this.lifecycleScope)
 

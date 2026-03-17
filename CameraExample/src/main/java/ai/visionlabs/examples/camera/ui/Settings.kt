@@ -9,4 +9,6 @@ object Settings {
 
     var recordVideo = false
 
+    var compressVideo = false
+
 }

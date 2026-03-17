@@ -3,6 +3,7 @@ package ai.visionlabs.examples.camera.ui.main
 import ai.visionlabs.examples.camera.R
 import ai.visionlabs.examples.camera.ui.Settings
 import android.app.Activity
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -23,6 +24,8 @@ import ru.visionlabs.sdk.lunacore.StartBestShotSearchCommand
 import ru.visionlabs.sdk.lunacore.YawLeftInteraction
 import ru.visionlabs.sdk.lunacore.YawRightInteraction
 import ru.visionlabs.sdk.lunacore.borderdistances.BorderDistancesStrategy
+import ru.visionlabs.videocompressor.VideoCompressor
+import java.io.File
 
 sealed class MainViewState {
 
@@ -166,6 +169,31 @@ class MainViewModel : ViewModel() {
                 LunaID.sendCommand(StartBestShotSearchCommand)
             }, startDelayMs
         )
+    }
+
+    suspend fun saveVideo(context: Context, path: String, shouldCompress: Boolean) {
+        val inputFile = File(path)
+        if (shouldCompress){
+            val nameCompressed = "best_shots/compressed_video.mp4"
+            val outputCompressedFile = File(context.filesDir, nameCompressed)
+            VideoCompressor.compress(inputFile, outputCompressedFile,250000).collect{
+                when(it){
+                    is VideoCompressor.State.Success -> {
+                        Log.i("saveVideo", "Compressed video has been saved: $nameCompressed")
+                    }
+                    is VideoCompressor.State.Failed -> {
+                        Log.e("saveVideo", "Compressed video saving has failed", it.exception)
+                    }
+                    VideoCompressor.State.Cancelled ->
+                        Log.e("saveVideo", "Compressed video saving has been cancelled")
+                }
+            }
+        } else {
+            val nameOriginal = "best_shots/original_video.mp4"
+            val outputOriginalFile = File(context.filesDir, nameOriginal)
+            inputFile.copyTo(outputOriginalFile, overwrite = true)
+            Log.i("saveVideo", "Original video has been saved: $nameOriginal")
+        }
     }
 
     companion object{

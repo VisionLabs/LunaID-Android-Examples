@@ -26,7 +26,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.visionlabs.sdk.lunacore.LunaID
-import ru.visionlabs.sdk.lunacore.utils.VideoUtils
 import java.io.File
 import java.io.FileOutputStream
 
@@ -34,6 +33,8 @@ import java.io.FileOutputStream
 class MainFragment : Fragment() {
 
     private val TAG = "MainFragment"
+
+    private val outputDir = File(context?.filesDir, "best_shots").apply { if (!exists()) mkdirs() }
 
     companion object {
         fun newInstance() = MainFragment()
@@ -58,10 +59,36 @@ class MainFragment : Fragment() {
         viewModel.init(this.viewLifecycleOwner)
         observeEngineInitStatus()
         observeBestShot()
+        observeVideo()
+        observeInteractionFrames()
+    }
+
+    private fun observeInteractionFrames() {
+        LunaID.interactionFramesResult.filterNotNull().onEach { result ->
+            result.interactionFrames.forEachIndexed { index, frame ->
+
+                val interactionFrameFile = File(outputDir, "interaction_frame_${index}.jpg")
+                frame.image.compress(
+                    Bitmap.CompressFormat.JPEG,
+                    90,
+                    FileOutputStream(interactionFrameFile)
+                )
+            }
+        }.flowOn(Dispatchers.Main)
+            .launchIn(this.viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun observeVideo() {
+        LunaID.videoRecordingResult.filterNotNull().onEach {
+            it.uri?.path?.let { p ->
+                viewModel.saveVideo(requireContext(), p, Settings.compressVideo)
+            }
+        }.flowOn(Dispatchers.Main)
+        .launchIn(this.viewLifecycleOwner.lifecycleScope)
     }
 
     private fun observeBestShot() {
-        LunaID.bestShot
+        LunaID.bestShotResult
             .filterNotNull()
             .onEach {
                 Log.d(TAG, "onViewCreated() collected bestshot, draw it")
@@ -73,7 +100,7 @@ class MainFragment : Fragment() {
 
     private fun saveBestShotFound(
         context: Context,
-        bestShotFound: LunaID.Event.BestShotFound
+        bestShotFound: LunaID.Event.SingleBestShotFound
     ) {
         try {
             val outputDir = File(context.filesDir, "best_shots").apply { if (!exists()) mkdirs() }
@@ -93,52 +120,6 @@ class MainFragment : Fragment() {
                 95,
                 FileOutputStream(warpFile)
             )
-
-            // Save interaction frames
-            bestShotFound.interactionFrames?.forEachIndexed { index, frame ->
-                val interactionFrameFile = File(outputDir, "interaction_frame_${index}.jpg")
-                frame.image.compress(
-                    Bitmap.CompressFormat.JPEG,
-                    90,
-                    FileOutputStream(interactionFrameFile)
-                )
-            }
-
-            // Handle video if available
-            bestShotFound.videoPath?.let { path ->
-                Log.d("SaveBestShot", "Video path: $path")
-
-                val videoInputUri = Uri.fromFile(File(path))
-                val originalVideoFile = File(outputDir, "original_video.mp4")
-                val compressedVideoFile = File(outputDir, "compressed_video.mp4")
-
-                // Copy original video
-                context.contentResolver.openInputStream(videoInputUri)?.use { input ->
-                    FileOutputStream(originalVideoFile).use { output ->
-                        input.copyTo(output)
-                    }
-                    Log.d(
-                        "SaveBestShot",
-                        "Original video copied to: ${originalVideoFile.absolutePath}"
-                    )
-                } ?: Log.e("SaveBestShot", "Failed to open input stream for original video")
-
-                // Compress video
-                VideoUtils.compressVideo(
-                    context,
-                    videoInputUri,
-                    compressedVideoFile,
-                    onSuccess = {
-                        Log.d(
-                            "SaveBestShot",
-                            "Video compressed successfully: ${compressedVideoFile.absolutePath}"
-                        )
-                    },
-                    onFailure = { throwable ->
-                        Log.e("SaveBestShot", "Video compression failed", throwable)
-                    }
-                )
-            } ?: Log.w("SaveBestShot", "No video path provided")
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -256,6 +237,18 @@ class MainFragment : Fragment() {
                 if (event.action == MotionEvent.ACTION_UP) {
                     binding.recordVideo.isChecked = !binding.recordVideo.isChecked
                     Settings.recordVideo = binding.recordVideo.isChecked
+                    return@setOnTouchListener true
+                }
+                return@setOnTouchListener false
+            }
+
+            compressVideo.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    return@setOnTouchListener true
+                }
+                if (event.action == MotionEvent.ACTION_UP) {
+                    binding.compressVideo.isChecked = !binding.compressVideo.isChecked
+                    Settings.compressVideo = binding.compressVideo.isChecked
                     return@setOnTouchListener true
                 }
                 return@setOnTouchListener false

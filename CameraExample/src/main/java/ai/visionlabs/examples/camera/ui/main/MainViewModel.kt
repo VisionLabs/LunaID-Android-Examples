@@ -173,28 +173,27 @@ class MainViewModel : ViewModel() {
 
     suspend fun saveVideo(context: Context, path: String, shouldCompress: Boolean) {
         val inputFile = File(path)
-        val nameOriginal = "best_shots/original_video.mp4"
-        val outputOriginalFile = File(context.filesDir, nameOriginal)
-        Log.i("SaveBestShot", "Original video: $nameOriginal")
-        inputFile.copyTo(outputOriginalFile, overwrite = true)
         if (shouldCompress){
             val nameCompressed = "best_shots/compressed_video.mp4"
             val outputCompressedFile = File(context.filesDir, nameCompressed)
             VideoCompressor.compress(inputFile, outputCompressedFile,250000).collect{
                 when(it){
                     is VideoCompressor.State.Success -> {
-                        Log.i("SaveBestShot", "Compressed video saved successfully: $nameCompressed")
+                        Log.i("saveVideo", "Compressed video has been saved: $nameCompressed")
                     }
                     is VideoCompressor.State.Failed -> {
-                        Log.e("SaveBestShot", "Compressed video saving has failed", it.exception)
+                        Log.e("saveVideo", "Compressed video saving has failed", it.exception)
                     }
                     VideoCompressor.State.Cancelled ->
-                        Log.e("SaveBestShot", "Compressed video saving has been cancelled")
+                        Log.e("saveVideo", "Compressed video saving has been cancelled")
                 }
             }
+        } else {
+            val nameOriginal = "best_shots/original_video.mp4"
+            val outputOriginalFile = File(context.filesDir, nameOriginal)
+            inputFile.copyTo(outputOriginalFile, overwrite = true)
+            Log.i("saveVideo", "Original video has been saved: $nameOriginal")
         }
-
-        Log.d("saveCompressVideo", "Saved to: ${outputOriginalFile.absolutePath}")
     }
 
     companion object{
